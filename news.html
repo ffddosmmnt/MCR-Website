@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCR | News</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="news.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html">MCR</a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a class="active" href="news.html">News</a>
+            </nav>
+
+            <div class="header-icons" aria-label="Utility navigation">
+                <a href="music.html#lyrics">Search</a>
+                <a href="showcase.html">Bag</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            <h1 class="page-title">News</h1>
+        </div>
+
+        <section class="container section news-feature" aria-labelledby="featured-news-title">
+            <figure class="image-frame news-feature-media">
+                <img src="assets/archive-news.png"
+                    alt="Black and white archive desk with film negatives, roses, and paper textures">
+            </figure>
+
+            <article class="news-feature-copy">
+                <span class="meta">Music / 24.05.2024</span>
+                <h2 id="featured-news-title">The Black Parade Returns to the Spotlight</h2>
+                <p class="lead">A deep dive into the continued influence of the landmark album, its visual language, and
+                    its place in modern alternative music.</p>
+                <a class="button" href="news-detail.html">Read More</a>
+            </article>
+        </section>
+
+        <section class="container section" id="latest-updates" aria-labelledby="latest-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="latest-title">Latest Updates</h2>
+            </div>
+
+            <div class="latest-grid">
+                <article class="latest-card">
+                    <figure class="image-frame latest-image">
+                        <img src="assets/tour-arena.png" alt="Empty concert arena prepared for tour production">
+                    </figure>
+                    <div class="latest-card-body">
+                        <p class="meta">Tour / 18.05.2024</p>
+                        <h3 class="card-title">European Tour Dates Announced</h3>
+                        <p class="card-copy">The archive expands across the continent with 12 new dates for the autumn
+                            leg.</p>
+                    </div>
+                </article>
+
+                <article class="latest-card">
+                    <figure class="image-frame latest-image">
+                        <img src="assets/black-parade-inspired.png"
+                            alt="Theatrical marching band inspired monochrome artwork">
+                    </figure>
+                    <div class="latest-card-body">
+                        <p class="meta">Press / 12.05.2024</p>
+                        <h3 class="card-title">Record Label Signing Update</h3>
+                        <p class="card-copy">A new partnership for distribution and production has been finalized with
+                            structural focus.</p>
+                    </div>
+                </article>
+
+                <article class="latest-card">
+                    <figure class="image-frame latest-image">
+                        <img src="assets/hero-concert.png" alt="Alternative rock concert stage with crowd silhouettes">
+                    </figure>
+                    <div class="latest-card-body">
+                        <p class="meta">Media / 05.05.2024</p>
+                        <h3 class="card-title">Rehearsal Room Footage</h3>
+                        <p class="card-copy">Exclusive raw video from the writing sessions of the upcoming untitled
+                            album.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container section announcement" aria-labelledby="announcement-title">
+            <div>
+                <span class="eyebrow">Tour bulletin</span>
+                <h2 id="announcement-title">New Tour Dates Announced</h2>
+                <p class="lead">Additional dates have been added to the upcoming run, including new arena stops and
+                    expanded fan ticket allocations.</p>
+            </div>
+            <a class="button" href="tour.html">View Tour</a>
+        </section>
+
+        <section class="container section fan-story" aria-labelledby="fan-stories-title">
+            <article>
+                <span class="eyebrow">Fan Stories</span>
+                <h2 class="section-title" id="fan-stories-title">The Archive Lives Through the Audience</h2>
+                <p class="lead">Fans continue to document memories, ticket stubs, recordings, and essays that trace the
+                    emotional history of the band.</p>
+                <a class="button secondary" href="#newsletter">Share Story</a>
+            </article>
+
+            <figure class="image-frame fan-story-media">
+                <img src="assets/hero-concert.png" alt="Concert audience and stage lights in black and white">
+            </figure>
+        </section>
+
+        <section class="container newsletter" id="newsletter" aria-labelledby="newsletter-title">
+            <div>
+                <h2 id="newsletter-title">Stay Updated</h2>
+                <p class="lead">Receive tour, music, and archive updates directly in your inbox.</p>
+            </div>
+
+            <form class="newsletter-form" action="#newsletter" method="get">
+                <label class="field-label" for="email">Email Address</label>
+                <div class="input-row">
+                    <input id="email" type="email" name="email" placeholder="user@domain.com">
+                    <button type="submit">Subscribe</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="about">
+        <div class="container footer-inner">
+            <div>
+                <strong>MCR Concept</strong>
+                <span>A finished black-and-white editorial website based on the original wireframes.</span>
+            </div>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCR | Music</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="music.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html">MCR</a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a class="active" href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+
+            <div class="header-icons" aria-label="Utility navigation">
+                <a href="#lyrics">Search</a>
+                <a href="showcase.html">Bag</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <div class="container">
+            <h1 class="page-title">Music</h1>
+        </div>
+
+        <section class="container section featured-release" id="store" aria-labelledby="release-title">
+            <figure class="image-frame featured-cover">
+                <img src="assets/black-parade-inspired.png"
+                    alt="Black and white gothic marching band inspired album artwork">
+            </figure>
+
+            <div class="featured-info">
+                <span class="eyebrow">Featured release</span>
+                <h2 id="release-title">The Black Parade</h2>
+                <p class="release-date">Released: October 23, 2006</p>
+                <p class="lead">A theatrical record built from grief, marching rhythms, arena hooks, and the visual
+                    language of a black-and-white parade.</p>
+                <div class="button-row">
+                    <a class="button" href="#lyrics">Listen on Spotify</a>
+                    <a class="button secondary" href="showcase.html">Buy Vinyl</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section" id="album-grid" aria-labelledby="album-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="album-title">Albums</h2>
+            </div>
+
+            <div class="album-grid">
+                <article class="album-card">
+                    <figure class="image-frame album-image tone-one">
+                        <img src="assets/black-parade-inspired.png" alt="Album artwork concept for Three Cheers">
+                    </figure>
+                    <div class="album-card-body">
+                        <h3>Three Cheers</h3>
+                        <p class="album-year">2004 / studio album</p>
+                        <a class="button secondary small full" href="#lyrics">Listen</a>
+                    </div>
+                </article>
+
+                <article class="album-card">
+                    <figure class="image-frame album-image tone-two">
+                        <img src="assets/archive-news.png" alt="Archive style album artwork concept">
+                    </figure>
+                    <div class="album-card-body">
+                        <h3>I Brought You My Bullets</h3>
+                        <p class="album-year">2002 / studio album</p>
+                        <a class="button secondary small full" href="#lyrics">Listen</a>
+                    </div>
+                </article>
+
+                <article class="album-card">
+                    <figure class="image-frame album-image tone-three">
+                        <img src="assets/hero-concert.png" alt="Concert stage artwork concept for Danger Days">
+                    </figure>
+                    <div class="album-card-body">
+                        <h3>Danger Days</h3>
+                        <p class="album-year">2010 / studio album</p>
+                        <a class="button secondary small full" href="#lyrics">Listen</a>
+                    </div>
+                </article>
+
+                <article class="album-card">
+                    <figure class="image-frame album-image tone-four">
+                        <img src="assets/tour-arena.png" alt="Arena artwork concept for Conventional Weapons">
+                    </figure>
+                    <div class="album-card-body">
+                        <h3>Conventional Weapons</h3>
+                        <p class="album-year">2013 / singles collection</p>
+                        <a class="button secondary small full" href="#lyrics">Listen</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container section" id="lyrics" aria-labelledby="lyrics-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="lyrics-title">Searchable Lyrics</h2>
+            </div>
+
+            <form class="search-form" action="#lyrics" method="get">
+                <label class="field-label" for="lyrics-search">Search songs or lyrics</label>
+                <input id="lyrics-search" type="search" name="q" placeholder="Enter keywords...">
+                <button type="submit">Search</button>
+            </form>
+
+            <div class="lyrics-table" role="table" aria-label="Searchable lyrics list">
+                <div class="lyrics-row header" role="row">
+                    <div class="lyrics-cell title" role="columnheader">Song Title</div>
+                    <div class="lyrics-cell" role="columnheader">Album</div>
+                    <div class="lyrics-cell action" role="columnheader">Action</div>
+                </div>
+
+                <article class="lyrics-row" role="row">
+                    <div class="lyrics-cell title" role="cell">Helena</div>
+                    <div class="lyrics-cell" role="cell">Three Cheers for Sweet Revenge</div>
+                    <div class="lyrics-cell action" role="cell"><a href="music.html#lyrics">Read Lyrics</a></div>
+                </article>
+
+                <article class="lyrics-row" role="row">
+                    <div class="lyrics-cell title" role="cell">Welcome to the Black Parade</div>
+                    <div class="lyrics-cell" role="cell">The Black Parade</div>
+                    <div class="lyrics-cell action" role="cell"><a href="music.html#lyrics">Read Lyrics</a></div>
+                </article>
+
+                <article class="lyrics-row" role="row">
+                    <div class="lyrics-cell title" role="cell">I'm Not Okay (I Promise)</div>
+                    <div class="lyrics-cell" role="cell">Three Cheers for Sweet Revenge</div>
+                    <div class="lyrics-cell action" role="cell"><a href="music.html#lyrics">Read Lyrics</a></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="container section" aria-labelledby="behind-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="behind-title">Behind the Music</h2>
+            </div>
+
+            <div class="card-grid">
+                <article class="story-card">
+                    <span class="package-label">Recording Story</span>
+                    <h3>The Paramour Sessions</h3>
+                    <p>The band shaped a haunted, live-room sound by recording in a mansion environment that pushed the
+                        album into dramatic territory.</p>
+                    <a class="button small" href="news.html">Read Story</a>
+                </article>
+
+                <article class="story-card">
+                    <span class="package-label">Visual System</span>
+                    <h3>Conceptual Framing</h3>
+                    <p>Costume, contrast, typography, and theatrical stage direction create a visual identity that still
+                        reads instantly.</p>
+                    <a class="button small" href="news.html">Explore Influences</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="container section" aria-labelledby="favorites-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="favorites-title">Fan Favorites</h2>
+            </div>
+
+            <div class="favorite-grid">
+                <article class="favorite-card">
+                    <div class="mini-cover" aria-hidden="true"></div>
+                    <div>
+                        <h3>Teenagers</h3>
+                        <p>1.2B plays</p>
+                    </div>
+                </article>
+
+                <article class="favorite-card">
+                    <div class="mini-cover alt" aria-hidden="true"></div>
+                    <div>
+                        <h3>Famous Last Words</h3>
+                        <p>850M plays</p>
+                    </div>
+                </article>
+
+                <article class="favorite-card">
+                    <div class="mini-cover dark" aria-hidden="true"></div>
+                    <div>
+                        <h3>Na Na Na</h3>
+                        <p>600M plays</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="about">
+        <div class="container footer-inner">
+            <div>
+                <strong>MCR Concept</strong>
+                <span>A finished black-and-white editorial website based on the original wireframes.</span>
+            </div>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+
+</html>
