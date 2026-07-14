@@ -47,3 +47,10 @@ out/
 *.tmp
 *.bak
 .history/
+
+.omo/*
+.omo*
+.omo
+.codegraph
+.codegraph*
+.codegraph/*

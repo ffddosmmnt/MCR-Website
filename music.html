@@ -48,8 +48,40 @@
                 <p class="lead">A theatrical record built from grief, marching rhythms, arena hooks, and the visual
                     language of a black-and-white parade.</p>
                 <div class="button-row">
-                    <a class="button" href="#lyrics">Listen on Spotify</a>
+                    <a class="button" href="#official-video">Play Full Song</a>
                     <a class="button secondary" href="showcase.html">Buy Vinyl</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container section" id="official-video" aria-labelledby="video-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="video-title">Full Song</h2>
+            </div>
+
+            <div class="music-embed-panel">
+                <div class="music-embed-copy">
+                    <span class="eyebrow">Official full-length audio</span>
+                    <h3>Welcome to the Black Parade</h3>
+                    <p>Play the complete 5:14 song, provided to YouTube by Reprise Records.</p>
+                    <a class="button secondary small" href="https://www.youtube.com/watch?v=G-I9csAflBs"
+                        target="_blank" rel="noopener noreferrer">Open on YouTube</a>
+                </div>
+
+                <div class="music-embed-frame">
+                    <iframe data-youtube-player
+                        data-src="https://www.youtube.com/embed/G-I9csAflBs?rel=0"
+                        title="My Chemical Romance - Welcome to the Black Parade official full audio" width="560"
+                        height="315" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen></iframe>
+                    <div class="music-embed-local-notice" data-youtube-local-notice hidden>
+                        <strong>Run this project through a local server</strong>
+                        <p>YouTube cannot load an embedded player when this HTML file is opened directly.</p>
+                        <code>python3 -m http.server 8000</code>
+                        <a href="https://www.youtube.com/watch?v=G-I9csAflBs" target="_blank"
+                            rel="noopener noreferrer">Play the full song on YouTube</a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -217,6 +249,7 @@
             </nav>
         </div>
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>

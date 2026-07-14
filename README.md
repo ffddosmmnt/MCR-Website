@@ -1,6 +1,6 @@
 # MCR Website
 
-A single-page fan website for **My Chemical Romance**, built from a Figma wireframe.
+A multi-page fan website for **My Chemical Romance**, built from editorial wireframes.
 
 ## Stack
 
@@ -10,31 +10,32 @@ A single-page fan website for **My Chemical Romance**, built from a Figma wirefr
 
 ## Structure
 
-```
-.
-├── index.html    # Single-page site (Home → Tour → Music sections)
-├── styles.css    # Design tokens, layout, components
-├── script.js     # Scroll-spy nav, cart, modals, lyrics search, etc.
-└── .gitignore
-```
+The project uses shared `base.css` and `script.js` files, plus a dedicated HTML and CSS file for each page.
 
 ## Sections
 
-1. **Home** — Hero, upcoming shows preview, news, stream now
-2. **Tour** — Full 2025 calendar, VIP packages, past shows, venue info, fan map
-3. **Music** — Featured release, discography, searchable lyrics, behind the music, fan favorites
+1. **Home** — Hero, upcoming shows preview, news, and featured stream
+2. **About** — Band history, members, timeline, and quotes
+3. **Music** — Featured release, discography, searchable lyrics, and fan favorites
+4. **Tour** — Tour calendar, VIP packages, past shows, venue info, and fan map
+5. **News** — Archive updates, newsletter, and article detail
+6. **Ticket Transaction** — Seat, delivery, contact, payment, and order summary
 
 ## Features
 
-- Smooth-scroll navigation with active link highlighting (scroll-spy)
-- Mobile hamburger menu
-- Cart with `localStorage` persistence
-- Modals for tickets, VIP packages, news, cart, and global search
-- Live lyrics search with match highlighting
-- Toast notifications
-- Scroll-reveal animations
-- Newsletter form with email validation
+- Accessible responsive navigation with mobile menu, Escape handling, and reduced-motion support
+- Live song and album filtering with result count and empty state
+- Responsive full-song YouTube embed licensed by Reprise Records
+- Interactive ticket quantity with minimum/maximum limits
+- Dynamic delivery selection, service fee, and checkout total
 
 ## Run
 
-Open `index.html` in any browser. No build step required.
+Run the project through a local web server so third-party embeds receive an HTTP referrer:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`. Opening the HTML files directly still works for the static content,
+but the YouTube player will show a local-server instruction instead of a broken embed.

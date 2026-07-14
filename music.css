@@ -28,6 +28,86 @@
   font-weight: 800;
 }
 
+.music-embed-panel {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.7fr) minmax(0, 1.3fr);
+  border: 1px solid var(--line);
+  background: var(--ink);
+}
+
+.music-embed-copy {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+  color: var(--white);
+}
+
+.music-embed-copy h3 {
+  margin: 8px 0 16px;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.9;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+.music-embed-copy p {
+  max-width: 32rem;
+  margin: 0 0 24px;
+  color: var(--paper-soft);
+}
+
+.music-embed-copy .button {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.music-embed-copy .button:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.music-embed-frame {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: var(--paper-soft);
+}
+
+.music-embed-frame iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
+
+.music-embed-local-notice {
+  width: 100%;
+  padding: 32px;
+  color: var(--ink);
+  text-align: center;
+}
+
+.music-embed-local-notice strong {
+  display: block;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+.music-embed-local-notice code {
+  display: block;
+  margin: 16px auto;
+  font-weight: 800;
+}
+
+.music-embed-local-notice a {
+  color: var(--accent);
+  font-weight: 900;
+}
+
 .release-date {
   margin: 0 0 16px;
 }
@@ -78,6 +158,23 @@
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 42px;
+}
+
+.lyrics-status {
+  margin: -26px 0 18px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.lyrics-empty {
+  margin: 0;
+  padding: 28px 18px;
+  border: 1px solid var(--line);
+  border-top: 0;
+  background: var(--paper-soft);
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .search-form .field-label {
@@ -220,9 +317,17 @@
   .featured-cover {
     flex-basis: auto;
   }
+
+  .music-embed-panel {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 680px) {
+  .music-embed-copy {
+    padding: 24px;
+  }
+
   .search-form {
     flex-direction: column;
   }

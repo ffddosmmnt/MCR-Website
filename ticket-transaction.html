@@ -76,9 +76,9 @@
                                 <strong>GA / 0</strong>
                                 <span>Quantity</span>
                                 <div class="quantity-control" aria-label="Ticket quantity">
-                                    <button type="button" class="button secondary small">-</button>
-                                    <output>2</output>
-                                    <button type="button" class="button secondary small">+</button>
+                                    <button type="button" class="button secondary small" aria-label="Decrease ticket quantity">-</button>
+                                    <output aria-live="polite">2</output>
+                                    <button type="button" class="button secondary small" aria-label="Increase ticket quantity">+</button>
                                 </div>
                             </div>
                         </div>
@@ -88,13 +88,13 @@
                         <h2 id="delivery-title">02. Delivery Method</h2>
                         <div class="delivery-options">
                             <label class="delivery-option selected">
-                                <input type="radio" name="delivery" checked>
+                                <input type="radio" name="delivery" value="mobile" checked>
                                 <span></span>
                                 <strong>Mobile Entry</strong>
                                 <em>Tickets delivered to your phone. No charge.</em>
                             </label>
                             <label class="delivery-option">
-                                <input type="radio" name="delivery">
+                                <input type="radio" name="delivery" value="will-call">
                                 <span></span>
                                 <strong>Will Call</strong>
                                 <em>Pick up at box office. ID required. $5.00</em>
@@ -154,25 +154,25 @@
                     <h2 id="summary-title">Order Summary</h2>
                     <dl>
                         <div>
-                            <dt>General Admission x2</dt>
-                            <dd>$250.00</dd>
+                            <dt data-summary-item>General Admission x2</dt>
+                            <dd data-summary-price>$250.00</dd>
                         </div>
                         <div>
                             <dt>Service Fee</dt>
-                            <dd>$42.50</dd>
+                            <dd data-summary-service>$42.50</dd>
                         </div>
                         <div>
                             <dt>Facility Charge</dt>
                             <dd>$10.00</dd>
                         </div>
                         <div>
-                            <dt>Delivery Mobile</dt>
-                            <dd>Free</dd>
+                            <dt data-summary-delivery>Delivery Mobile</dt>
+                            <dd data-summary-delivery-price>Free</dd>
                         </div>
                     </dl>
                     <div class="summary-total">
                         <span>Total</span>
-                        <strong>$302.50</strong>
+                        <strong data-summary-total aria-live="polite">$302.50</strong>
                     </div>
                     <button type="submit" form="checkout-form">Complete Purchase</button>
                     <p>By clicking complete purchase you agree to the terms of service and purchase policy. No refunds or
@@ -200,6 +200,7 @@
             </nav>
         </div>
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>
