@@ -19,7 +19,7 @@ The project uses shared `base.css` and `script.js` files, plus a dedicated HTML 
 3. **Music** — Featured release, discography, searchable lyrics, and fan favorites
 4. **Tour** — Tour calendar, VIP packages, past shows, venue info, and fan map
 5. **Store** — Merchandise showcase, product filtering, lookbook, and fan bag summary
-6. **News** — Archive updates, newsletter, and article detail
+6. **News** — News updates, newsletter, and article detail
 7. **Ticket Transaction** — Seat, delivery, contact, payment, and order summary
 
 ## Features

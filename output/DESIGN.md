@@ -2,7 +2,7 @@
 
 ## 1. Atmosphere & Identity
 
-An editorial rock archive with stark concert-poster contrast, off-white paper, black rules, and a restrained blood-red accent. The signature is oversized condensed-feeling typography framed by rigid borders and archival imagery.
+An editorial rock News with stark concert-poster contrast, off-white paper, black rules, and a restrained blood-red accent. The signature is oversized condensed-feeling typography framed by rigid borders and archival imagery.
 
 ## 2. Color
 
