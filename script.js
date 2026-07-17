@@ -161,7 +161,64 @@ function initializeYouTubePlayer() {
   localNotice.hidden = false;
 }
 
+function initializeMerchShowcase() {
+  const filter = document.querySelector("[data-store-filter]");
+  const productGrid = document.querySelector("[data-product-grid]");
+  const emptyState = document.querySelector("[data-store-empty]");
+  const bagItems = document.querySelector("[data-bag-items]");
+  const bagTotal = document.querySelector("[data-bag-total]");
+
+  if (!(filter instanceof HTMLSelectElement) || !productGrid || !emptyState || !bagItems || !bagTotal) return;
+
+  const products = [...productGrid.querySelectorAll(".product-card")];
+  const bag = new Map();
+  const formatPrice = (value) => `$${value}`;
+
+  filter.addEventListener("change", () => {
+    const selectedCategory = filter.value;
+    let visibleCount = 0;
+
+    for (const product of products) {
+      const isVisible = selectedCategory === "all" || product.dataset.category === selectedCategory;
+      product.hidden = !isVisible;
+      if (isVisible) visibleCount += 1;
+    }
+
+    emptyState.hidden = visibleCount !== 0;
+  });
+
+  const renderBag = () => {
+    const entries = [...bag.values()];
+    const total = entries.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+    bagItems.innerHTML = entries.length
+      ? entries.map((item) => `
+          <div class="bag-line">
+            <span>${item.name} x${item.quantity}</span>
+            <strong>${formatPrice(item.price * item.quantity)}</strong>
+          </div>
+        `).join("")
+      : "<p>Your bag is empty. Add a product from the showcase.</p>";
+    bagTotal.textContent = formatPrice(total);
+  };
+
+  productGrid.addEventListener("click", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-add-to-bag]") : null;
+    const product = button?.closest(".product-card");
+
+    if (!button || !(product instanceof HTMLElement)) return;
+
+    const name = product.dataset.name || "Merch item";
+    const price = Number(product.dataset.price || 0);
+    const current = bag.get(name) || { name, price, quantity: 0 };
+    current.quantity += 1;
+    bag.set(name, current);
+    renderBag();
+  });
+}
+
 initializeNavigation();
 initializeLyricsFilter();
 initializeTicketSummary();
 initializeYouTubePlayer();
+initializeMerchShowcase();

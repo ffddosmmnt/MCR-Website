@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCR | Store</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="showcase.css">
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html">MCR</a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a class="active" href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+
+            <div class="header-icons" aria-label="Utility navigation">
+                <a href="#products">Shop</a>
+                <a href="#bag">Bag</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page store-page">
+        <section class="container store-hero" aria-labelledby="store-title">
+            <div class="store-hero-copy">
+                <span class="eyebrow">Official merch drop / limited archive</span>
+                <h1 class="page-title" id="store-title">Store</h1>
+                <p class="lead">A monochrome merchandise showcase for MCR fans: tour tees, hoodies, vinyl, patches, and collectibles built around the Black Parade archive mood.</p>
+                <div class="button-row">
+                    <a class="button" href="#products">Shop Collection</a>
+                    <a class="button secondary" href="#lookbook">View Lookbook</a>
+                </div>
+            </div>
+
+            <figure class="image-frame store-hero-media">
+                <img src="assets/black-parade-inspired.png" alt="Monochrome Black Parade inspired merchandise artwork">
+                <figcaption>Drop 01 / Funeral March</figcaption>
+            </figure>
+        </section>
+
+        <section class="container section drop-strip" aria-label="Store highlights">
+            <article>
+                <span>01</span>
+                <strong>Limited Pressing</strong>
+                <p>Small-batch pieces with numbered archive tags.</p>
+            </article>
+            <article>
+                <span>02</span>
+                <strong>Tour Ready</strong>
+                <p>Heavy cotton, distressed ink, and arena-night details.</p>
+            </article>
+            <article>
+                <span>03</span>
+                <strong>Fan Bundle</strong>
+                <p>Build a bag and see the checkout total update instantly.</p>
+            </article>
+        </section>
+
+        <section class="container section" id="products" aria-labelledby="products-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="products-title">Merch Showcase</h2>
+                <form class="store-filter" aria-label="Filter merchandise">
+                    <label for="category-filter">Filter</label>
+                    <select id="category-filter" data-store-filter>
+                        <option value="all">All Items</option>
+                        <option value="apparel">Apparel</option>
+                        <option value="music">Music</option>
+                        <option value="accessory">Accessories</option>
+                    </select>
+                </form>
+            </div>
+
+            <div class="product-grid" data-product-grid>
+                <article class="product-card featured" data-category="apparel" data-name="Black Parade Jacket" data-price="128">
+                    <figure class="image-frame product-image">
+                        <img src="assets/black-parade-inspired.png" alt="Black Parade inspired military jacket product card">
+                        <span class="product-badge">Best Seller</span>
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Apparel / Limited</p>
+                        <h3>Black Parade Jacket</h3>
+                        <p>Structured marching-band silhouette with embroidered chest badge and red stitch accents.</p>
+                        <div class="product-actions">
+                            <strong>$128</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="apparel" data-name="Revenge Tour Tee" data-price="42">
+                    <figure class="image-frame product-image">
+                        <img src="assets/hero-concert.png" alt="Black and white tour tee product card">
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Apparel / Cotton</p>
+                        <h3>Revenge Tour Tee</h3>
+                        <p>Washed black tee with loud back print, cracked ink texture, and oversized stage dates.</p>
+                        <div class="product-actions">
+                            <strong>$42</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="music" data-name="Three Cheers Vinyl" data-price="36">
+                    <figure class="image-frame product-image">
+                        <img src="assets/archive-news.png" alt="Vinyl archive merchandise product card">
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Music / Vinyl</p>
+                        <h3>Three Cheers Vinyl</h3>
+                        <p>Gatefold reissue concept with lyric insert, matte sleeve, and archive-style liner notes.</p>
+                        <div class="product-actions">
+                            <strong>$36</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="accessory" data-name="Danger Days Patch Set" data-price="18">
+                    <figure class="image-frame product-image">
+                        <img src="assets/tour-arena.png" alt="Patch set accessory product card">
+                        <span class="product-badge">New</span>
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Accessory / Set</p>
+                        <h3>Danger Days Patch Set</h3>
+                        <p>Four woven patches inspired by desert broadcasts, signal maps, and road-case labels.</p>
+                        <div class="product-actions">
+                            <strong>$18</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="apparel" data-name="Ghost Choir Hoodie" data-price="76">
+                    <figure class="image-frame product-image">
+                        <img src="assets/black-parade-inspired.png" alt="Monochrome hoodie merchandise product card">
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Apparel / Fleece</p>
+                        <h3>Ghost Choir Hoodie</h3>
+                        <p>Heavyweight pullover with sleeve typography, kangaroo pocket, and faded parade artwork.</p>
+                        <div class="product-actions">
+                            <strong>$76</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="product-card" data-category="accessory" data-name="Archive Tote Bag" data-price="24">
+                    <figure class="image-frame product-image">
+                        <img src="assets/archive-news.png" alt="Archive tote bag accessory product card">
+                    </figure>
+                    <div class="product-body">
+                        <p class="meta">Accessory / Canvas</p>
+                        <h3>Archive Tote Bag</h3>
+                        <p>Natural canvas tote with black screen print, inner lyric tag, and reinforced straps.</p>
+                        <div class="product-actions">
+                            <strong>$24</strong>
+                            <button type="button" class="button small" data-add-to-bag>Add to Bag</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <p class="store-empty" data-store-empty hidden>No merchandise found in this category.</p>
+        </section>
+
+        <section class="container section store-split" id="lookbook" aria-label="Merch lookbook and bag summary">
+            <article class="lookbook-panel">
+                <span class="eyebrow">Lookbook note</span>
+                <h2 class="section-title">Wear It Loud</h2>
+                <p class="lead">Each piece is presented like a tour artifact: high contrast product photography, stamped labels, and a gritty catalog layout that still works on small screens.</p>
+                <ul class="lookbook-list">
+                    <li><span>Drop</span><strong>Funeral March</strong></li>
+                    <li><span>Palette</span><strong>Black / Bone / Blood Red</strong></li>
+                    <li><span>Ships</span><strong>Worldwide</strong></li>
+                </ul>
+            </article>
+
+            <aside class="bag-panel" id="bag" aria-labelledby="bag-title">
+                <span class="eyebrow">Fan Bag</span>
+                <h2 id="bag-title">Selected Merch</h2>
+                <div class="bag-items" data-bag-items>
+                    <p>Your bag is empty. Add a product from the showcase.</p>
+                </div>
+                <div class="bag-total">
+                    <span>Total</span>
+                    <strong data-bag-total>$0</strong>
+                </div>
+                <a class="button full" href="ticket-transaction.html">Continue Checkout</a>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <strong>MCR Concept</strong>
+                <span>A finished black-and-white editorial website based on the original wireframes.</span>
+            </div>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>
