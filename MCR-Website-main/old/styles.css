@@ -1,0 +1,1047 @@
+/* =========================================================
+   My Chemical Romance — Full site (Layers 1–3)
+   ========================================================= */
+
+/* ---------- Tokens ---------- */
+:root {
+    --color-bg: #ffffff;
+    --color-ink: #18181b;
+    --color-line: #000000;
+    --color-muted-1: #e5e5e5;
+    --color-muted-2: #d9d9d9;
+    --color-deep: #1a1c1c;
+    --color-grey-text: #4c4546;
+    --color-tier-bg: #eeeeee;
+
+    --font-display: "Space Grotesk", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, sans-serif;
+
+    --max-width: 1440px;
+    --gutter: 64px;
+}
+
+/* ---------- Reset ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px; /* account for sticky nav */
+}
+
+html, body {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* anchor target offset for sticky nav */
+section[id] { scroll-margin-top: 90px; }
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; background: none; border: 0; color: inherit; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* =========================================================
+   TOP NAV
+   ========================================================= */
+.top-nav {
+    width: 100%;
+    height: 82px;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-ink);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.top-nav__inner {
+    max-width: var(--max-width);
+    height: 80px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 36px;
+    letter-spacing: -1.8px;
+    line-height: 40px;
+    color: var(--color-ink);
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-link {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: var(--color-ink);
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: border-color .15s;
+}
+
+.nav-link--active,
+.nav-link:hover {
+    border-bottom-color: var(--color-ink);
+}
+
+.nav-link--disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
+    user-select: none;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.icon-btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ink);
+    border-radius: 4px;
+    position: relative;
+    transition: background .15s;
+}
+
+.icon-btn:hover { background: #f2f2f2; }
+
+.cart-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    background: var(--color-line);
+    color: var(--color-bg);
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cart-count[data-empty="true"] { display: none; }
+
+.menu-toggle { display: none; }
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+.main {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 64px var(--gutter) 128px;
+}
+
+/* Section title */
+.section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.2;
+    color: var(--color-deep);
+    letter-spacing: -0.5px;
+}
+
+.kicker {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 16px;
+}
+
+/* Placeholder image */
+.placeholder-img {
+    background: var(--color-muted-1);
+    border: 1px solid var(--color-line);
+    background-image:
+        linear-gradient(45deg, transparent 48%, rgba(0,0,0,0.06) 49%, rgba(0,0,0,0.06) 51%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, rgba(0,0,0,0.06) 49%, rgba(0,0,0,0.06) 51%, transparent 52%);
+    background-size: 24px 24px;
+}
+
+/* Reveal animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+   BUTTONS / TAG
+   ========================================================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    padding: 12px 20px;
+    border: 1px solid var(--color-line);
+    transition: background .15s, color .15s, transform .1s;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn--solid { background: var(--color-line); color: var(--color-bg); }
+.btn--solid:hover { background: var(--color-bg); color: var(--color-line); }
+
+.btn--outline { background: var(--color-bg); color: var(--color-line); }
+.btn--outline:hover { background: var(--color-line); color: var(--color-bg); }
+
+.btn--sm { padding: 8px 16px; }
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    padding: 8px 16px;
+    border: 1px solid var(--color-line);
+}
+
+.tag--muted {
+    color: #6b6b6b;
+    border-color: #c4c4c4;
+}
+
+.link-arrow {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    color: var(--color-line);
+}
+
+.link-arrow:hover { text-decoration: underline; }
+
+/* =========================================================
+   PAGE TITLE (Tour / Music)
+   ========================================================= */
+.page-title {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: 64px;
+}
+.page-title__text {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 64px;
+    letter-spacing: -1.28px;
+    color: var(--color-deep);
+}
+
+/* =========================================================
+   HERO (home)
+   ========================================================= */
+.hero {
+    display: grid;
+    grid-template-columns: 1fr 533px;
+    gap: 48px;
+    align-items: center;
+    padding-bottom: 128px;
+}
+.hero__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 64px;
+    line-height: 1.1;
+    letter-spacing: -1.28px;
+    color: var(--color-deep);
+    margin-bottom: 24px;
+}
+.hero__lead {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 672px;
+    color: var(--color-ink);
+    margin-bottom: 32px;
+}
+.hero__ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero__image {
+    width: 100%;
+    height: 400px;
+}
+
+/* =========================================================
+   TOUR (home upcoming + tour calendar)
+   ========================================================= */
+.tour, .tour-calendar { padding-bottom: 128px; }
+
+.tour__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-line);
+    margin-bottom: 0;
+}
+
+.tour__list { display: flex; flex-direction: column; }
+
+.tour-row {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 2fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--color-line);
+}
+.tour-row__date {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+}
+.tour-row__venue {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.1;
+    color: var(--color-deep);
+}
+.tour-row__city {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--color-ink);
+}
+
+/* Calendar table (tour page) */
+.calendar { border: 1px solid var(--color-line); border-top: none; }
+
+.calendar__head {
+    display: grid;
+    grid-template-columns: 140px 1fr 2fr 160px;
+    gap: 16px;
+    padding: 16px;
+    background: var(--color-line);
+    color: var(--color-bg);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+}
+
+.calendar__body { display: flex; flex-direction: column; }
+
+.calendar-row {
+    display: grid;
+    grid-template-columns: 140px 1fr 2fr 160px;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+    border-bottom: 1px solid var(--color-line);
+    transition: background .15s;
+}
+.calendar-row:last-child { border-bottom: none; }
+.calendar-row:hover { background: #fafafa; }
+
+.calendar-row__date {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+}
+.calendar-row__city {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+}
+.calendar-row__venue {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--color-ink);
+}
+.calendar-row__action { justify-self: end; }
+
+/* =========================================================
+   NEWS (home)
+   ========================================================= */
+.news {
+    padding-bottom: 128px;
+}
+.news__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 36px;
+    letter-spacing: 1.2px;
+    color: var(--color-line);
+    margin-bottom: 48px;
+    text-align: center;
+}
+.news__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+.news-card { cursor: pointer; transition: transform .2s; }
+.news-card:hover { transform: translateY(-4px); }
+.news-card__img { width: 100%; height: 260px; background: var(--color-muted-2); margin-bottom: 16px; border: 1px solid var(--color-line); }
+.news-card__title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1.2px;
+    color: var(--color-line);
+    margin-bottom: 8px;
+}
+.news-card__subtitle {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-ink);
+}
+
+/* =========================================================
+   MUSIC PREVIEW (home)
+   ========================================================= */
+.music-preview {
+    display: grid;
+    grid-template-columns: 592px 1fr;
+    gap: 96px;
+    align-items: start;
+}
+.music-preview__cover {
+    width: 100%;
+    height: 570px;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+}
+.music-preview__tag {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    color: var(--color-line);
+    margin-bottom: 24px;
+}
+.music-preview__album {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.1;
+    color: var(--color-line);
+}
+.music-preview__info { padding-top: 88px; }
+.music-preview__info .section-title { font-size: 32px; margin-bottom: 24px; }
+.music-preview__desc { font-size: 16px; margin-bottom: 32px; }
+.music-preview__links { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
+.music-preview__links .btn { width: 220px; padding: 16px 24px; }
+
+/* =========================================================
+   VIP PACKAGES (tour)
+   ========================================================= */
+.vip { padding-bottom: 128px; }
+.vip .section-title { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--color-line); }
+
+.vip__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.vip-tier {
+    border: 1px solid var(--color-line);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s;
+}
+.vip-tier:hover { transform: translateY(-4px); }
+
+.vip-tier--featured {
+    background: var(--color-tier-bg);
+}
+
+.vip-tier__head { margin-bottom: 16px; }
+.vip-tier__badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    padding: 4px 8px;
+    background: var(--color-line);
+    color: var(--color-bg);
+    margin-bottom: 8px;
+}
+.vip-tier__name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--color-deep);
+}
+.vip-tier__price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 36px;
+    color: var(--color-line);
+}
+.vip-tier__list { flex: 1; margin-bottom: 24px; }
+.vip-tier__list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+
+/* =========================================================
+   PAST SHOWS (tour)
+   ========================================================= */
+.past-shows { padding-bottom: 128px; }
+.past-shows .section-title { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--color-line); }
+
+.past-shows__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+.past-card { display: flex; flex-direction: column; }
+.past-card__img { width: 100%; height: 180px; margin-bottom: 12px; }
+.past-card__date {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 4px;
+}
+.past-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-deep);
+}
+.past-card__city { font-size: 14px; color: var(--color-ink); }
+
+/* =========================================================
+   INFO + MAP (tour)
+   ========================================================= */
+.info-map {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+}
+.venue-info .section-title,
+.fan-map .section-title {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-line);
+}
+.venue-info__list li {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+}
+.venue-info__list strong {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+.fan-map__box {
+    width: 100%;
+    height: 400px;
+    position: relative;
+}
+.fan-map__pin {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--color-line);
+    border: 2px solid var(--color-bg);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--color-line);
+    animation: pinPulse 2s infinite;
+}
+@keyframes pinPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+}
+
+/* =========================================================
+   FEATURED ALBUM (music)
+   ========================================================= */
+.featured-album { padding-bottom: 128px; }
+.featured-album .kicker {
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--color-line);
+    width: 100%;
+    margin-bottom: 24px;
+}
+.featured-album__wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+}
+.featured-album__cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+}
+.featured-album__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: var(--color-deep);
+    margin-bottom: 16px;
+}
+.featured-album__meta {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 24px;
+}
+.featured-album__desc { margin-bottom: 32px; max-width: 480px; }
+.featured-album__actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+/* =========================================================
+   DISCOGRAPHY (music)
+   ========================================================= */
+.discography { padding-bottom: 128px; }
+.discography .section-title { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--color-line); }
+
+.discography__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+.album-card {
+    border: 1px solid var(--color-line);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    transition: transform .2s, box-shadow .2s;
+}
+.album-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 6px 6px 0 var(--color-line);
+}
+.album-card__cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 12px;
+}
+.album-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--color-deep);
+    padding: 0 8px;
+}
+.album-card__year {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    padding: 0 8px;
+    margin-bottom: 12px;
+}
+.album-card__btn { margin: 0 8px 4px; }
+
+/* =========================================================
+   LYRICS (music)
+   ========================================================= */
+.lyrics { padding-bottom: 128px; }
+.lyrics .section-title { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-line); }
+
+.lyrics__search { max-width: 576px; margin-bottom: 24px; }
+.lyrics__label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 12px;
+}
+.lyrics__field { display: flex; gap: 0; }
+.lyrics__input {
+    flex: 1;
+    height: 48px;
+    padding: 0 16px;
+    border: 1px solid var(--color-line);
+    border-right: 0;
+    font-family: var(--font-body);
+    font-size: 16px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    outline: none;
+}
+.lyrics__input:focus { background: #fafafa; }
+.lyrics__field .btn { height: 48px; padding: 0 24px; }
+
+.lyrics__results {
+    display: grid;
+    gap: 16px;
+}
+.lyric-result {
+    border: 1px solid var(--color-line);
+    padding: 16px;
+}
+.lyric-result__song {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+.lyric-result__album {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 8px;
+}
+.lyric-result__line { font-size: 14px; line-height: 1.6; }
+.lyric-result__line mark { background: #ffe34f; padding: 0 2px; }
+
+.lyrics__empty {
+    text-align: center;
+    padding: 32px;
+    color: var(--color-grey-text);
+    font-size: 14px;
+}
+
+/* =========================================================
+   BEHIND THE MUSIC (music)
+   ========================================================= */
+.behind { padding-bottom: 128px; }
+.behind .section-title { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid var(--color-line); }
+
+.behind__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+.behind-card {
+    border: 1px solid var(--color-line);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+}
+.behind-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--color-deep);
+    margin-bottom: 16px;
+}
+.behind-card__body { flex: 1; margin-bottom: 24px; font-size: 15px; line-height: 1.6; }
+.behind-card .btn { align-self: flex-start; }
+
+/* =========================================================
+   FAN FAVORITES (music)
+   ========================================================= */
+.favorites { padding-top: 64px; border-top: 1px solid var(--color-line); }
+.favorites .section-title { margin-bottom: 32px; }
+
+.favorites__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+.fav-card {
+    border: 1px solid var(--color-line);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background .15s;
+    cursor: pointer;
+}
+.fav-card:hover { background: #fafafa; }
+.fav-card__rank {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 32px;
+    color: var(--color-line);
+    min-width: 32px;
+}
+.fav-card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-deep);
+}
+.fav-card__plays {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.footer {
+    background: var(--color-line);
+    color: var(--color-bg);
+    padding: 64px 0;
+}
+.footer__inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr 1fr;
+    gap: 48px;
+}
+.footer__heading {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1.2px;
+    margin-bottom: 16px;
+}
+.footer__text { font-size: 13px; opacity: .8; line-height: 1.6; }
+.footer__form { display: flex; gap: 0; max-width: 360px; }
+.footer__input {
+    flex: 1;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--color-bg);
+    border-right: 0;
+    background: transparent;
+    color: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+}
+.footer__input::placeholder { color: rgba(255,255,255,.6); }
+.footer__form .btn {
+    background: var(--color-bg);
+    color: var(--color-line);
+    border-color: var(--color-bg);
+    height: 40px;
+}
+.footer__form .btn:hover { background: var(--color-line); color: var(--color-bg); }
+
+.footer__socials { display: flex; flex-direction: column; gap: 8px; }
+.footer__social {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+.footer__social:hover { text-decoration: underline; }
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+.modal[hidden] { display: none; }
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    animation: fadeIn .2s;
+}
+.modal__panel {
+    position: relative;
+    width: min(560px, 100%);
+    max-height: 90vh;
+    overflow: auto;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    padding: 40px;
+    animation: pop .2s ease-out;
+}
+.modal__close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--color-line);
+    width: 32px;
+    height: 32px;
+}
+.modal__content h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--color-deep);
+    margin-bottom: 16px;
+}
+.modal__content p { margin-bottom: 16px; line-height: 1.6; }
+.modal__content .modal-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.modal__content .modal-meta {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--color-grey-text);
+    margin-bottom: 8px;
+}
+.modal__content .modal-price {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    color: var(--color-line);
+    margin-bottom: 16px;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--color-line);
+    color: var(--color-bg);
+    padding: 14px 24px;
+    border: 1px solid var(--color-line);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity .25s, transform .25s;
+    pointer-events: none;
+}
+.toast[hidden] { display: none; }
+.toast.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 1100px) {
+    .main { padding: 48px 32px 96px; }
+
+    .hero,
+    .music-preview,
+    .featured-album__wrap,
+    .info-map,
+    .behind__grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .hero__image { height: auto; aspect-ratio: 4 / 3; }
+    .music-preview__cover { height: auto; aspect-ratio: 1 / 1; padding: 32px; }
+    .music-preview__info { padding-top: 0; }
+
+    .news__grid,
+    .vip__grid,
+    .past-shows__grid,
+    .discography__grid,
+    .favorites__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .calendar__head,
+    .calendar-row {
+        grid-template-columns: 100px 1fr 1fr 120px;
+        font-size: 12px;
+    }
+
+    .calendar-row__city { font-size: 16px; }
+
+    .footer__inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+@media (max-width: 720px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 82px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--color-bg);
+        border-bottom: 1px solid var(--color-line);
+        padding: 24px;
+        gap: 16px;
+    }
+    .nav-links.is-open { display: flex; }
+    .menu-toggle { display: inline-flex; }
+
+    .top-nav__inner { padding: 0 20px; }
+
+    .hero__title,
+    .page-title__text { font-size: 44px; }
+    .featured-album__title { font-size: 36px; }
+    .section-title { font-size: 32px; }
+
+    .news__grid,
+    .vip__grid,
+    .past-shows__grid,
+    .discography__grid,
+    .favorites__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .calendar__head { display: none; }
+    .calendar-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+    .calendar-row__action { justify-self: stretch; }
+    .calendar-row__action .btn { width: 100%; }
+
+    .tour-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .modal__panel { padding: 24px; }
+}
