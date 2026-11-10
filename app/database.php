@@ -33,7 +33,7 @@ function database(): PDO
         throw new RuntimeException('Database connection settings are invalid.');
     }
 
-    $connection = new PDO(
+    $candidate = new PDO(
         "mysql:host={$host};port={$port};dbname={$name};charset=utf8mb4",
         $user,
         $password,
@@ -44,6 +44,10 @@ function database(): PDO
             PDO::ATTR_TIMEOUT => 3,
         ],
     );
+
+    // concerts.concert_date is TIMESTAMP: read it in a deterministic, labelled timezone.
+    $candidate->exec("SET time_zone = '+00:00'");
+    $connection = $candidate;
 
     return $connection;
 }

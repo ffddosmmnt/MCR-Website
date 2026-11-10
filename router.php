@@ -20,13 +20,27 @@ if ($path === '/api/albums.php') {
     return;
 }
 
+$legacyPages = ['index', 'music', 'tour', 'news', 'news-detail'];
+foreach ($legacyPages as $page) {
+    if ($path === '/' . $page . '.html') {
+        $query = $_SERVER['QUERY_STRING'] ?? '';
+        header('Location: ' . $page . '.php' . ($query === '' ? '' : '?' . $query), true, 308);
+        return;
+    }
+}
+
+$dynamicPage = $path === '/' ? 'index.php' : ltrim($path, '/');
+if (in_array($dynamicPage, array_map(fn ($page) => $page . '.php', $legacyPages), true)) {
+    require __DIR__ . '/' . $dynamicPage;
+    return;
+}
+
 $staticFiles = [
-    'index.html', 'about.html', 'music.html', 'tour.html', 'showcase.html',
-    'news.html', 'news-detail.html', 'ticket-transaction.html',
+    'about.html', 'showcase.html', 'ticket-transaction.html',
     'base.css', 'home.css', 'about.css', 'music.css', 'tour.css', 'showcase.css',
     'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js',
 ];
-$relativePath = $path === '/' ? 'index.html' : ltrim($path, '/');
+$relativePath = ltrim($path, '/');
 $file = null;
 
 if (in_array($relativePath, $staticFiles, true)) {

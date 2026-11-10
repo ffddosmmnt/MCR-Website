@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require_once dirname(__DIR__) . '/app/database.php';
+require_once dirname(__DIR__) . '/app/content.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -15,11 +15,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'GET') {
 }
 
 try {
-    $query = database()->prepare(
-        'SELECT id, title, release_date, cover_image FROM albums ORDER BY release_date DESC, id DESC LIMIT 100',
-    );
-    $query->execute();
-    $albums = $query->fetchAll();
+    $albums = albums();
 
     foreach ($albums as &$album) {
         $album['id'] = (int) $album['id'];
