@@ -1,0 +1,11 @@
+Options -Indexes
+DirectoryIndex index.html
+
+# Apache 2.4 with mod_rewrite and AllowOverride enabled.
+RewriteEngine On
+RewriteRule ^(?:app|agent|tests|old|output|\.runtime)(?:/|$) - [F,L,NC]
+RewriteRule ^router\.php(?:/|$) - [F,L,NC]
+
+<FilesMatch "(?i)(^\.|\.(?:md|db|sql|ini|log|ps1|bak|zip)$)">
+    Require all denied
+</FilesMatch>
