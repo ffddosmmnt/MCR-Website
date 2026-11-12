@@ -10,11 +10,7 @@ MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus informasi b
 
 Versi ini tidak memerlukan akun, email, atau password dan tidak memiliki tombol login maupun logout. Siapa pun yang membuka halaman ini dapat menggunakan seluruh fungsi pengelolaan. Untuk selesai, cukup tutup tab dashboard.
 
-Perubahan yang Anda simpan berlaku pada data band yang digunakan aplikasi. Untuk latihan, buat data baru dengan awalan **UJI**, misalnya **UJI Album**, lalu gunakan data tersebut saat mencoba **Edit** dan **Delete**. Hindari mengubah atau menghapus konten yang masih digunakan.
-
-## Versi dengan login
-
-Versi dashboard sebelumnya disimpan terpisah di folder **dashboard-auth**. Untuk menggunakan versi yang memerlukan akun admin, buka [dashboard dengan login](http://127.0.0.1:8000/dashboard-auth/) dan ikuti [panduan versi tersebut](../dashboard-auth/README.md).
+Perubahan yang Anda simpan berlaku pada data band yang digunakan aplikasi. Hindari mengubah atau menghapus konten yang masih digunakan.
 
 ## Mengenal menu
 
@@ -41,7 +37,8 @@ Beberapa pilihan memerlukan data lain yang sudah tersedia. Tambahkan album sebel
 2. Klik **+ Add record**.
 3. Isi formulir yang muncul. Isian bertanda **(optional)** boleh dikosongkan.
 4. Jika ada daftar pilihan, pilih data yang sesuai, misalnya album untuk sebuah lagu.
-5. Klik **Save record**.
+5. Untuk gambar anggota band atau sampul album, klik **Choose File / Pilih File** pada **Image** atau **Cover image**, lalu pilih gambar dari perangkat Anda. Bagian ini boleh dikosongkan.
+6. Klik **Save record**.
 
 Pesan **Record saved.** menandakan data berhasil disimpan. Jika ada pesan kesalahan, perbaiki isian yang disebutkan lalu simpan kembali.
 
@@ -75,6 +72,8 @@ Pesan **No records found.** berarti belum ada data atau tidak ada hasil yang coc
 
 Perubahan berhasil disimpan setelah muncul pesan **Record saved.**
 
+Untuk mengganti gambar anggota band atau sampul album, pilih file baru saat membuka **Edit**. Jika tidak memilih file baru, gambar sebelumnya tetap digunakan. Gambar yang tersimpan dapat dilihat pada daftar data dan formulir edit.
+
 Jika data sudah diubah oleh admin lain, muat ulang halaman dan periksa versi terbarunya sebelum mengubah kembali.
 
 ## Menghapus data
@@ -94,5 +93,11 @@ Data yang masih digunakan oleh informasi lain tidak dapat dihapus. Contohnya, al
 - **Harga** diisi tanpa simbol mata uang atau pemisah ribuan. Contoh: `125000` atau `125000.00`. Harga tidak boleh negatif dan dapat memiliki paling banyak dua angka di belakang titik.
 - **Stok dan kuota** diisi dengan bilangan bulat nol atau lebih, tanpa angka pecahan.
 - **Waktu konser** menggunakan WIB. Periksa tanggal dan jam sebelum menyimpan.
-- **Image path / Cover path** diisi dengan lokasi gambar yang sudah disediakan pengelola, misalnya `assets/Blackparade.png`. Belum tersedia tombol untuk mengunggah gambar langsung dari dashboard.
+- **Image / Cover image** diunggah langsung dari perangkat, tanpa mengetik lokasi file. Pilih gambar **JPG, PNG, atau WebP**, maksimal **2 MB**, dengan panjang/lebar maksimal **6000 piksel** dan luas maksimal **20 megapiksel**. Jika formulir gagal disimpan, pilih kembali file gambar sebelum mencoba lagi.
 - **Lirik, isi berita, dan deskripsi produk** diisi sebagai teks biasa. Gunakan baris baru untuk memisahkan bagian tulisan.
+
+## Penyimpanan gambar
+
+Gambar yang berhasil diunggah otomatis disimpan di folder **dashboard/uploads** dengan nama yang dibuat oleh aplikasi. Anda tidak perlu menyalin file ke folder tersebut atau mengisi alamat gambar sendiri.
+
+Mengganti gambar atau menghapus data tidak menghapus berkas gambar yang sudah tersimpan. Hal ini menjaga gambar lama tetap tersedia bila masih diperlukan. Fitur unggah tersedia pada **Band members** dan **Albums**.
