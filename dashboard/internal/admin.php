@@ -3,13 +3,14 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../app/view.php';
+require_once __DIR__ . '/images.php';
 
 /** Fixed schema allowlist: request parameters never become SQL identifiers. */
 function admin_modules(): array
 {
     return [
-        'band_members' => ['Band members', ['name' => ['Name', 'text', 100], 'instrument' => ['Instrument', 'text', 100, true], 'cover_img' => ['Image path', 'image', 65535, true]]],
-        'albums' => ['Albums', ['title' => ['Title', 'text', 150], 'release_date' => ['Release date', 'date', 10, true], 'cover_image' => ['Cover path', 'image', 65535, true]]],
+        'band_members' => ['Band members', ['name' => ['Name', 'text', 100], 'instrument' => ['Instrument', 'text', 100, true], 'cover_img' => ['Image', 'image', 65535, true]]],
+        'albums' => ['Albums', ['title' => ['Title', 'text', 150], 'release_date' => ['Release date', 'date', 10, true], 'cover_image' => ['Cover image', 'image', 65535, true]]],
         'songs' => ['Songs', ['album_id' => ['Album', 'relation', 'albums'], 'title' => ['Title', 'text', 150], 'lyrics' => ['Lyrics', 'textarea', 65535, true]]],
         'news_articles' => ['News', ['title' => ['Title', 'text', 200], 'slug' => ['Slug', 'slug', 220], 'content' => ['Content', 'textarea', 65535, true], 'news_date' => ['News date', 'datetime-local', 19, true]]],
         'venues' => ['Venues', ['name' => ['Name', 'text', 150], 'city' => ['City', 'text', 100], 'country' => ['Country', 'text', 100]]],
@@ -106,6 +107,9 @@ function admin_values(PDO $db, array $fields, array $input): array
     $values = [];
     foreach ($fields as $key => [$label, $type, $max]) {
         $value = admin_string($input, $key);
+        if ($type === 'image' && $value !== '') {
+            throw new InvalidArgumentException('Use the file selector to upload an image.');
+        }
         if ($value === '' && ($fields[$key][3] ?? false)) {
             $values[$key] = null;
             continue;
@@ -147,9 +151,6 @@ function admin_values(PDO $db, array $fields, array $input): array
             if ($type === 'slug' && !preg_match('/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/', $value)) {
                 throw new InvalidArgumentException('Slug must contain lowercase letters, numbers, and single hyphens.');
             }
-            if ($type === 'image' && album_cover($value) !== $value) {
-                throw new InvalidArgumentException('Choose an existing raster image path inside assets/.');
-            }
         }
         $values[$key] = $value;
     }
@@ -158,6 +159,9 @@ function admin_values(PDO $db, array $fields, array $input): array
 
 function admin_save(PDO $db, string $table, array $fields, string $action, int $id): void
 {
+    $current = [];
+    $newUploads = [];
+    $commitStarted = false;
     $db->beginTransaction();
     try {
         if ($action !== 'create') {
@@ -171,6 +175,15 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
             $stmt->execute([$id]);
         } else {
             $values = admin_values($db, $fields, $_POST);
+            foreach ($fields as $column => $field) {
+                if ($field[1] === 'image') {
+                    $uploaded = admin_upload_image($column);
+                    if ($uploaded !== null) {
+                        $newUploads[] = $uploaded;
+                    }
+                    $values[$column] = $uploaded ?? ($current[$column] ?? null);
+                }
+            }
             $columns = array_keys($fields);
             if ($action === 'create') {
                 $sql = "INSERT INTO `$table` (`" . implode('`,`', $columns) . '`) VALUES (' . implode(',', array_fill(0, count($columns), '?')) . ')';
@@ -180,9 +193,18 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
             }
             $db->prepare($sql)->execute(array_values($values));
         }
+        $commitStarted = true;
         $db->commit();
     } catch (Throwable $error) {
-        $db->rollBack();
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        // A lost connection during COMMIT can have an unknown outcome; retain the file then.
+        if (!$commitStarted) {
+            foreach ($newUploads as $path) {
+                admin_discard_upload($path);
+            }
+        }
         throw $error;
     }
 }

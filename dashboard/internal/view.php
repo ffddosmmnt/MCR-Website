@@ -20,7 +20,9 @@
     } elseif ($field[1] === 'timestamp' && $display !== null) {
         $display = date_label($display, true);
     }
-    if ($field[1] === 'textarea' && $display !== null): ?>
+    if ($field[1] === 'image' && $display !== null): ?>
+<img class="img-thumbnail" src="<?= e('../' . album_cover($display)) ?>" alt="<?= e($field[0]) ?> for record <?= (int) $row['id'] ?>" width="96" height="96" loading="lazy">
+<?php elseif ($field[1] === 'textarea' && $display !== null): ?>
 <details><summary><?= e(mb_strimwidth($display, 0, 70, '…')) ?></summary><p class="text-break"><?= nl2br(e($display)) ?></p></details>
 <?php else: ?><?= $display === null ? '<span class="text-body-secondary">—</span>' : e((string) $display) ?><?php endif ?></td><?php endforeach ?>
 <td><div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm" <?= $action === 'edit' && $id === (int) $row['id'] ? 'data-dialog-opener' : '' ?> aria-label="Edit record <?= (int) $row['id'] ?>" href="<?= e($url(['action' => 'edit', 'id' => $row['id']])) ?>">Edit</a><a class="btn btn-outline-danger btn-sm" <?= $action === 'delete' && $id === (int) $row['id'] ? 'data-dialog-opener' : '' ?> aria-label="Delete record <?= (int) $row['id'] ?>" href="<?= e($url(['action' => 'delete', 'id' => $row['id']])) ?>">Delete</a></div></td></tr><?php endforeach ?>
@@ -38,15 +40,19 @@
 <dialog open class="record-modal" id="record-dialog" aria-labelledby="record-title">
 <div class="modal-heading"><h2 id="record-title"><?= e(ucfirst($action)) ?> · <?= e($title) ?></h2><a class="modal-close" href="<?= e($url()) ?>" aria-label="Close">&times;</a></div>
 <?php if ($error): ?><div class="alert alert-danger" role="alert"><?= e($error) ?></div><?php endif ?>
-<form method="post" action="<?= e($url(['action' => $action, 'id' => $id ?: null])) ?>">
+<form method="post" enctype="multipart/form-data" action="<?= e($url(['action' => $action, 'id' => $id ?: null])) ?>">
 <input type="hidden" name="csrf" value="<?= e($_SESSION['csrf']) ?>"><input type="hidden" name="version" value="<?= e($version) ?>">
 <?php if ($action === 'delete'): ?><p>Delete <strong><?= e(admin_label($record)) ?></strong>? This cannot be undone. Records with dependencies cannot be deleted.</p>
 <?php else: foreach ($fields as $key => [$label, $type, $max]): $optional = $fields[$key][3] ?? false; ?>
 <div class="mb-3"><label class="form-label" for="field-<?= e($key) ?>"><?= e($label) ?><?= $optional ? ' (optional)' : '' ?></label>
 <?php if ($type === 'relation'): ?><select class="form-select" id="field-<?= e($key) ?>" name="<?= e($key) ?>" required><option value="">Choose…</option><?php foreach ($options[$key] as $parentId => $parentLabel): ?><option value="<?= (int) $parentId ?>" <?= (string) ($values[$key] ?? '') === (string) $parentId ? 'selected' : '' ?>><?= e($parentLabel) ?></option><?php endforeach ?></select>
+<?php elseif ($type === 'image'): ?>
+<?php if (!empty($record[$key])): ?><p><img class="img-thumbnail" src="<?= e('../' . album_cover($record[$key])) ?>" alt="Current <?= e(strtolower($label)) ?>" width="120" height="120"></p><?php endif ?>
+<input class="form-control" id="field-<?= e($key) ?>" name="<?= e($key) ?>" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="field-<?= e($key) ?>-help">
+<p class="modal-help" id="field-<?= e($key) ?>-help">JPG, PNG or WebP, up to 2 MB; at most 6000 pixels per side and 20 megapixels. Leave empty to keep the current image.<?php if ($error): ?> Choose the file again if needed.<?php endif ?></p>
 <?php elseif ($type === 'textarea'): ?><textarea class="form-control" rows="6" id="field-<?= e($key) ?>" name="<?= e($key) ?>" maxlength="65535" <?= $optional ? '' : 'required' ?>><?= e((string) ($values[$key] ?? '')) ?></textarea>
 <?php else: $inputType = match ($type) { 'integer', 'money' => 'number', 'timestamp' => 'datetime-local', 'date', 'datetime-local' => $type, default => 'text' }; ?><input class="form-control" id="field-<?= e($key) ?>" name="<?= e($key) ?>" type="<?= e($inputType) ?>" value="<?= e((string) ($values[$key] ?? '')) ?>" <?= $optional ? '' : 'required' ?> <?php if (in_array($type, ['integer', 'money'], true)): ?>min="0" max="<?= $type === 'money' ? '9999999999.99' : $max ?>" step="<?= $type === 'money' ? '0.01' : '1' ?>"<?php elseif (in_array($type, ['datetime-local', 'timestamp'], true)): ?>step="1"<?php else: ?>maxlength="<?= $max ?>"<?php endif ?>><?php endif ?>
-<?php if ($type === 'image'): ?><p class="modal-help">Existing local image, for example assets/Blackparade.png.</p><?php endif ?></div>
+</div>
 <?php endforeach; endif ?>
 <div class="modal-actions"><a class="btn btn-outline-secondary" href="<?= e($url()) ?>">Cancel</a><button class="btn <?= $action === 'delete' ? 'btn-danger' : 'btn-primary' ?>" type="submit"><?= $action === 'delete' ? 'Yes, delete' : 'Save record' ?></button></div>
 </form></dialog>
