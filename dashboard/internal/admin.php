@@ -29,7 +29,8 @@ function admin_session(): void
     }
     session_save_path($sessionDirectory);
     ini_set('session.use_strict_mode', '1');
-    session_name('mcr_admin');
+    // Session is used only for form tokens, flash messages and edit snapshots.
+    session_name('mcr_dashboard');
     session_set_cookie_params(['httponly' => true, 'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'samesite' => 'Lax', 'path' => '/']);
     if (!session_start()) {
         admin_fail(503, 'Session storage is unavailable.');
@@ -59,24 +60,6 @@ function admin_redirect(string $url = 'index.php'): never
 {
     header('Location: ' . $url, true, 303);
     exit;
-}
-
-function admin_user(): array
-{
-    if (!isset($_SESSION['admin_id']) || time() - ($_SESSION['last_active'] ?? 0) > 1800) {
-        unset($_SESSION['admin_id'], $_SESSION['last_active']);
-        admin_redirect('login.php');
-    }
-    // Re-read role on every request so revocation takes effect immediately.
-    $stmt = database()->prepare('SELECT id,name,role,password_hash FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['admin_id']]);
-    $user = $stmt->fetch();
-    if (!$user || $user['role'] !== 'admin' || !hash_equals($_SESSION['auth_version'] ?? '', hash('sha256', $user['password_hash']))) {
-        unset($_SESSION['admin_id']);
-        admin_fail(403, 'Administrator access is required.');
-    }
-    $_SESSION['last_active'] = time();
-    return $user;
 }
 
 function admin_head(string $title): void
