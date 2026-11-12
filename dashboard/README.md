@@ -1,31 +1,20 @@
-# Panduan Pengguna MCR Admin
+# Panduan Pengguna MCR Admin — Akses Langsung
 
-MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus informasi band, musik, berita, konser, serta merchandise. Panduan ini menjelaskan cara menggunakan menu dan tombol yang tersedia di dashboard.
+MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus informasi band, musik, berita, konser, serta merchandise.
 
-## Masuk ke dashboard
+## Membuka dashboard
 
-1. Buka alamat dashboard yang diberikan pengelola aplikasi.
-2. Masukkan **Email** dan **Password** akun admin Anda.
-3. Klik **Sign in**.
+1. Buka [dashboard lokal](http://127.0.0.1:8000/dashboard/) atau alamat dashboard yang diberikan pengelola aplikasi.
+2. Halaman pengelolaan langsung terbuka sebagai **Administrator**.
+3. Pilih menu data yang ingin dikelola.
 
-Jika belum memiliki akun atau lupa password, hubungi pengelola aplikasi. Pendaftaran akun dan penggantian password belum tersedia di dashboard.
+Versi ini tidak memerlukan akun, email, atau password dan tidak memiliki tombol login maupun logout. Siapa pun yang membuka halaman ini dapat menggunakan seluruh fungsi pengelolaan. Untuk selesai, cukup tutup tab dashboard.
 
-## Menggunakan akun pengujian
+Perubahan yang Anda simpan berlaku pada data band yang digunakan aplikasi. Untuk latihan, buat data baru dengan awalan **UJI**, misalnya **UJI Album**, lalu gunakan data tersebut saat mencoba **Edit** dan **Delete**. Hindari mengubah atau menghapus konten yang masih digunakan.
 
-Akun berikut telah disiapkan untuk mencoba dashboard pada aplikasi lokal ini:
+## Versi dengan login
 
-| Keterangan | Akun pengujian |
-|---|---|
-| Nama | `admin` |
-| Email untuk masuk | `admin@example.test` |
-| Akses | Admin |
-| Password | Diberikan secara terpisah oleh pengelola. |
-
-Buka [dashboard lokal](http://127.0.0.1:8000/dashboard/), masukkan **email** akun di atas dan password pengujian, lalu klik **Sign in**. Gunakan email lengkap, bukan hanya nama `admin`. Jika alamat lokal tidak dapat dibuka, minta pengelola menyalakan aplikasi atau memberikan alamat yang sedang digunakan.
-
-Akun pengujian memiliki akses admin. Data yang ditambahkan, diubah, atau dihapus akan memengaruhi data band yang sama dengan akun admin lainnya. Untuk latihan, buat data baru dengan awalan **UJI**, misalnya **UJI Album**, lalu gunakan data tersebut saat mencoba **Edit** dan **Delete**. Hindari mengubah atau menghapus konten yang masih digunakan.
-
-Setelah selesai, klik **Sign out**. Jika akun pengujian tidak lagi diperlukan, minta pengelola menonaktifkan aksesnya.
+Versi dashboard sebelumnya disimpan terpisah di folder **dashboard-auth**. Untuk menggunakan versi yang memerlukan akun admin, buka [dashboard dengan login](http://127.0.0.1:8000/dashboard-auth/) dan ikuti [panduan versi tersebut](../dashboard-auth/README.md).
 
 ## Mengenal menu
 
