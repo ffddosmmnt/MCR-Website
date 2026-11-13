@@ -1,0 +1,6 @@
+Options -Indexes -ExecCGI
+Require all denied
+<FilesMatch "^[a-f0-9]{32}\.(?:jpg|png|webp)$">
+    Require all granted
+    SetHandler none
+</FilesMatch>

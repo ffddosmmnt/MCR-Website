@@ -52,10 +52,14 @@ function article_url(array $article): string
 /** Keep database-supplied image paths local; never turn them into external/traversal URLs. */
 function album_cover(?string $path): string
 {
-    if ($path !== null && str_starts_with($path, 'assets/') && !str_contains($path, '\\')
+    $imageRoot = $path !== null && str_starts_with($path, 'assets/') ? 'assets' : null;
+    if ($path !== null && preg_match('~\Adashboard/uploads/[a-f0-9]{32}\.(?:jpg|png|webp)\z~', $path)) {
+        $imageRoot = 'dashboard/uploads';
+    }
+    if ($path !== null && $imageRoot !== null && !str_contains($path, '\\')
         && !preg_match('~(?:^|/)\.\.?(/|$)~', $path)
         && preg_match('/\.(?:png|jpe?g|webp|gif)\z/i', $path)) {
-        $assetRoot = realpath(dirname(__DIR__) . '/assets');
+        $assetRoot = realpath(dirname(__DIR__) . '/' . $imageRoot);
         $file = realpath(dirname(__DIR__) . '/' . $path);
         if ($assetRoot !== false && $file !== false && is_file($file)
             && str_starts_with($file, $assetRoot . DIRECTORY_SEPARATOR)) {
