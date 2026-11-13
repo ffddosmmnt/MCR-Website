@@ -19,9 +19,14 @@ try {
         admin_fail(404, 'Module not found.');
     }
     [$title, $fields] = $modules[$table];
+    $createReadOnly = in_array($table, ['users', 'merch_orders', 'merch_order_items', 'ticket_orders', 'ticket_order_items'], true);
+    $listFields = array_filter($fields, fn ($field) => $field[1] !== 'password');
     $action = admin_string($_GET, 'action');
     if (!in_array($action, ['', 'create', 'edit', 'delete'], true)) {
         throw new InvalidArgumentException('Invalid action.');
+    }
+    if ($createReadOnly && in_array($action, ['edit', 'delete'], true)) {
+        admin_fail(404, 'Update and Delete for this module are introduced in WBS 2.3.');
     }
     $id = in_array($action, ['edit', 'delete'], true) ? admin_id(admin_string($_GET, 'id')) : 0;
     $search = admin_string($_GET, 'search');
@@ -29,7 +34,7 @@ try {
         throw new InvalidArgumentException('Search is too long.');
     }
     $sort = admin_string($_GET, 'sort', 'id');
-    if (!in_array($sort, array_merge(['id'], array_keys($fields)), true)) {
+    if (!in_array($sort, array_merge(['id'], array_keys($listFields)), true)) {
         throw new InvalidArgumentException('Invalid sort column.');
     }
     $direction = admin_string($_GET, 'direction', 'desc');
@@ -47,12 +52,10 @@ try {
     }
     $page = (int) $pageText;
     $db = database();
-    $filterKey = null;
     foreach ($fields as $key => $field) {
         if ($field[1] !== 'relation') {
             continue;
         }
-        $filterKey = $key;
         // Include every parent, not just the first page of records.
         $parents = $db->query('SELECT * FROM `' . $field[2] . '` ORDER BY id DESC')->fetchAll();
         $options[$key] = [];
@@ -60,11 +63,22 @@ try {
             $options[$key][(string) $parent['id']] = admin_label($parent);
         }
     }
-    $filter = admin_string($_GET, 'filter');
-    if ($filter !== '' && ($filterKey === null || !isset($options[$filterKey][$filter]))) {
+    $filters = [];
+    $legacyFilter = admin_string($_GET, 'filter');
+    if (!$options && $legacyFilter !== '') {
         throw new InvalidArgumentException('Invalid relation filter.');
     }
-    $state = ['module' => $table, 'search' => $search, 'sort' => $sort, 'direction' => $direction, 'limit' => $limit, 'page' => $page, 'filter' => $filter];
+    foreach ($options as $key => $parents) {
+        $filter = admin_string($_GET, 'filter_' . $key, $key === array_key_first($options) ? $legacyFilter : '');
+        if ($filter !== '' && !isset($parents[$filter])) {
+            throw new InvalidArgumentException('Invalid ' . strtolower($fields[$key][0]) . ' filter.');
+        }
+        $filters[$key] = $filter;
+    }
+    $state = ['module' => $table, 'search' => $search, 'sort' => $sort, 'direction' => $direction, 'limit' => $limit, 'page' => $page];
+    foreach ($filters as $key => $filter) {
+        $state['filter_' . $key] = $filter;
+    }
     $url = fn (array $changes = []) => 'index.php?' . http_build_query(array_merge($state, $changes));
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === '') {
@@ -100,7 +114,7 @@ try {
     $values = $record;
     if ($error && $action !== 'delete') {
         foreach ($fields as $key => $field) {
-            $values[$key] = is_string($_POST[$key] ?? null) ? $_POST[$key] : '';
+            $values[$key] = $field[1] === 'password' ? '' : (is_string($_POST[$key] ?? null) ? $_POST[$key] : '');
         }
     } else {
         foreach ($fields as $key => $field) {
@@ -112,15 +126,17 @@ try {
     if ($search !== '') {
         $clauses = [];
         $pattern = '%' . strtr($search, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
-        foreach (array_merge(['id'], array_keys($fields)) as $column) {
+        foreach (array_merge(['id'], array_keys($listFields)) as $column) {
             $clauses[] = "CAST(`$column` AS CHAR) LIKE ? ESCAPE '!'";
             $parameters[] = $pattern;
         }
         $where[] = '(' . implode(' OR ', $clauses) . ')';
     }
-    if ($filter !== '') {
-        $where[] = "`$filterKey` = ?";
-        $parameters[] = $filter;
+    foreach ($filters as $key => $filter) {
+        if ($filter !== '') {
+            $where[] = "`$key` = ?";
+            $parameters[] = $filter;
+        }
     }
     $whereSql = $where ? ' WHERE ' . implode(' AND ', $where) : '';
     $stmt = $db->prepare("SELECT COUNT(*) FROM `$table`" . $whereSql);

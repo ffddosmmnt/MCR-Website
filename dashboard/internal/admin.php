@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../app/view.php';
 require_once __DIR__ . '/images.php';
+require_once __DIR__ . '/orders.php';
 
 /** Fixed schema allowlist: request parameters never become SQL identifiers. */
 function admin_modules(): array
@@ -19,6 +20,11 @@ function admin_modules(): array
         'categories' => ['Categories', ['name' => ['Name', 'text', 100]]],
         'products' => ['Products', ['category_id' => ['Category', 'relation', 'categories'], 'name' => ['Name', 'text', 150], 'price' => ['Price', 'money', 12], 'details' => ['Details', 'textarea', 65535, true]]],
         'product_variants' => ['Product variants', ['product_id' => ['Product', 'relation', 'products'], 'size' => ['Size', 'text', 30, true], 'color' => ['Color', 'text', 50, true], 'stock' => ['Stock', 'integer', 2147483647]]],
+        'users' => ['Users', ['name' => ['Name', 'text', 100], 'email' => ['Email', 'email', 150], 'password_hash' => ['Password', 'password', 72], 'role' => ['Role', 'choice', ['user', 'admin']], 'time_stamp' => ['Recorded (UTC)', 'generated', 19], 'created_at' => ['Created at', 'generated', 19]]],
+        'merch_orders' => ['Merch orders', ['user_id' => ['User', 'relation', 'users'], 'status' => ['Status', 'text', 30], 'total_amount' => ['Total amount', 'calculated', 12]]],
+        'merch_order_items' => ['Merch order items', ['order_id' => ['Order', 'relation', 'merch_orders'], 'variant_id' => ['Product variant', 'relation', 'product_variants'], 'quantity' => ['Quantity', 'positive_integer', 2147483647], 'unit_price' => ['Unit price', 'money', 12], 'subtotal' => ['Subtotal', 'calculated', 12], 'address' => ['Address', 'textarea', 65535, true], 'time_stamp' => ['Recorded (UTC)', 'generated', 19], 'created_at' => ['Created at', 'generated', 19]]],
+        'ticket_orders' => ['Ticket orders', ['user_id' => ['User', 'relation', 'users'], 'status' => ['Status', 'text', 30], 'total_amount' => ['Total amount', 'calculated', 12]]],
+        'ticket_order_items' => ['Ticket order items', ['order_id' => ['Order', 'relation', 'ticket_orders'], 'ticket_type_id' => ['Ticket type', 'relation', 'ticket_types'], 'quantity' => ['Quantity', 'positive_integer', 2147483647], 'unit_price' => ['Unit price', 'money', 12], 'subtotal' => ['Subtotal', 'calculated', 12], 'order_code' => ['Order code', 'signed_integer', 2147483647, true], 'time_stamp' => ['Recorded (UTC)', 'generated', 19], 'created_at' => ['Created at', 'generated', 19]]],
     ];
 }
 
@@ -102,10 +108,28 @@ function admin_version(array $record): string
     return hash_hmac('sha256', json_encode($record, JSON_THROW_ON_ERROR), $_SESSION['csrf']);
 }
 
-function admin_values(PDO $db, array $fields, array $input): array
+function admin_values(PDO $db, array $fields, array $input, array $current = []): array
 {
     $values = [];
     foreach ($fields as $key => [$label, $type, $max]) {
+        if (in_array($type, ['generated', 'calculated'], true)) {
+            continue;
+        }
+        if ($type === 'password') {
+            $password = $input[$key] ?? '';
+            if (!is_string($password) || str_contains($password, "\0") || !mb_check_encoding($password, 'UTF-8')) {
+                throw new InvalidArgumentException('Invalid password.');
+            }
+            if ($password === '' && $current) {
+                $values[$key] = $current[$key];
+                continue;
+            }
+            if (strlen($password) < 12 || strlen($password) > 72) {
+                throw new InvalidArgumentException('Password must contain 12–72 bytes.');
+            }
+            $values[$key] = password_hash($password, PASSWORD_DEFAULT);
+            continue;
+        }
         $value = admin_string($input, $key);
         if ($type === 'image' && $value !== '') {
             throw new InvalidArgumentException('Use the file selector to upload an image.');
@@ -117,12 +141,17 @@ function admin_values(PDO $db, array $fields, array $input): array
         if ($value === '') {
             throw new InvalidArgumentException($label . ' is required.');
         }
-        if ($type === 'relation') {
+        if ($type === 'choice') {
+            if (!in_array($value, $max, true)) {
+                throw new InvalidArgumentException('Invalid ' . strtolower($label) . '.');
+            }
+        } elseif ($type === 'relation') {
             $value = admin_id($value);
             admin_record($db, $max, $value);
-        } elseif ($type === 'integer') {
-            if (!ctype_digit($value) || strlen($value) > 10 || (int) $value > $max) {
-                throw new InvalidArgumentException($label . ' must be a non-negative integer up to ' . $max . '.');
+        } elseif (in_array($type, ['integer', 'positive_integer', 'signed_integer'], true)) {
+            $minimum = match ($type) { 'positive_integer' => 1, 'signed_integer' => -2147483648, default => 0 };
+            if (!preg_match('/\A-?[0-9]{1,10}\z/', $value) || (int) $value < $minimum || (int) $value > $max) {
+                throw new InvalidArgumentException($label . ' must be an integer from ' . $minimum . ' to ' . $max . '.');
             }
         } elseif ($type === 'money') {
             if (!preg_match('/\A[0-9]{1,10}(?:\.[0-9]{1,2})?\z/', $value)) {
@@ -151,6 +180,9 @@ function admin_values(PDO $db, array $fields, array $input): array
             if ($type === 'slug' && !preg_match('/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/', $value)) {
                 throw new InvalidArgumentException('Slug must contain lowercase letters, numbers, and single hyphens.');
             }
+            if ($type === 'email' && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                throw new InvalidArgumentException('Enter a valid email address.');
+            }
         }
         $values[$key] = $value;
     }
@@ -162,8 +194,13 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
     $current = [];
     $newUploads = [];
     $commitStarted = false;
+    $family = admin_order_family($table);
     $db->beginTransaction();
     try {
+        $orderIds = admin_lock_orders($db, $table, $action, $id);
+        $adminRows = $table === 'users'
+            ? $db->query("SELECT id FROM users WHERE role = 'admin' ORDER BY id FOR UPDATE")->fetchAll()
+            : [];
         if ($action !== 'create') {
             $current = admin_record($db, $table, $id, true);
             if (!hash_equals(admin_version($current), admin_string($_POST, 'version'))) {
@@ -171,10 +208,19 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
             }
         }
         if ($action === 'delete') {
+            if ($table === 'users' && $current['role'] === 'admin' && count($adminRows) < 2) {
+                throw new DomainException('The last administrator account cannot be deleted.');
+            }
             $stmt = $db->prepare("DELETE FROM `$table` WHERE id = ?");
             $stmt->execute([$id]);
         } else {
-            $values = admin_values($db, $fields, $_POST);
+            $values = admin_values($db, $fields, $_POST, $current);
+            if ($family !== null && $table === $family[1]) {
+                $values['subtotal'] = admin_item_subtotal($values);
+            }
+            if ($table === 'users' && ($current['role'] ?? '') === 'admin' && $values['role'] !== 'admin' && count($adminRows) < 2) {
+                throw new DomainException('The last administrator must keep the admin role.');
+            }
             foreach ($fields as $column => $field) {
                 if ($field[1] === 'image') {
                     $uploaded = admin_upload_image($column);
@@ -184,7 +230,7 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
                     $values[$column] = $uploaded ?? ($current[$column] ?? null);
                 }
             }
-            $columns = array_keys($fields);
+            $columns = array_keys($values);
             if ($action === 'create') {
                 $sql = "INSERT INTO `$table` (`" . implode('`,`', $columns) . '`) VALUES (' . implode(',', array_fill(0, count($columns), '?')) . ')';
             } else {
@@ -192,6 +238,9 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
                 $values['id'] = $id;
             }
             $db->prepare($sql)->execute(array_values($values));
+        }
+        if ($family !== null && !($action === 'delete' && $table === $family[0])) {
+            admin_update_order_totals($db, $table, $orderIds);
         }
         $commitStarted = true;
         $db->commit();
@@ -211,6 +260,9 @@ function admin_save(PDO $db, string $table, array $fields, string $action, int $
 
 function admin_input_value(mixed $value, string $type): string
 {
+    if ($type === 'password') {
+        return '';
+    }
     if ($value === null) {
         return '';
     }
@@ -225,6 +277,12 @@ function admin_label(array $record): string
     $label = $record['title'] ?? $record['name'] ?? null;
     if ($label === null && array_key_exists('concert_date', $record)) {
         $label = $record['concert_date'] === null ? 'Date to be announced' : date_label($record['concert_date'], true);
+    }
+    if ($label === null && isset($record['user_id'])) {
+        $label = 'User #' . $record['user_id'] . ' · ' . $record['status'] . ' · ' . $record['total_amount'];
+    }
+    if ($label === null && isset($record['product_id'])) {
+        $label = 'Product #' . $record['product_id'] . ' · ' . trim(($record['size'] ?? '') . ' ' . ($record['color'] ?? ''));
     }
     $label ??= trim(($record['size'] ?? '') . ' ' . ($record['color'] ?? '')) ?: 'Record';
     return '#' . $record['id'] . ' · ' . $label;
