@@ -20,6 +20,20 @@ if ($path === '/api/albums.php') {
     return;
 }
 
+if (in_array($path, ['/dashboard', '/dashboard-auth'], true)) {
+    header('Location: ' . $path . '/', true, 308);
+    return;
+}
+$dashboardPages = [
+    '/dashboard/' => 'dashboard/index.php', '/dashboard/index.php' => 'dashboard/index.php',
+    '/dashboard-auth/' => 'dashboard-auth/index.php', '/dashboard-auth/index.php' => 'dashboard-auth/index.php',
+    '/dashboard-auth/login.php' => 'dashboard-auth/login.php', '/dashboard-auth/logout.php' => 'dashboard-auth/logout.php',
+];
+if (isset($dashboardPages[$path]) && is_file(__DIR__ . '/' . $dashboardPages[$path])) {
+    require __DIR__ . '/' . $dashboardPages[$path];
+    return;
+}
+
 $legacyPages = ['index', 'music', 'tour', 'news', 'news-detail'];
 foreach ($legacyPages as $page) {
     if ($path === '/' . $page . '.html') {
@@ -39,12 +53,21 @@ $staticFiles = [
     'about.html', 'showcase.html', 'ticket-transaction.html',
     'base.css', 'home.css', 'about.css', 'music.css', 'tour.css', 'showcase.css',
     'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js',
+    'dashboard/adminlte.min.css', 'dashboard/template.css', 'dashboard/dashboard.js',
+    'dashboard-auth/adminlte.min.css', 'dashboard-auth/template.css', 'dashboard-auth/dashboard.js',
 ];
 $relativePath = ltrim($path, '/');
 $file = null;
 
 if (in_array($relativePath, $staticFiles, true)) {
     $file = __DIR__ . '/' . $relativePath;
+} elseif (preg_match('~\Adashboard/uploads/[a-f0-9]{32}\.(?:jpg|png|webp)\z~', $relativePath)) {
+    $uploadRoot = realpath(__DIR__ . '/dashboard/uploads');
+    $candidate = realpath(__DIR__ . '/' . $relativePath);
+    if ($uploadRoot !== false && $candidate !== false
+        && str_starts_with($candidate, $uploadRoot . DIRECTORY_SEPARATOR)) {
+        $file = $candidate;
+    }
 } elseif (str_starts_with($relativePath, 'assets/')) {
     $assetRoot = realpath(__DIR__ . '/assets');
     $candidate = realpath(__DIR__ . '/' . $relativePath);
