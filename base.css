@@ -17,6 +17,39 @@
   display: none !important;
 }
 
+.content-notice {
+  padding: 24px;
+  border: 1px solid var(--line);
+  background: var(--paper-soft);
+  line-height: 1.6;
+}
+
+.content-note {
+  color: var(--muted);
+  margin-top: 24px;
+  margin-bottom: 32px;
+  font-size: 0.85rem;
+}
+
+section[id], .section-title[id] {
+  scroll-margin-top: 110px;
+}
+
+a, h1, h2, h3, .show-venue, .table-cell {
+  overflow-wrap: anywhere;
+}
+
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
 html {
   scroll-behavior: smooth;
 }

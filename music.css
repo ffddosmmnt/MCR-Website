@@ -196,6 +196,25 @@
   min-width: 138px;
 }
 
+.song-details {
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+  scroll-margin-top: 110px;
+}
+
+.song-details summary {
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.song-lyrics {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
 .lyrics-table {
   overflow: hidden;
   border: 1px solid var(--line);

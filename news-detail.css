@@ -5,6 +5,13 @@
   align-items: start;
 }
 
+.article-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  margin: 32px 0 64px;
+}
+
 .article-shell {
   min-width: 0;
 }
