@@ -53,24 +53,25 @@ function initializeLyricsFilter() {
   if (!(form instanceof HTMLFormElement) || !(input instanceof HTMLInputElement) || !table) return;
 
   const rows = [...table.querySelectorAll(".lyrics-row:not(.header)")];
-  const status = document.createElement("p");
+  const status = document.querySelector("[data-lyrics-status]") ?? document.createElement("p");
   status.className = "lyrics-status";
   status.setAttribute("role", "status");
   status.setAttribute("aria-live", "polite");
-  form.after(status);
+  if (!status.isConnected) form.after(status);
 
-  const emptyState = document.createElement("p");
+  const emptyState = document.querySelector("[data-lyrics-empty]") ?? document.createElement("p");
   emptyState.className = "lyrics-empty";
   emptyState.textContent = "No songs match your search.";
   emptyState.hidden = true;
-  table.after(emptyState);
+  if (!emptyState.isConnected) table.after(emptyState);
 
   const filterRows = () => {
     const query = input.value.trim().toLocaleLowerCase();
     let visibleCount = 0;
 
     for (const row of rows) {
-      const matches = row.textContent?.toLocaleLowerCase().includes(query) ?? false;
+      const searchText = row.dataset.searchText ?? row.textContent ?? "";
+      const matches = searchText.toLocaleLowerCase().includes(query);
       row.hidden = !matches;
       if (matches) visibleCount += 1;
     }
@@ -87,6 +88,23 @@ function initializeLyricsFilter() {
   });
   input.addEventListener("input", filterRows);
   filterRows();
+}
+
+function initializeSongDetails() {
+  if (!document.querySelector(".song-details")) return;
+
+  const revealSong = (hash) => {
+    if (!/^#song-\d+$/.test(hash)) return;
+    const song = document.getElementById(hash.slice(1));
+    if (song instanceof HTMLDetailsElement) song.open = true;
+  };
+
+  document.addEventListener("click", (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href^="#song-"]') : null;
+    if (link instanceof HTMLAnchorElement) revealSong(link.hash);
+  });
+  window.addEventListener("hashchange", () => revealSong(location.hash));
+  revealSong(location.hash);
 }
 
 function initializeTicketSummary() {
@@ -219,6 +237,7 @@ function initializeMerchShowcase() {
 
 initializeNavigation();
 initializeLyricsFilter();
+initializeSongDetails();
 initializeTicketSummary();
 initializeYouTubePlayer();
 initializeMerchShowcase();

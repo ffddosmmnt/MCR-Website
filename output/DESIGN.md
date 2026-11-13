@@ -59,7 +59,7 @@ Spacing follows a 4px base where practical. The shared container is `min(100% - 
 
 ## 6. Motion & Interaction
 
-Micro interactions use 200ms ease-out and animate only `transform` and `opacity`. All controls retain visible keyboard focus. `prefers-reduced-motion: reduce` disables the mobile menu transition.
+The current CSS uses 200ms ease-out for navigation `transform`/`opacity`, 180ms for button background/color/transform, and 500ms for image transform/filter. `prefers-reduced-motion: reduce` currently disables only the mobile menu/toggle transitions; it does not cover every hover effect or smooth scrolling. Preserve visible keyboard focus and evaluate motion coverage when changing these components.
 
 ## 7. Depth & Surface
 
@@ -73,4 +73,7 @@ Target WCAG 2.2 AA: visible focus, keyboard reachability, semantic labels, 44px 
 
 | Item | Location | Why accepted | Owner / Exit |
 |---|---|---|---|
-| Some existing navigation links target the user-deleted Store page | Shared header/footer | Pre-existing worktree deletion is outside this task | Restore or replace Store page in a separate task |
+| Small shared buttons have a 34px minimum height, below the stated 44px touch-target goal | `base.css`, `.button.small` | Existing CSS has not been audited for full WCAG compliance | Evaluate target size/spacing when modifying these controls |
+| Reduced-motion overrides cover menu/toggle transitions only | `base.css` | Button/image hover effects and smooth scroll are not covered by the existing override | Evaluate motion preferences when modifying these effects |
+
+The Store page currently exists as `showcase.html`; the previous note about a deleted Store page is obsolete. See [the agent rules](RULES.md) for the verified page map, responsive exceptions, DOM contracts, and prototype limitations.
