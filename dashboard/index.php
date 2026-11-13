@@ -19,14 +19,10 @@ try {
         admin_fail(404, 'Module not found.');
     }
     [$title, $fields] = $modules[$table];
-    $createReadOnly = in_array($table, ['users', 'merch_orders', 'merch_order_items', 'ticket_orders', 'ticket_order_items'], true);
     $listFields = array_filter($fields, fn ($field) => $field[1] !== 'password');
     $action = admin_string($_GET, 'action');
     if (!in_array($action, ['', 'create', 'edit', 'delete'], true)) {
         throw new InvalidArgumentException('Invalid action.');
-    }
-    if ($createReadOnly && in_array($action, ['edit', 'delete'], true)) {
-        admin_fail(404, 'Update and Delete for this module are introduced in WBS 2.3.');
     }
     $id = in_array($action, ['edit', 'delete'], true) ? admin_id(admin_string($_GET, 'id')) : 0;
     $search = admin_string($_GET, 'search');
