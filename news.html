@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>News | MCR</title><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="news.css"></head>
+<body data-page="news"><header class="site-header"><div class="container header-inner"><a class="logo" href="index.html">MCR</a><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html">Music</a><a href="tour.html">Tour</a><a href="showcase.html">Store</a><a href="news.html" class="active" aria-current="page">News</a></nav><div class="header-icons" aria-label="Utility navigation"><a href="music.html#lyrics">Search</a><a href="showcase.html#bag">Bag</a></div></div></header>
+<main class="page"><div class="container"><h1 class="page-title">News</h1></div><div class="container"><p class="content-notice" data-content-status role="status" aria-live="polite">Loading content…</p><noscript><p class="content-notice">JavaScript is required to load live content. Navigation and the static artwork remain available.</p></noscript></div>
+<section class="container section news-feature" aria-labelledby="featured-news-title" data-featured-news hidden><figure class="image-frame news-feature-media"><img src="assets/archive-news.png" alt="Editorial archive artwork"></figure><article class="news-feature-copy"><span class="meta" data-date></span><h2 id="featured-news-title" data-title></h2><p class="lead" data-excerpt></p><a class="button" data-article-link>Read More</a></article></section>
+<section class="container section" id="latest-updates" aria-labelledby="latest-title"><div class="section-heading-row"><h2 class="section-title" id="latest-title">Latest Updates</h2></div><div class="latest-grid" data-news></div><p class="content-note">Up to 100 articles are shown, newest dated articles first. Undated articles follow.</p></section>
+<section class="container section announcement" aria-labelledby="announcement-title"><div><span class="eyebrow">On the road</span><h2 id="announcement-title">Explore Tour Dates</h2><p class="lead">Find venue details and the published concert schedule.</p></div><a class="button" href="tour.html">View Tour</a></section>
+<section class="container section fan-story" aria-labelledby="fan-stories-title">
+            <article>
+                <span class="eyebrow">Fan Stories</span>
+                <h2 class="section-title" id="fan-stories-title">The News Lives Through the Audience</h2>
+                <p class="lead">Fans continue to document memories, ticket stubs, recordings, and essays that trace the
+                    emotional history of the band.</p>
+                <a class="button secondary" href="#newsletter">Newsletter Information</a>
+            </article>
+
+            <figure class="image-frame fan-story-media">
+                <img src="assets/hero-concert.png" alt="Concert audience and stage lights in black and white">
+            </figure>
+        </section>
+<section class="container newsletter" id="newsletter" aria-labelledby="newsletter-title"><div><h2 id="newsletter-title">Stay Updated</h2><p class="lead">Newsletter registration will be connected in a later project stage.</p></div><form class="newsletter-form" action="news.html#newsletter" method="get"><label class="field-label" for="email">Email Address</label><div class="input-row"><input id="email" type="email" name="email" placeholder="user@domain.com" disabled><button type="submit" disabled>Coming Soon</button></div></form></section></main>
+<template id="news-template"><article class="latest-card"><figure class="image-frame latest-image"><img src="assets/archive-news.png" alt="Editorial archive artwork" loading="lazy"></figure><div class="latest-card-body"><p class="meta" data-date></p><h3 class="card-title"><a data-article-link data-title></a></h3><p class="card-copy" data-excerpt></p></div></article></template>
+<footer class="site-footer" id="about"><div class="container footer-inner"><div><strong>My Chemical Romance</strong><span>Web Programming group project.</span></div><div class="footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html">Music</a><a href="tour.html">Tour</a><a href="showcase.html">Store</a><a href="news.html">News</a></div></div></footer>
+<script src="site-config.js"></script><script src="script.js"></script><script src="content.js"></script></body></html>

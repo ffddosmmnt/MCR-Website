@@ -9,46 +9,6 @@ function e(?string $value): string
     return htmlspecialchars($value ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
-/** No exception/SQL details leave the server. Null means loading failed, not empty data. */
-function load_content(callable $loader): ?array
-{
-    try {
-        return $loader();
-    } catch (Throwable $error) {
-        error_log('[mcr] Content read failed (' . get_class($error) . ').');
-        http_response_code(503);
-        header('Cache-Control: no-store');
-        return null;
-    }
-}
-
-function page_header(string $pageTitle, string $activePage, string $stylesheet): void
-{
-    header('Content-Type: text/html; charset=utf-8');
-    header('X-Content-Type-Options: nosniff');
-    if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)) {
-        http_response_code(405);
-        header('Allow: GET, HEAD');
-        exit('Method not allowed.');
-    }
-    require __DIR__ . '/views/header.php';
-}
-
-function page_footer(): void
-{
-    require __DIR__ . '/views/footer.php';
-}
-
-function content_notice(string $message, bool $error = false): void
-{
-    echo '<p class="content-notice" role="' . ($error ? 'alert' : 'status') . '">' . e($message) . '</p>';
-}
-
-function article_url(array $article): string
-{
-    return 'news-detail.php?slug=' . rawurlencode($article['slug']);
-}
-
 /** Keep database-supplied image paths local; never turn them into external/traversal URLs. */
 function album_cover(?string $path): string
 {

@@ -1,0 +1,32 @@
+
+/* Tampilan halaman sederhana. CSS tabel dan tombol dari AdminLTE. */
+body { margin: 0; background: #15191f; color: #e2e8f0; font-family: Arial, sans-serif; }
+.halaman { width: 95%; max-width: 1250px; margin: 28px auto; }
+.judul-halaman { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.judul-halaman h1 { font-size: 24px; margin: 0; }
+.daftar-data { background: #212529; border: 1px solid #3b424d; }
+.daftar-data .card-header { border-bottom: 1px solid #3b424d; }
+.daftar-data .card-footer { border-top: 1px solid #3b424d; }
+@media (max-width: 600px) { .judul-halaman { align-items: start; flex-direction: column; } }
+.table > :not(caption) > * > * { padding: 14px 16px; }
+.table th { white-space: nowrap; }
+.sort-link { text-decoration: none; }
+.page-input { width: 76px; }
+body.modal-open { overflow: hidden; }
+.record-modal { width: min(520px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 24px; border: 1px solid #49515d; border-radius: 6px; color: #e2e8f0; background: #212529; box-shadow: 0 5px 20px #0003; overflow-y: auto; }
+.record-modal::backdrop { background: #000a; }
+.modal-heading { display: flex; align-items: start; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.modal-heading h2 { font-size: 1.25rem; margin: 0 0 6px; }
+.modal-heading p, .modal-help { color: #b0bac9; font-size: .875rem; margin: 0; }
+.modal-close { border: 0; background: transparent; color: #b0bac9; font-size: 1.75rem; line-height: 1; padding: 2px 6px; cursor: pointer; }
+.record-modal label { display: block; font-weight: 600; margin: 16px 0 6px; }
+.record-modal input:not([type="hidden"]) { display: block; width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #49515d; border-radius: 6px; background: #171c23; color: #e2e8f0; font: inherit; }
+.record-modal input:focus-visible, .modal-close:focus-visible { outline: 2px solid #4275e0; outline-offset: 2px; }
+.modal-help { margin-top: 6px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+
+.btn-outline-primary { --bs-btn-color: #8ab4ff; --bs-btn-border-color: #6a94d0; }
+.btn-outline-danger { --bs-btn-color: #ff9aa4; --bs-btn-border-color: #d77883; }
+.btn-outline-secondary { color: #c1cad7; border-color: #667180; }
+.btn-outline-secondary:hover { background: #495360; color: #fff; }

@@ -1,6 +1,15 @@
 # Panduan Pengguna MCR Admin — Akses Langsung
 
-MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus informasi band, musik, berita, konser, serta merchandise.
+MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus data pada **seluruh 15 tabel** basis data band, termasuk akun pengguna dan catatan pesanan.
+
+## Tahapan tugas
+
+| WBS | Operasi | Cara menggunakan dashboard |
+|---|---|---|
+| **2.2** | **Create / Insert** dan **Read / Select** | Tambahkan data melalui **+ Add record**, simpan, lalu periksa hasilnya pada daftar masing-masing menu. |
+| **2.3** | **Update** dan **Delete** | Ubah data melalui **Edit**, periksa hasilnya, lalu gunakan **Delete** pada data yang sudah tidak diperlukan. |
+
+Lakukan tahap 2.2 pada semua menu terlebih dahulu, kemudian tahap 2.3. Data yang memiliki keterkaitan harus dibuat mulai dari data induknya dan dihapus mulai dari data turunannya.
 
 ## Membuka dashboard
 
@@ -28,8 +37,32 @@ Pilih salah satu menu di bagian atas halaman sesuai data yang ingin dikelola.
 | **Categories** | Mengelola kategori merchandise. |
 | **Products** | Mengelola nama produk, kategori, harga, dan deskripsi. |
 | **Product variants** | Mengelola pilihan ukuran, warna, dan stok suatu produk. |
+| **Users** | Mengelola nama, email, password, dan peran pengguna. |
+| **Merch orders** | Mengelola pemilik dan status pesanan merchandise; total ditampilkan otomatis. |
+| **Merch order items** | Mengelola produk yang dipesan, jumlah, harga satuan, dan alamat pada item pesanan merchandise. |
+| **Ticket orders** | Mengelola pemilik dan status pesanan tiket; total ditampilkan otomatis. |
+| **Ticket order items** | Mengelola jenis tiket yang dipesan, jumlah, harga satuan, dan kode pesanan. |
 
 Beberapa pilihan memerlukan data lain yang sudah tersedia. Tambahkan album sebelum memasukkan lagu, tempat konser sebelum membuat konser, dan konser sebelum memasukkan jenis tiket. Untuk merchandise, buat kategori terlebih dahulu, lalu produk, kemudian pilihan ukuran atau warnanya.
+
+Untuk pesanan, buat pengguna melalui **Users**, lalu buat **Merch orders** atau **Ticket orders**. Setelah itu, tambahkan isi pesanan melalui menu **Merch order items** atau **Ticket order items**. Produk/varian dan jenis tiket yang dipilih juga harus sudah tersedia.
+
+## Mengelola pengguna
+
+Isi nama, email yang belum dipakai akun lain, password sepanjang **12–72 byte**, dan peran **user** atau **admin**. Password tidak ditampilkan pada daftar pengguna. Saat mengedit, kosongkan kolom Password jika tidak ingin menggantinya.
+
+Tanggal pembuatan dan pencatatan akun diisi otomatis. Akun admin terakhir tidak dapat dihapus atau diubah menjadi user agar akses ke versi dashboard dengan login tetap tersedia. Pengguna yang masih mempunyai pesanan juga tidak dapat dihapus.
+
+## Mencatat pesanan
+
+1. Buka **Merch orders** atau **Ticket orders**, pilih pengguna, lalu isi status pesanan. Pesanan yang baru dibuat mempunyai total nol karena belum ada item.
+2. Buka menu item yang sesuai dan pilih pesanan tersebut.
+3. Pilih varian produk atau jenis tiket, isi jumlah minimal **1**, lalu masukkan harga satuan sesuai catatan pesanan.
+4. Klik **Save record**. Subtotal dihitung dari jumlah × harga satuan, lalu total pesanan diperbarui dari seluruh subtotal itemnya.
+
+Subtotal dan total tidak perlu diketik. Mengubah jumlah atau harga item akan memperbarui total. Memindahkan item ke pesanan lain memperbarui total kedua pesanan; menghapus item mengurangi total pesanan terkait. Untuk menghapus pesanan, hapus seluruh itemnya terlebih dahulu.
+
+Pesanan pada dashboard ini merupakan **pencatatan administrasi**. Stok produk dan kuota tiket tetap dikelola secara terpisah melalui **Product variants** dan **Ticket types**. Menambah, mengubah, menghapus item, atau mengganti status pesanan tidak otomatis mengubah stok/kuota dan tidak menjalankan pembayaran.
 
 ## Menambah data
 
@@ -92,6 +125,7 @@ Data yang masih digunakan oleh informasi lain tidak dapat dihapus. Contohnya, al
 - **Slug** adalah nama singkat yang digunakan pada alamat berita, misalnya `kabar-tur-baru`. Gunakan huruf kecil, angka, dan tanda hubung antarkata. Setiap berita harus memiliki slug yang berbeda.
 - **Harga** diisi tanpa simbol mata uang atau pemisah ribuan. Contoh: `125000` atau `125000.00`. Harga tidak boleh negatif dan dapat memiliki paling banyak dua angka di belakang titik.
 - **Stok dan kuota** diisi dengan bilangan bulat nol atau lebih, tanpa angka pecahan.
+- **Quantity** pada item pesanan diisi bilangan bulat minimal satu. **Unit price** adalah harga satuan yang dicatat; **Subtotal** dan **Total amount** dihitung otomatis.
 - **Waktu konser** menggunakan WIB. Periksa tanggal dan jam sebelum menyimpan.
 - **Image / Cover image** diunggah langsung dari perangkat, tanpa mengetik lokasi file. Pilih gambar **JPG, PNG, atau WebP**, maksimal **2 MB**, dengan panjang/lebar maksimal **6000 piksel** dan luas maksimal **20 megapiksel**. Jika formulir gagal disimpan, pilih kembali file gambar sebelum mencoba lagi.
 - **Lirik, isi berita, dan deskripsi produk** diisi sebagai teks biasa. Gunakan baris baru untuk memisahkan bagian tulisan.
@@ -101,3 +135,12 @@ Data yang masih digunakan oleh informasi lain tidak dapat dihapus. Contohnya, al
 Gambar yang berhasil diunggah otomatis disimpan di folder **dashboard/uploads** dengan nama yang dibuat oleh aplikasi. Anda tidak perlu menyalin file ke folder tersebut atau mengisi alamat gambar sendiri.
 
 Mengganti gambar atau menghapus data tidak menghapus berkas gambar yang sudah tersimpan. Hal ini menjaga gambar lama tetap tersedia bila masih diperlukan. Fitur unggah tersedia pada **Band members** dan **Albums**.
+
+## Menyiapkan pengumpulan tugas
+
+Setelah kedua tahap selesai diperiksa, unggah hasil pekerjaan ke repositori GitHub **public** dan sertakan pesan commit yang menjelaskan perubahan. Contoh pesan commit yang dapat digunakan untuk masing-masing tahap:
+
+- **WBS 2.2:** `WBS 2.2: tambah operasi Create dan Read untuk seluruh 15 tabel`.
+- **WBS 2.3:** `WBS 2.3: lengkapi operasi Update dan Delete untuk seluruh 15 tabel`.
+
+Salin tautan commit atau hasil pekerjaan yang relevan ke kolom **Deliverable** pada baris **WBS ID 2.2** dan **2.3** di jadwal tugas. Contoh pesan di atas adalah panduan pengumpulan, bukan pernyataan bahwa commit atau upload sudah dilakukan.
