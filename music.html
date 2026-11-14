@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Music | MCR</title><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="music.css"></head>
+<body data-page="music"><header class="site-header"><div class="container header-inner"><a class="logo" href="index.html">MCR</a><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html" class="active" aria-current="page">Music</a><a href="tour.html">Tour</a><a href="showcase.html">Store</a><a href="news.html">News</a></nav><div class="header-icons" aria-label="Utility navigation"><a href="music.html#lyrics">Search</a><a href="showcase.html#bag">Bag</a></div></div></header>
+<main class="page"><div class="container"><h1 class="page-title">Music</h1></div><div class="container"><p class="content-notice" data-content-status role="status" aria-live="polite">Loading content…</p><noscript><p class="content-notice">JavaScript is required to load live content. Navigation and the static artwork remain available.</p></noscript></div>
+<section class="container section featured-release" id="store" aria-labelledby="release-title" data-featured-album hidden><figure class="image-frame featured-cover"><img src="assets/Blackparade.png" data-cover alt="Album artwork"></figure><div class="featured-info"><span class="eyebrow">Latest catalog release</span><h2 id="release-title" data-title></h2><p class="release-date" data-date></p><a class="button" href="#lyrics">Explore Songs</a></div></section>
+<section class="container section" id="album-grid" aria-labelledby="album-title"><div class="section-heading-row"><h2 class="section-title" id="album-title">Albums</h2></div><div class="album-grid" data-albums></div></section>
+<section class="container section" id="lyrics" aria-labelledby="lyrics-title"><div class="section-heading-row"><h2 class="section-title" id="lyrics-title">Searchable Lyrics</h2></div><form class="search-form" action="music.html#lyrics" method="get"><label class="field-label" for="lyrics-search">Search song titles, albums, or lyrics in the loaded catalog</label><input id="lyrics-search" type="search" name="q" placeholder="Enter keywords..." maxlength="200" disabled><button type="submit" disabled>Search</button></form><p class="lyrics-status" data-lyrics-status role="status" aria-live="polite">Waiting for the song catalog.</p><div class="lyrics-table" role="table" aria-label="Searchable lyrics list"><div class="lyrics-row header" role="row"><div class="lyrics-cell title" role="columnheader">Song Title</div><div class="lyrics-cell" role="columnheader">Album</div><div class="lyrics-cell action" role="columnheader">Lyrics</div></div><div role="rowgroup" data-songs></div></div><p class="lyrics-empty" data-lyrics-empty hidden>No songs match your search.</p></section>
+<section class="container section" id="playlist" aria-labelledby="playlist-title"><div class="section-heading-row"><h2 class="section-title" id="playlist-title">Shared Playlist</h2></div><p class="lead">The same catalog for every visitor, grouped by album and song title. Individual audio playback is not connected.</p><div class="song-library" data-playlist></div><p class="content-note">Up to 100 albums and 100 songs are shown from the catalog.</p></section>
+<section class="container section" aria-labelledby="behind-title">
+            <div class="section-heading-row">
+                <h2 class="section-title" id="behind-title">Behind the Music</h2>
+            </div>
+
+            <div class="card-grid">
+                <article class="story-card">
+                    <span class="package-label">Recording Story</span>
+                    <h3>The Paramour Sessions</h3>
+                    <p>The band shaped a haunted, live-room sound by recording in a mansion environment that pushed the
+                        album into dramatic territory.</p>
+                    <a class="button small" href="news.html">Read Story</a>
+                </article>
+
+                <article class="story-card">
+                    <span class="package-label">Visual System</span>
+                    <h3>Conceptual Framing</h3>
+                    <p>Costume, contrast, typography, and theatrical stage direction create a visual identity that still
+                        reads instantly.</p>
+                    <a class="button small" href="news.html">Explore Influences</a>
+                </article>
+            </div>
+        </section>
+<section class="container section" id="official-video" aria-labelledby="video-title">
+        <div class="section-heading-row"><h2 class="section-title" id="video-title">Featured Video</h2></div>
+        <div class="music-embed-panel">
+            <div class="music-embed-copy"><span class="eyebrow">YouTube feature</span><h3>Welcome to the Black Parade</h3><p>A featured video, separate from the database song list.</p><a class="button secondary small" href="https://www.youtube.com/watch?v=G-I9csAflBs" target="_blank" rel="noopener noreferrer">Open on YouTube</a></div>
+            <div class="music-embed-frame">
+                <iframe data-youtube-player data-src="https://www.youtube.com/embed/G-I9csAflBs?rel=0" title="My Chemical Romance - Welcome to the Black Parade" width="560" height="315" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <div class="music-embed-local-notice" data-youtube-local-notice hidden><strong>Run this project through the PHP server</strong><p>Use the documented PHP router to load the database catalog and video.</p><a href="https://www.youtube.com/watch?v=G-I9csAflBs" target="_blank" rel="noopener noreferrer">Play on YouTube</a></div>
+            </div>
+        </div>
+    </section>
+</main>
+<template id="album-template"><article class="album-card"><figure class="image-frame album-image"><img data-cover alt="Album artwork" loading="lazy"></figure><div class="album-card-body"><h3 data-title></h3><p class="album-year" data-date></p><a class="button secondary small full" href="#lyrics">Browse Lyrics</a></div></article></template>
+<template id="song-row-template"><article class="lyrics-row" role="row"><div class="lyrics-cell title" role="cell" data-title></div><div class="lyrics-cell" role="cell" data-album></div><div class="lyrics-cell action" role="cell"><a data-song-link>Read Lyrics</a></div></article></template>
+<template id="playlist-template"><details class="song-details"><summary><span data-title></span> <span class="meta" data-album></span></summary><p class="song-lyrics" data-lyrics></p></details></template>
+
+<footer class="site-footer" id="about"><div class="container footer-inner"><div><strong>My Chemical Romance</strong><span>Web Programming group project.</span></div><div class="footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html">Music</a><a href="tour.html">Tour</a><a href="showcase.html">Store</a><a href="news.html">News</a></div></div></footer>
+<script src="site-config.js"></script><script src="script.js"></script><script src="content.js"></script></body></html>

@@ -236,8 +236,16 @@ function initializeMerchShowcase() {
 }
 
 initializeNavigation();
-initializeLyricsFilter();
-initializeSongDetails();
+if (document.body.dataset.page !== "music") {
+  initializeLyricsFilter();
+  initializeSongDetails();
+}
+document.addEventListener("mcr:content-ready", () => {
+  if (document.body.dataset.page === "music") {
+    initializeLyricsFilter();
+    initializeSongDetails();
+  }
+}, { once: true });
 initializeTicketSummary();
 initializeYouTubePlayer();
 initializeMerchShowcase();

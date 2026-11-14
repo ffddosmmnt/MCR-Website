@@ -1,11 +1,11 @@
 Options -Indexes
-DirectoryIndex index.php
+DirectoryIndex index.html index.php
 
 # Apache 2.4 with mod_rewrite and AllowOverride enabled.
 RewriteEngine On
 RewriteRule ^(?:app|agent|tests|old|output|\.runtime)(?:/|$) - [F,L,NC]
 RewriteRule ^router\.php(?:/|$) - [F,L,NC]
-RewriteRule ^(index|music|tour|news|news-detail)\.html$ $1.php [R=308,L]
+RewriteRule ^(index|music|tour|news|news-detail)\.php$ $1.html [R=308,L]
 
 <FilesMatch "(?i)(^\.|\.(?:md|db|sql|ini|log|ps1|bak|zip)$)">
     Require all denied

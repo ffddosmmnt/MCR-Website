@@ -15,8 +15,9 @@ if (str_contains($path, "\0") || str_contains($path, '\\') || preg_match('~(?:^|
     return;
 }
 
-if ($path === '/api/albums.php') {
-    require __DIR__ . '/api/albums.php';
+$publicApis = ['albums', 'home', 'music', 'news', 'article', 'tour'];
+if (preg_match('~\A/api/([a-z]+)\.php\z~', $path, $apiMatch) && in_array($apiMatch[1], $publicApis, true)) {
+    require __DIR__ . '/api/' . $apiMatch[1] . '.php';
     return;
 }
 
@@ -36,27 +37,22 @@ if (isset($dashboardPages[$path]) && is_file(__DIR__ . '/' . $dashboardPages[$pa
 
 $legacyPages = ['index', 'music', 'tour', 'news', 'news-detail'];
 foreach ($legacyPages as $page) {
-    if ($path === '/' . $page . '.html') {
+    if ($path === '/' . $page . '.php') {
         $query = $_SERVER['QUERY_STRING'] ?? '';
-        header('Location: ' . $page . '.php' . ($query === '' ? '' : '?' . $query), true, 308);
+        header('Location: ' . $page . '.html' . ($query === '' ? '' : '?' . $query), true, 308);
         return;
     }
 }
 
-$dynamicPage = $path === '/' ? 'index.php' : ltrim($path, '/');
-if (in_array($dynamicPage, array_map(fn ($page) => $page . '.php', $legacyPages), true)) {
-    require __DIR__ . '/' . $dynamicPage;
-    return;
-}
-
 $staticFiles = [
+    'index.html', 'music.html', 'news.html', 'news-detail.html', 'tour.html',
     'about.html', 'showcase.html', 'ticket-transaction.html',
     'base.css', 'home.css', 'about.css', 'music.css', 'tour.css', 'showcase.css',
-    'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js',
+    'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js', 'site-config.js', 'content.js',
     'dashboard/adminlte.min.css', 'dashboard/template.css', 'dashboard/dashboard.js',
     'dashboard-auth/adminlte.min.css', 'dashboard-auth/template.css', 'dashboard-auth/dashboard.js',
 ];
-$relativePath = ltrim($path, '/');
+$relativePath = $path === '/' ? 'index.html' : ltrim($path, '/');
 $file = null;
 
 if (in_array($relativePath, $staticFiles, true)) {
