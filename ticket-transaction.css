@@ -249,7 +249,8 @@
   grid-column: 1 / -1;
 }
 
-.field-grid input {
+.field-grid input,
+.field-grid select {
   min-width: 0;
   height: 64px;
   border: 1px solid #8e9499;

@@ -14,6 +14,20 @@ if (str_contains($path, "\0") || str_contains($path, '\\') || preg_match('~(?:^|
     echo 'Not found.';
     return;
 }
+if (in_array($path, ['/showcase.php', '/ticket-transaction.php', '/news.php'], true)) {
+    require __DIR__ . $path;
+    return;
+}
+$phpAliases = [
+    '/showcase.html' => '/showcase.php',
+    '/ticket-transaction.html' => '/ticket-transaction.php',
+    '/news.html' => '/news.php',
+];
+if (isset($phpAliases[$path])) {
+    $query = $_SERVER['QUERY_STRING'] ?? '';
+    header('Location: ' . $phpAliases[$path] . ($query === '' ? '' : '?' . $query), true, 308);
+    return;
+}
 
 $publicApis = ['albums', 'home', 'music', 'news', 'article', 'tour'];
 if (preg_match('~\A/api/([a-z]+)\.php\z~', $path, $apiMatch) && in_array($apiMatch[1], $publicApis, true)) {
@@ -46,7 +60,7 @@ foreach ($legacyPages as $page) {
 
 $staticFiles = [
     'index.html', 'music.html', 'news.html', 'news-detail.html', 'tour.html',
-    'about.html', 'showcase.html', 'ticket-transaction.html',
+    'about.html',
     'base.css', 'home.css', 'about.css', 'music.css', 'tour.css', 'showcase.css',
     'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js', 'site-config.js', 'content.js',
     'dashboard/adminlte.min.css', 'dashboard/template.css', 'dashboard/dashboard.js',

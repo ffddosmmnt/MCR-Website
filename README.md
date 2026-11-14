@@ -41,5 +41,17 @@ Run the project through a local web server so third-party embeds receive an HTTP
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`. Opening the HTML files directly still works for the static content,
-but the YouTube player will show a local-server instruction instead of a broken embed.
+For the PHP/MySQL features, configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and
+`DB_PASSWORD` in the process environment, then start the PHP development server from
+the repository root with `php -S 127.0.0.1:8000 router.php`.
+The active store is `showcase.php`; the ticket flow is `ticket-transaction.php`; and
+`news.php` handles newsletter and contact POST requests. The old `.html` URLs redirect
+to these active routes when the development router is used.
+
+Ticket orders require an authenticated session exposing `$_SESSION['mcr_user_id']`.
+The server calculates price and quota, locks the ticket row, and writes the order and
+order item in one transaction. Payment card and CVV data are not collected.
+
+The schema includes `newsletter_subscribers` and `contact_messages`. Set `MAIL_TO` to
+an approved local test mailbox to enable notification delivery; without it, submissions
+are still stored and the UI explicitly reports that email notification is unavailable.
