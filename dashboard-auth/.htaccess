@@ -1,7 +1,0 @@
-Options -Indexes
-DirectoryIndex index.php
-RewriteEngine On
-RewriteRule ^internal(?:/|$) - [F,L,NC]
-<FilesMatch "(?i)(^\.|\.(?:md|sql|log|map)$)">
-    Require all denied
-</FilesMatch>
