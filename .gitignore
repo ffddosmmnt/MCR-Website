@@ -69,7 +69,6 @@ runtime/
 tests/
 test.*
 test-*
-README*
 
 # Local verification screenshots
 /output/screenshots/html-api-home.jpg
