@@ -55,3 +55,24 @@ out/
 .codegraph
 .codegraph*
 .codegraph/*
+
+# Local agent instructions and working documents
+AGENTS.md
+/agent/
+/tasks/
+TODO.md
+TASKS.md
+
+# Local dashboard backup, runtime, tests, and user guides
+/dashboard-auth/
+runtime/
+tests/
+test.*
+test-*
+README*
+
+# Local verification screenshots
+/output/screenshots/html-api-home.jpg
+/output/screenshots/html-static-mobile.jpg
+/output/screenshots/section-3-2-news-detail.jpg
+/output/screenshots/section-3-2-tour-mobile.jpg
