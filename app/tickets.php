@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/view.php';
+require_once __DIR__ . '/auth.php';
 
 function ticket_session_user_id(): ?int
 {
-    $userId = $_SESSION['mcr_user_id'] ?? null;
-    return is_int($userId) && $userId > 0 ? $userId : null;
+    $user = auth_current_user();
+    return $user === null ? null : (int) $user['id'];
 }
 
 function ticket_types(): array

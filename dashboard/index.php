@@ -1,6 +1,20 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/internal/admin.php';
+require_once __DIR__ . '/../app/auth.php';
+auth_session();
+try {
+    $currentUser = auth_current_user();
+} catch (Throwable $exception) {
+    error_log('[mcr] Dashboard authentication failed (' . get_class($exception) . ').');
+    http_response_code(503);
+    echo 'Dashboard is temporarily unavailable.';
+    exit;
+}
+if ($currentUser === null || $currentUser['role'] !== 'admin') {
+    header('Location: ../login.php?redirect=%2Fdashboard%2F', true, 303);
+    exit;
+}
 admin_session();
 if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'POST'], true)) {
     header('Allow: GET, HEAD, POST');

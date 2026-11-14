@@ -3,15 +3,14 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/app/tickets.php';
-require_once __DIR__ . '/app/engagement.php';
 
-engagement_session();
+auth_session();
 $error = null;
 $success = null;
 $types = [];
 try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        engagement_check_csrf();
+        auth_check_csrf();
         $userId = ticket_session_user_id();
         if ($userId === null) {
             http_response_code(401);
@@ -51,7 +50,7 @@ if ($types === []) {
 <?php if ($error !== null): ?><p class="content-notice" role="alert"><?= e($error) ?></p><?php endif; ?>
 <?php if ($success !== null): ?><p class="content-notice" role="status"><?= e($success) ?></p><?php endif; ?>
 <form class="checkout-form" method="post" action="ticket-transaction.php">
-    <input type="hidden" name="csrf" value="<?= e(engagement_csrf()) ?>">
+    <input type="hidden" name="csrf" value="<?= e(auth_csrf()) ?>">
     <section class="checkout-panel"><h2>Choose a ticket</h2><div class="field-grid">
         <label class="wide">Ticket type<select name="ticket_type_id" required><option value="">Select a ticket</option><?php foreach ($types as $type): ?><option value="<?= (int) $type['id'] ?>" <?= (int) $type['quota'] < 1 ? 'disabled' : '' ?>><?= e($type['name'] . ' · ' . $type['venue_name'] . ' · $' . $type['price'] . ' · ' . $type['quota'] . ' left') ?></option><?php endforeach; ?></select></label>
         <label>Quantity<input type="number" name="quantity" min="1" max="6" value="1" required></label>

@@ -14,7 +14,7 @@ if (str_contains($path, "\0") || str_contains($path, '\\') || preg_match('~(?:^|
     echo 'Not found.';
     return;
 }
-if (in_array($path, ['/showcase.php', '/ticket-transaction.php', '/news.php'], true)) {
+if (in_array($path, ['/showcase.php', '/ticket-transaction.php', '/news.php', '/login.php', '/register.php', '/logout.php'], true)) {
     require __DIR__ . $path;
     return;
 }

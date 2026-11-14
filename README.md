@@ -55,3 +55,15 @@ order item in one transaction. Payment card and CVV data are not collected.
 The schema includes `newsletter_subscribers` and `contact_messages`. Set `MAIL_TO` to
 an approved local test mailbox to enable notification delivery; without it, submissions
 are still stored and the UI explicitly reports that email notification is unavailable.
+
+User accounts are created at `register.php` with a 12–72 byte password and are always
+assigned the `user` role. Sign in at `login.php`; passwords are stored with
+`password_hash()` and sessions are regenerated after login. The dashboard requires an
+existing account whose database role is `admin`; public registration cannot create admins.
+Create the first administrator only from a local CLI with:
+
+```powershell
+Read-Host 'Password (12–72 bytes)' -AsSecureString |
+  ForEach-Object { [Net.NetworkCredential]::new('', $_).Password } |
+  & php tools/create-admin.php "Admin Name" admin@example.test
+```
