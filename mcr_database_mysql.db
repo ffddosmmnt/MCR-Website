@@ -196,3 +196,23 @@ CREATE TABLE IF NOT EXISTS `ticket_order_items` (
   CONSTRAINT `chk_ticket_order_items_unit_price` CHECK (`unit_price` >= 0),
   CONSTRAINT `chk_ticket_order_items_subtotal` CHECK (`subtotal` >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `newsletter_subscribers` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(150) NOT NULL,
+  `status` VARCHAR(20) NOT NULL DEFAULT 'active',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_newsletter_subscribers_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(150) NOT NULL,
+  `subject` VARCHAR(150) NOT NULL,
+  `message` TEXT NOT NULL,
+  `status` VARCHAR(20) NOT NULL DEFAULT 'new',
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

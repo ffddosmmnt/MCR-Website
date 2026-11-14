@@ -209,14 +209,23 @@ function initializeMerchShowcase() {
     const entries = [...bag.values()];
     const total = entries.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    bagItems.innerHTML = entries.length
-      ? entries.map((item) => `
-          <div class="bag-line">
-            <span>${item.name} x${item.quantity}</span>
-            <strong>${formatPrice(item.price * item.quantity)}</strong>
-          </div>
-        `).join("")
-      : "<p>Your bag is empty. Add a product from the showcase.</p>";
+    bagItems.replaceChildren();
+    if (entries.length === 0) {
+      const empty = document.createElement("p");
+      empty.textContent = "Your bag is empty. Add a product from the showcase.";
+      bagItems.append(empty);
+    } else {
+      for (const item of entries) {
+        const line = document.createElement("div");
+        line.className = "bag-line";
+        const name = document.createElement("span");
+        name.textContent = `${item.name} x${item.quantity}`;
+        const price = document.createElement("strong");
+        price.textContent = formatPrice(item.price * item.quantity);
+        line.append(name, price);
+        bagItems.append(line);
+      }
+    }
     bagTotal.textContent = formatPrice(total);
   };
 
