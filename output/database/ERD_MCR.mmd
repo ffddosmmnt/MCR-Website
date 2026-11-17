@@ -1,0 +1,152 @@
+erDiagram
+    direction TB
+    %% Physical schema: a required FK does not force a parent to have children.
+    %% checkout_requests: PK(user_id, request_key); exactly one order FK is non-NULL.
+    band_members {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR name  "VARCHAR(100); NOT NULL"
+        VARCHAR instrument  "VARCHAR(100); NULL; DEFAULT NULL"
+        TEXT cover_img  "TEXT; NULL; DEFAULT NULL"
+    }
+    news_articles {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR title  "VARCHAR(200); NOT NULL"
+        VARCHAR slug UK "VARCHAR(220); NOT NULL"
+        TEXT content  "TEXT; NULL; DEFAULT NULL"
+        DATETIME news_date  "DATETIME; NULL; DEFAULT NULL"
+    }
+    users {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR name  "VARCHAR(100); NOT NULL"
+        VARCHAR email UK "VARCHAR(150); NOT NULL"
+        VARCHAR password_hash  "VARCHAR(255); NOT NULL"
+        VARCHAR role  "VARCHAR(20); NOT NULL; DEFAULT 'user'"
+        TIMESTAMP time_stamp  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+        DATETIME created_at  "DATETIME; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    albums {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR title  "VARCHAR(150); NOT NULL"
+        DATE release_date  "DATE; NULL; DEFAULT NULL"
+        TEXT cover_image  "TEXT; NULL; DEFAULT NULL"
+    }
+    songs {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED album_id FK "INT UNSIGNED; NOT NULL"
+        VARCHAR title  "VARCHAR(150); NOT NULL"
+        TEXT lyrics  "TEXT; NULL; DEFAULT NULL"
+    }
+    categories {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR name  "VARCHAR(100); NOT NULL"
+    }
+    products {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED category_id FK "INT UNSIGNED; NOT NULL"
+        VARCHAR name  "VARCHAR(150); NOT NULL"
+        DECIMAL price  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        TEXT details  "TEXT; NULL; DEFAULT NULL"
+    }
+    product_variants {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED product_id FK "INT UNSIGNED; NOT NULL"
+        VARCHAR size  "VARCHAR(30); NULL; DEFAULT NULL"
+        VARCHAR color  "VARCHAR(50); NULL; DEFAULT NULL"
+        INT stock  "INT; NOT NULL; DEFAULT 0"
+    }
+    merch_orders {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED user_id FK "INT UNSIGNED; NOT NULL"
+        DECIMAL total_amount  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        VARCHAR status  "VARCHAR(30); NOT NULL; DEFAULT 'pending'"
+    }
+    merch_order_items {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED order_id FK "INT UNSIGNED; NOT NULL"
+        INT_UNSIGNED variant_id FK "INT UNSIGNED; NOT NULL"
+        INT quantity  "INT; NOT NULL"
+        DECIMAL unit_price  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        DECIMAL subtotal  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        TIMESTAMP time_stamp  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+        DATETIME created_at  "DATETIME; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+        TEXT address  "TEXT; NULL; DEFAULT NULL"
+    }
+    venues {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR name  "VARCHAR(150); NOT NULL"
+        VARCHAR city  "VARCHAR(100); NOT NULL"
+        VARCHAR country  "VARCHAR(100); NOT NULL"
+    }
+    concerts {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED venue_id FK "INT UNSIGNED; NOT NULL"
+        TIMESTAMP concert_date  "TIMESTAMP; NULL; DEFAULT NULL"
+        VARCHAR status  "VARCHAR(30); NOT NULL; DEFAULT 'scheduled'"
+    }
+    ticket_types {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED concert_id FK "INT UNSIGNED; NOT NULL"
+        VARCHAR name  "VARCHAR(100); NOT NULL"
+        DECIMAL price  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        INT quota  "INT; NOT NULL; DEFAULT 0"
+    }
+    ticket_orders {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED user_id FK "INT UNSIGNED; NOT NULL"
+        DECIMAL total_amount  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        VARCHAR status  "VARCHAR(30); NOT NULL; DEFAULT 'pending'"
+    }
+    ticket_order_items {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        INT_UNSIGNED order_id FK "INT UNSIGNED; NOT NULL"
+        INT_UNSIGNED ticket_type_id FK "INT UNSIGNED; NOT NULL"
+        INT quantity  "INT; NOT NULL"
+        DECIMAL unit_price  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        DECIMAL subtotal  "DECIMAL(12,2); NOT NULL; DEFAULT 0.00"
+        INT order_code  "INT; NULL; DEFAULT NULL"
+        TIMESTAMP time_stamp  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+        DATETIME created_at  "DATETIME; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    checkout_requests {
+        INT_UNSIGNED user_id PK,FK "INT UNSIGNED; NOT NULL"
+        CHAR request_key PK "CHAR(64); NOT NULL"
+        CHAR payload_hash  "CHAR(64); NOT NULL"
+        INT_UNSIGNED ticket_order_id FK,UK "INT UNSIGNED; NULL; DEFAULT NULL"
+        INT_UNSIGNED merch_order_id FK,UK "INT UNSIGNED; NULL; DEFAULT NULL"
+        TIMESTAMP created_at  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    contact_messages {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR name  "VARCHAR(100); NOT NULL"
+        VARCHAR email  "VARCHAR(150); NOT NULL"
+        VARCHAR subject  "VARCHAR(200); NOT NULL"
+        TEXT message  "TEXT; NOT NULL"
+        CHAR request_key UK "CHAR(64); NOT NULL"
+        CHAR payload_hash  "CHAR(64); NOT NULL"
+        TIMESTAMP created_at  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    newsletter_subscriptions {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR email UK "VARCHAR(150); NOT NULL"
+        TIMESTAMP created_at  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    fan_messages {
+        INT_UNSIGNED id PK "INT UNSIGNED; NOT NULL; AUTO_INCREMENT"
+        VARCHAR display_name  "VARCHAR(100); NOT NULL"
+        TEXT message  "TEXT; NOT NULL"
+        TIMESTAMP created_at  "TIMESTAMP; NOT NULL; DEFAULT CURRENT_TIMESTAMP"
+    }
+    albums ||--o{ songs : "album_id"
+    categories ||--o{ products : "category_id"
+    products ||--o{ product_variants : "product_id"
+    users ||--o{ merch_orders : "user_id"
+    merch_orders ||--o{ merch_order_items : "order_id"
+    product_variants ||--o{ merch_order_items : "variant_id"
+    venues ||--o{ concerts : "venue_id"
+    concerts ||--o{ ticket_types : "concert_id"
+    users ||--o{ ticket_orders : "user_id"
+    ticket_orders ||--o{ ticket_order_items : "order_id"
+    ticket_types ||--o{ ticket_order_items : "ticket_type_id"
+    users ||--o{ checkout_requests : "user_id"
+    ticket_orders |o--o| checkout_requests : "ticket_order_id"
+    merch_orders |o--o| checkout_requests : "merch_order_id"
