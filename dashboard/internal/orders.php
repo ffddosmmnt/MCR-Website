@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+require_once __DIR__ . '/../../app/money.php';
 
 /** Administrative records only: item edits do not reserve stock or ticket quota. */
 function admin_order_family(string $table): ?array
@@ -42,15 +43,12 @@ function admin_lock_orders(PDO $db, string $table, string $action, int $id): arr
 /** DECIMAL(12,2), expressed as integer cents; never calculate money with floats. */
 function admin_money_cents(string $value): int
 {
-    if (!preg_match('/\A([0-9]{1,10})(?:\.([0-9]{1,2}))?\z/', $value, $parts)) {
-        throw new InvalidArgumentException('Amount exceeds the supported DECIMAL(12,2) range.');
-    }
-    return (int) $parts[1] * 100 + (int) str_pad($parts[2] ?? '', 2, '0');
+    return money_cents($value);
 }
 
 function admin_money_string(int $cents): string
 {
-    return intdiv($cents, 100) . '.' . str_pad((string) ($cents % 100), 2, '0', STR_PAD_LEFT);
+    return money_string($cents);
 }
 
 function admin_item_subtotal(array $values): string
