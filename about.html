@@ -7,7 +7,7 @@
     <title>MCR | About</title>
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="about.css">
-</head>
+<link rel="stylesheet" href="interaction.css"></head>
 
 <body>
     <header class="site-header">
@@ -25,7 +25,7 @@
 
             <div class="header-icons" aria-label="Utility navigation">
                 <a href="music.html#lyrics">Search</a>
-                <a href="#contact">Contact</a>
+                <a href="#contact-form">Contact</a>
             </div>
         </div>
     </header>
@@ -179,13 +179,13 @@
                 <span>- Alternative Press</span>
             </article>
         </section>
-    </main>
+    <section class="container section contact-section" id="contact-form" aria-labelledby="contact-title"><div><span class="eyebrow">Get in touch</span><h2 class="section-title" id="contact-title">Contact us</h2><p>Your message is private and will be read by our team.</p><a class="button secondary" href="account.html">Join the fans</a></div><form class="interaction-form" data-interaction-form="contact" method="post"><label>Name<input name="name" maxlength="100" autocomplete="name" required></label><label>Email<input type="email" name="email" maxlength="150" autocomplete="email" required></label><label>Subject<input name="subject" maxlength="200" required></label><label>Message<textarea name="message" maxlength="5000" required></textarea></label><button type="submit" disabled>Send message</button><p data-form-status role="status" aria-live="polite">Connecting...</p><noscript><p>JavaScript is required to submit this form.</p></noscript></form></section></main>
 
     <footer class="site-footer" id="contact">
         <div class="container footer-inner">
             <div>
-                <strong>MCR Concept</strong>
-                <span>A finished black-and-white editorial website based on the original wireframes.</span>
+                <strong>My Chemical Romance</strong>
+                <span>Music, live shows, and merchandise.</span>
             </div>
             <nav class="footer-links" aria-label="Footer navigation">
                 <a href="index.html">Home</a>
@@ -197,7 +197,7 @@
             </nav>
         </div>
     </footer>
-    <script src="script.js"></script>
-</body>
+    <script src="site-config.js"></script><script src="script.js"></script>
+<script src="interaction.js"></script></body>
 
 </html>

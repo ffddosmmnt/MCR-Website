@@ -4,7 +4,7 @@
 // inserted as textContent, never interpreted as HTML.
 (async () => {
   const page = document.body.dataset.page;
-  const endpoints = { index: "home.php", music: "music.php", news: "news.php", "news-detail": "article.php", tour: "tour.php" };
+  const endpoints = { index: "home.php", music: "music.php", news: "news.php", "news-detail": "article.php", tour: "tour.php", store: "catalog.php" };
   if (!endpoints[page]) return;
   const status = document.querySelector("[data-content-status]");
   const find = (root, selector) => root.querySelector(selector);
@@ -39,16 +39,7 @@
   };
 
   try {
-    const configured = window.MCR_CONFIG?.apiBase ?? "";
-    if (!configured && location.hostname.endsWith(".github.io")) {
-      throw Object.assign(new Error(), { code: "api_not_configured" });
-    }
-    const apiBase = new URL(configured || "api/", document.baseURI);
-    if (!["http:", "https:"].includes(apiBase.protocol) || apiBase.username || apiBase.password
-        || apiBase.search || apiBase.hash || (location.protocol === "https:" && apiBase.protocol !== "https:")) {
-      throw Object.assign(new Error(), { code: "api_not_configured" });
-    }
-    if (!apiBase.pathname.endsWith("/")) apiBase.pathname += "/";
+    const apiBase = resolveMcrApiBase();
     const url = new URL(endpoints[page], apiBase);
     if (["music", "news-detail", "tour"].includes(page)) url.search = location.search;
     const controller = new AbortController();
@@ -66,7 +57,50 @@
     const data = payload.data;
     if (!data || typeof data !== "object") throw new Error("Invalid content response");
 
-    if (page === "index") {
+    if (page === "store") {
+      const filter = find(document, "[data-store-filter]");
+      const grid = find(document, "[data-product-grid]");
+      data.categories.forEach(category => {
+        const option = document.createElement("option");
+        option.value = String(category.id);
+        option.textContent = category.name;
+        filter.append(option);
+      });
+      data.products.forEach(product => clone("product-template", grid, root => {
+        const card = find(root, ".product-card");
+        card.dataset.category = String(product.category_id);
+        card.dataset.name = product.name;
+        card.dataset.price = product.price;
+        text(root, "[data-product-name]", product.name);
+        text(root, "[data-product-details]", product.details || "No description available.");
+        text(root, "[data-category-name]", product.category_name);
+        text(root, "[data-product-price]", formatRupiah(catalogCents(product.price)));
+        const select = find(root, "[data-variant-select]");
+        select.setAttribute("aria-label", `Variant for ${product.name}`);
+        product.variants.forEach(variant => {
+          const option = document.createElement("option");
+          option.value = String(variant.id);
+          option.dataset.stock = String(variant.stock);
+          option.dataset.label = [variant.size, variant.color].filter(Boolean).join(" / ") || `Variant #${variant.id}`;
+          option.textContent = `${option.dataset.label} · ${variant.stock} in stock`;
+          option.disabled = variant.stock === 0;
+          select.append(option);
+        });
+        if (!product.variants.length) {
+          const option = document.createElement("option");
+          option.textContent = "No variants available";
+          select.append(option);
+        }
+        const available = [...select.options].find(option => !option.disabled && option.value && option.dataset.stock);
+        if (available) select.value = available.value;
+        const inStock = product.variants.some(variant => variant.stock > 0);
+        select.disabled = !inStock;
+        find(root, "[data-add-to-bag]").disabled = !inStock;
+        text(root, "[data-variant-stock]", inStock ? "Availability shown per variant; stock is not reserved." : "Currently unavailable.");
+      }));
+      filter.disabled = false;
+      find(document, "[data-store-empty]").hidden = data.products.length !== 0;
+    } else if (page === "index") {
       const shows = find(document, "[data-home-concerts]");
       const news = find(document, "[data-home-news]");
       if (!data.concerts.length) notice(shows, "No tour dates have been published yet.");
@@ -138,6 +172,7 @@
       if (data.selected) {
         const selected = find(document, "[data-selected-concert]");
         fillConcert(selected, data.selected);
+        find(document, "[data-book-concert]").href = `ticket-transaction.html?kind=ticket&concert=${encodeURIComponent(data.selected.id)}`;
         selected.hidden = false;
       }
     }
@@ -149,7 +184,7 @@
   } catch (error) {
     document.body.dataset.contentState = "error";
     const messages = {
-      api_not_configured: "This static preview is available, but live content has not been connected yet.",
+      api_not_configured: "Content is currently unavailable. Please try again later.",
       invalid_request: "The page request is invalid. Please check the search text or content link.",
       not_found: "The requested article or concert was not found. Please return to the news or tour list.",
     };

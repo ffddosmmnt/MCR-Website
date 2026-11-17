@@ -15,7 +15,7 @@ if (str_contains($path, "\0") || str_contains($path, '\\') || preg_match('~(?:^|
     return;
 }
 
-$publicApis = ['albums', 'home', 'music', 'news', 'article', 'tour'];
+$publicApis = ['albums', 'home', 'music', 'news', 'article', 'tour', 'catalog', 'tickets', 'session', 'checkout', 'interaction', 'fans'];
 if (preg_match('~\A/api/([a-z]+)\.php\z~', $path, $apiMatch) && in_array($apiMatch[1], $publicApis, true)) {
     require __DIR__ . '/api/' . $apiMatch[1] . '.php';
     return;
@@ -28,6 +28,7 @@ if (in_array($path, ['/dashboard', '/dashboard-auth'], true)) {
 $dashboardPages = [
     '/dashboard/' => 'dashboard/index.php', '/dashboard/index.php' => 'dashboard/index.php',
     '/dashboard-auth/' => 'dashboard-auth/index.php', '/dashboard-auth/index.php' => 'dashboard-auth/index.php',
+    '/dashboard-auth/messages.php' => 'dashboard-auth/messages.php',
     '/dashboard-auth/login.php' => 'dashboard-auth/login.php', '/dashboard-auth/logout.php' => 'dashboard-auth/logout.php',
 ];
 if (isset($dashboardPages[$path]) && is_file(__DIR__ . '/' . $dashboardPages[$path])) {
@@ -46,9 +47,9 @@ foreach ($legacyPages as $page) {
 
 $staticFiles = [
     'index.html', 'music.html', 'news.html', 'news-detail.html', 'tour.html',
-    'about.html', 'showcase.html', 'ticket-transaction.html',
+    'about.html', 'showcase.html', 'ticket-transaction.html', 'account.html',
     'base.css', 'home.css', 'about.css', 'music.css', 'tour.css', 'showcase.css',
-    'news.css', 'news-detail.css', 'ticket-transaction.css', 'script.js', 'site-config.js', 'content.js',
+    'news.css', 'news-detail.css', 'ticket-transaction.css', 'shop.css', 'script.js', 'site-config.js', 'content.js', 'commerce.js', 'interaction.js', 'interaction.css',
     'dashboard/adminlte.min.css', 'dashboard/template.css', 'dashboard/dashboard.js',
     'dashboard-auth/adminlte.min.css', 'dashboard-auth/template.css', 'dashboard-auth/dashboard.js',
 ];

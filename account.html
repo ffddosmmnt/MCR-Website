@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Fan Account | MCR</title><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="shop.css"></head>
+<body data-page="account">
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html">MCR</a>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+
+            <div class="header-icons" aria-label="Utility navigation">
+                <a href="showcase.html#products">Shop</a>
+                <a href="showcase.html#bag">Bag</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container shop-main">
+        <h1>Fan account</h1>
+        <p class="shop-notice">Create an account to book tickets and order merchandise.</p>
+        <p role="status" data-shop-status>Connecting…</p>
+        <a class="button" data-backend-link hidden>Continue to checkout</a>
+        <noscript><p>JavaScript is required to use your account.</p></noscript>
+        <section class="shop-panel" data-account-user hidden>
+            <h2>Signed in</h2><p data-account-name></p>
+            <div class="button-row"><a class="button" data-return-link href="showcase.html">Continue browsing</a><button type="button" class="button secondary" data-logout>Sign out</button></div>
+        </section>
+        <div data-auth-forms hidden>
+            <section class="shop-panel"><h2>Sign in</h2>
+                <form method="post" data-account-form="login">
+                    <label>Email<input type="email" name="email" maxlength="150" autocomplete="username" required></label>
+                    <label>Password<input type="password" name="password" minlength="12" maxlength="72" autocomplete="current-password" required></label>
+                    <button type="submit" disabled>Sign in</button>
+                </form>
+            </section>
+            <section class="shop-panel"><h2>Create a fan account</h2>
+                <form method="post" data-account-form="register">
+                    <label>Name<input name="name" maxlength="100" autocomplete="name" required></label>
+                    <label>Email<input type="email" name="email" maxlength="150" autocomplete="username" required></label>
+                    <label>Password (12–72 bytes)<input type="password" name="password" minlength="12" maxlength="72" autocomplete="new-password" required></label>
+                    <button type="submit" disabled>Create account</button>
+                </form>
+            </section>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div>
+                <strong>My Chemical Romance</strong>
+                <span>Music, live shows, and merchandise.</span>
+            </div>
+            <nav class="footer-links" aria-label="Footer navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="music.html">Music</a>
+                <a href="tour.html">Tour</a>
+                <a href="showcase.html">Store</a>
+                <a href="news.html">News</a>
+            </nav>
+        </div>
+    </footer>
+    <script src="site-config.js"></script><script src="script.js"></script><script src="commerce.js"></script>
+</body></html>

@@ -107,63 +107,6 @@ function initializeSongDetails() {
   revealSong(location.hash);
 }
 
-function initializeTicketSummary() {
-  const quantityControl = document.querySelector(".quantity-control");
-  const summary = document.querySelector(".summary-card");
-  const deliveryInputs = [...document.querySelectorAll('input[name="delivery"]')];
-
-  if (!quantityControl || !summary || deliveryInputs.length === 0) return;
-
-  const buttons = [...quantityControl.querySelectorAll("button")];
-  const output = quantityControl.querySelector("output");
-  const itemName = summary.querySelector("[data-summary-item]");
-  const itemPrice = summary.querySelector("[data-summary-price]");
-  const servicePrice = summary.querySelector("[data-summary-service]");
-  const deliveryName = summary.querySelector("[data-summary-delivery]");
-  const deliveryPrice = summary.querySelector("[data-summary-delivery-price]");
-  const totalPrice = summary.querySelector("[data-summary-total]");
-
-  if (buttons.length !== 2 || !output || !itemName || !itemPrice || !servicePrice || !deliveryName || !deliveryPrice || !totalPrice) return;
-
-  let quantity = Number(output.value || output.textContent) || 1;
-  const formatPrice = (value) => `$${value.toFixed(2)}`;
-
-  const renderSummary = () => {
-    const selectedDelivery = deliveryInputs.find((input) => input instanceof HTMLInputElement && input.checked);
-    const deliveryFee = selectedDelivery?.value === "will-call" ? 5 : 0;
-    const ticketSubtotal = quantity * 125;
-    const serviceFee = quantity * 21.25;
-    const total = ticketSubtotal + serviceFee + 10 + deliveryFee;
-
-    output.value = String(quantity);
-    output.textContent = String(quantity);
-    buttons[0].disabled = quantity === 1;
-    buttons[1].disabled = quantity === 6;
-    itemName.textContent = `General Admission x${quantity}`;
-    itemPrice.textContent = formatPrice(ticketSubtotal);
-    servicePrice.textContent = formatPrice(serviceFee);
-    deliveryName.textContent = selectedDelivery?.value === "will-call" ? "Delivery Will Call" : "Delivery Mobile";
-    deliveryPrice.textContent = deliveryFee ? formatPrice(deliveryFee) : "Free";
-    totalPrice.textContent = formatPrice(total);
-
-    for (const input of deliveryInputs) {
-      input.closest(".delivery-option")?.classList.toggle("selected", input instanceof HTMLInputElement && input.checked);
-    }
-  };
-
-  buttons[0].addEventListener("click", () => {
-    quantity = Math.max(1, quantity - 1);
-    renderSummary();
-  });
-  buttons[1].addEventListener("click", () => {
-    quantity = Math.min(6, quantity + 1);
-    renderSummary();
-  });
-  for (const input of deliveryInputs) input.addEventListener("change", renderSummary);
-
-  renderSummary();
-}
-
 function initializeYouTubePlayer() {
   const player = document.querySelector("[data-youtube-player]");
   const localNotice = document.querySelector("[data-youtube-local-notice]");
@@ -179,60 +122,88 @@ function initializeYouTubePlayer() {
   localNotice.hidden = false;
 }
 
+function catalogCents(value) {
+  if (!/^[0-9]{1,10}\.[0-9]{2}$/.test(value)) throw new Error("Invalid catalog price");
+  return BigInt(value.replace(".", ""));
+}
+
+function formatRupiah(cents) {
+  const amount = cents / 100n;
+  return `Rp ${amount.toLocaleString("id-ID")},${String(cents % 100n).padStart(2, "0")}`;
+}
+
 function initializeMerchShowcase() {
   const filter = document.querySelector("[data-store-filter]");
   const productGrid = document.querySelector("[data-product-grid]");
   const emptyState = document.querySelector("[data-store-empty]");
   const bagItems = document.querySelector("[data-bag-items]");
   const bagTotal = document.querySelector("[data-bag-total]");
-
-  if (!(filter instanceof HTMLSelectElement) || !productGrid || !emptyState || !bagItems || !bagTotal) return;
-
-  const products = [...productGrid.querySelectorAll(".product-card")];
+  const status = document.querySelector("[data-bag-status]");
+  if (!filter || !productGrid || !emptyState || !bagItems || !bagTotal) return;
   const bag = new Map();
-  const formatPrice = (value) => `$${value}`;
-
+  const products = [...productGrid.querySelectorAll(".product-card")];
   filter.addEventListener("change", () => {
-    const selectedCategory = filter.value;
-    let visibleCount = 0;
-
-    for (const product of products) {
-      const isVisible = selectedCategory === "all" || product.dataset.category === selectedCategory;
-      product.hidden = !isVisible;
-      if (isVisible) visibleCount += 1;
+    let count = 0;
+    for (const card of products) {
+      card.hidden = filter.value !== "all" && card.dataset.category !== filter.value;
+      if (!card.hidden) count++;
     }
-
-    emptyState.hidden = visibleCount !== 0;
+    emptyState.hidden = count !== 0;
   });
-
   const renderBag = () => {
-    const entries = [...bag.values()];
-    const total = entries.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    bagItems.innerHTML = entries.length
-      ? entries.map((item) => `
-          <div class="bag-line">
-            <span>${item.name} x${item.quantity}</span>
-            <strong>${formatPrice(item.price * item.quantity)}</strong>
-          </div>
-        `).join("")
-      : "<p>Your bag is empty. Add a product from the showcase.</p>";
-    bagTotal.textContent = formatPrice(total);
+    bagItems.replaceChildren();
+    let total = 0n;
+    for (const [id, item] of bag) {
+      total += item.cents * BigInt(item.quantity);
+      const row = document.createElement("div");
+      row.className = "bag-line";
+      const name = document.createElement("span");
+      name.textContent = `${item.name} / ${item.label} × ${item.quantity}`;
+      const amount = document.createElement("strong");
+      amount.textContent = formatRupiah(item.cents * BigInt(item.quantity));
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "button secondary small";
+      remove.textContent = "Remove";
+      remove.setAttribute("aria-label", `Remove ${item.name} / ${item.label}`);
+      remove.addEventListener("click", () => { bag.delete(id); renderBag(); });
+      row.append(name, amount, remove);
+      bagItems.append(row);
+    }
+    if (!bag.size) {
+      const empty = document.createElement("p");
+      empty.textContent = "Your bag is empty. Add a variant from the catalog.";
+      bagItems.append(empty);
+    }
+    bagTotal.textContent = formatRupiah(total);
+    const checkout = document.querySelector("[data-merch-checkout]");
+    if (checkout) {
+      checkout.hidden = !bag.size;
+      const params = new URLSearchParams();
+      params.set("kind", "merch");
+      for (const [id, item] of bag) params.append("item", `${id}:${item.quantity}`);
+      checkout.href = `ticket-transaction.html?${params}`;
+    }
   };
-
-  productGrid.addEventListener("click", (event) => {
+  productGrid.addEventListener("click", event => {
     const button = event.target instanceof Element ? event.target.closest("[data-add-to-bag]") : null;
-    const product = button?.closest(".product-card");
-
-    if (!button || !(product instanceof HTMLElement)) return;
-
-    const name = product.dataset.name || "Merch item";
-    const price = Number(product.dataset.price || 0);
-    const current = bag.get(name) || { name, price, quantity: 0 };
-    current.quantity += 1;
-    bag.set(name, current);
+    const card = button?.closest(".product-card");
+    if (!card || button.disabled) return;
+    const option = card.querySelector("[data-variant-select]").selectedOptions[0];
+    if (!option || option.disabled) return;
+    const id = option.value;
+    const current = bag.get(id) || { name: card.dataset.name, label: option.dataset.label, cents: catalogCents(card.dataset.price), quantity: 0 };
+    if (current.quantity >= Number(option.dataset.stock)) {
+      status.textContent = "The selected quantity has reached the displayed stock. Availability is checked again at checkout.";
+      return;
+    }
+    if (bag.size >= 20 && !bag.has(id)) { status.textContent = "A bag can contain up to 20 variants."; return; }
+    current.quantity++;
+    bag.set(id, current);
+    status.textContent = "Added to your temporary bag. No stock is reserved yet.";
     renderBag();
   });
+  renderBag();
 }
 
 initializeNavigation();
@@ -245,7 +216,6 @@ document.addEventListener("mcr:content-ready", () => {
     initializeLyricsFilter();
     initializeSongDetails();
   }
+  if (document.body.dataset.page === "store") initializeMerchShowcase();
 }, { once: true });
-initializeTicketSummary();
 initializeYouTubePlayer();
-initializeMerchShowcase();

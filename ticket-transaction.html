@@ -1,16 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCR | Ticket Transaction</title>
-    <link rel="stylesheet" href="base.css">
-    <link rel="stylesheet" href="ticket-transaction.css">
-</head>
-
-<body>
-    <header class="site-header checkout-header">
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Checkout | MCR</title><link rel="stylesheet" href="base.css"><link rel="stylesheet" href="shop.css"></head>
+<body data-page="ticket-transaction">
+    <header class="site-header">
         <div class="container header-inner">
             <a class="logo" href="index.html">MCR</a>
 
@@ -18,177 +9,52 @@
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="music.html">Music</a>
-                <a class="active" href="tour.html">Tour</a>
+                <a href="tour.html">Tour</a>
                 <a href="showcase.html">Store</a>
                 <a href="news.html">News</a>
             </nav>
 
             <div class="header-icons" aria-label="Utility navigation">
-                <a href="news.html#newsletter">Newsletter</a>
+                <a href="showcase.html#products">Shop</a>
+                <a href="showcase.html#bag">Bag</a>
             </div>
         </div>
     </header>
 
-    <main class="transaction-page">
-        <section class="container stepper" aria-label="Checkout progress">
-            <div class="step done">
-                <span>1</span>
-                <strong>Select Tickets</strong>
-            </div>
-            <div class="step-line"></div>
-            <div class="step active">
-                <span>2</span>
-                <strong>Information</strong>
-            </div>
-            <div class="step-line muted"></div>
-            <div class="step">
-                <span>3</span>
-                <strong>Payment</strong>
-            </div>
-            <div class="step-line muted"></div>
-            <div class="step">
-                <span>4</span>
-                <strong>Confirmation</strong>
-            </div>
-        </section>
-
-        <div class="container checkout-grid">
-            <div class="checkout-main">
-                <section class="event-card" aria-label="Selected event">
-                    <div>
-                        <h1>My Chemical Romance</h1>
-                        <p>The Kia Forum, Inglewood, CA</p>
-                    </div>
-                    <time datetime="2024-10-14T20:00">Oct 14, 2024<br>8:00 PM</time>
-                </section>
-
-                <form class="checkout-form" id="checkout-form" action="ticket-transaction.html" method="get">
-                    <section class="checkout-panel" aria-labelledby="seat-title">
-                        <h2 id="seat-title">01. Seat Selection</h2>
-                        <div class="seat-grid">
-                            <figure class="image-frame seat-map">
-                                <img src="assets/tour-arena.png" alt="Arena seating map for the selected ticket">
-                            </figure>
-                            <div class="seat-info">
-                                <span>Section</span>
-                                <strong>Pit</strong>
-                                <span>Row / Seat</span>
-                                <strong>GA / 0</strong>
-                                <span>Quantity</span>
-                                <div class="quantity-control" aria-label="Ticket quantity">
-                                    <button type="button" class="button secondary small" aria-label="Decrease ticket quantity">-</button>
-                                    <output aria-live="polite">2</output>
-                                    <button type="button" class="button secondary small" aria-label="Increase ticket quantity">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="checkout-panel" aria-labelledby="delivery-title">
-                        <h2 id="delivery-title">02. Delivery Method</h2>
-                        <div class="delivery-options">
-                            <label class="delivery-option selected">
-                                <input type="radio" name="delivery" value="mobile" checked>
-                                <span></span>
-                                <strong>Mobile Entry</strong>
-                                <em>Tickets delivered to your phone. No charge.</em>
-                            </label>
-                            <label class="delivery-option">
-                                <input type="radio" name="delivery" value="will-call">
-                                <span></span>
-                                <strong>Will Call</strong>
-                                <em>Pick up at box office. ID required. $5.00</em>
-                            </label>
-                        </div>
-                    </section>
-
-                    <section class="checkout-panel" aria-labelledby="contact-title">
-                        <h2 id="contact-title">03. Contact Information</h2>
-                        <div class="field-grid">
-                            <label>
-                                Full Name
-                                <input type="text" name="name" placeholder="Gerard Way">
-                            </label>
-                            <label>
-                                Email Address
-                                <input type="email" name="email" placeholder="g.way@mcr.com">
-                            </label>
-                            <label class="wide">
-                                Phone Number
-                                <input type="tel" name="phone" placeholder="+1 (555) 000-0000">
-                            </label>
-                        </div>
-                    </section>
-
-                    <section class="checkout-panel" aria-labelledby="payment-title">
-                        <h2 id="payment-title">04. Payment Details</h2>
-                        <div class="field-grid">
-                            <label class="wide">
-                                Credit Card Number
-                                <input type="text" name="card" placeholder="XXXX XXXX XXXX XXXX">
-                            </label>
-                            <label>
-                                Expiration Date
-                                <input type="text" name="expiry" placeholder="MM/YY">
-                            </label>
-                            <label>
-                                CVV
-                                <input type="text" name="cvv" placeholder="123">
-                            </label>
-                            <label class="wide">
-                                Billing Address
-                                <input type="text" name="address" placeholder="123 Revenge Ave, Newark, NJ">
-                            </label>
-                        </div>
-                    </section>
-                </form>
-            </div>
-
-            <aside class="checkout-sidebar" aria-label="Checkout summary">
-                <div class="timer-bar">
-                    <span>Time Remaining</span>
-                    <strong>09:54</strong>
+    <main class="container shop-main">
+        <h1>Review your order</h1>
+        <p class="shop-notice">Prices in IDR · No additional fees · Maximum 2 tickets per account per concert. Orders cannot be cancelled.</p>
+        <p role="status" data-shop-status>Connecting…</p>
+        <a class="button" data-backend-link hidden>Continue to checkout</a>
+        <a class="button" data-sign-in hidden>Sign in to continue</a>
+        <noscript><p>JavaScript is required to review and create an order.</p></noscript>
+        <section class="shop-panel" data-checkout-panel hidden>
+            <h2>Selection</h2><p data-account-name></p>
+            <form method="post" data-checkout-form>
+                <div class="shop-fields" data-ticket-fields hidden>
+                    <p data-concert-label></p>
+                    <label>Ticket type<select name="ticket_type" required disabled></select></label>
+                    <label>Quantity (maximum 2)<input name="quantity" type="number" min="1" max="2" value="1" required disabled></label>
                 </div>
-
-                <section class="summary-card" aria-labelledby="summary-title">
-                    <h2 id="summary-title">Order Summary</h2>
-                    <dl>
-                        <div>
-                            <dt data-summary-item>General Admission x2</dt>
-                            <dd data-summary-price>$250.00</dd>
-                        </div>
-                        <div>
-                            <dt>Service Fee</dt>
-                            <dd data-summary-service>$42.50</dd>
-                        </div>
-                        <div>
-                            <dt>Facility Charge</dt>
-                            <dd>$10.00</dd>
-                        </div>
-                        <div>
-                            <dt data-summary-delivery>Delivery Mobile</dt>
-                            <dd data-summary-delivery-price>Free</dd>
-                        </div>
-                    </dl>
-                    <div class="summary-total">
-                        <span>Total</span>
-                        <strong data-summary-total aria-live="polite">$302.50</strong>
-                    </div>
-                    <button type="submit" form="checkout-form">Complete Purchase</button>
-                    <p>By clicking complete purchase you agree to the terms of service and purchase policy. No refunds or
-                        exchanges.</p>
-                </section>
-
-                <a class="support-box" href="news.html#newsletter">Need help? Contact support@mcr.com</a>
-            </aside>
-        </div>
+                <p data-merch-selection hidden></p>
+                <label data-address-field hidden>Delivery address<textarea name="address" maxlength="2000" disabled></textarea></label>
+                <button type="submit" data-review-order disabled>Review order</button>
+            </form>
+        </section>
+        <section class="shop-panel" data-quote-panel hidden>
+            <h2 data-order-title>Order summary</h2>
+            <div data-order-lines></div>
+            <p><strong>Total: <span data-order-total></span></strong></p>
+            <p data-order-address></p>
+            <button type="button" data-create-order hidden>Place order</button>
+            <a class="button secondary" href="showcase.html" data-new-order hidden>Back to Store</a>
+        </section>
     </main>
-
     <footer class="site-footer">
         <div class="container footer-inner">
             <div>
-                <strong>MCR Concept</strong>
-                <span>A finished black-and-white editorial website based on the original wireframes.</span>
+                <strong>My Chemical Romance</strong>
+                <span>Music, live shows, and merchandise.</span>
             </div>
             <nav class="footer-links" aria-label="Footer navigation">
                 <a href="index.html">Home</a>
@@ -200,7 +66,5 @@
             </nav>
         </div>
     </footer>
-    <script src="script.js"></script>
-</body>
-
-</html>
+    <script src="site-config.js"></script><script src="script.js"></script><script src="commerce.js"></script>
+</body></html>

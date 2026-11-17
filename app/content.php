@@ -32,6 +32,47 @@ function songs(): array
     );
 }
 
+/** Prices stay DECIMAL strings; variant IDs identify bag items, not product names. */
+function merch_catalog(): array
+{
+    $categories = content_rows('SELECT id, name FROM categories ORDER BY name, id LIMIT :limit', 100);
+    $products = content_rows(
+        'SELECT p.id, p.category_id, c.name AS category_name, p.name, p.price, p.details
+         FROM products p JOIN categories c ON c.id = p.category_id ORDER BY p.name, p.id LIMIT :limit', 100,
+    );
+    $byProduct = [];
+    if ($products !== []) {
+        $ids = array_column($products, 'id');
+        $marks = implode(',', array_fill(0, count($ids), '?'));
+        $query = database()->prepare("SELECT id, product_id, size, color, stock FROM product_variants WHERE product_id IN ($marks) ORDER BY id");
+        $query->execute($ids);
+        foreach ($query->fetchAll() as $variant) {
+            $variant['id'] = (int) $variant['id'];
+            $variant['product_id'] = (int) $variant['product_id'];
+            $variant['stock'] = (int) $variant['stock'];
+            $byProduct[$variant['product_id']][] = $variant;
+        }
+    }
+    $categoryMap = [];
+    foreach ($categories as $category) {
+        $category['id'] = (int) $category['id'];
+        $categoryMap[$category['id']] = $category;
+    }
+    foreach ($products as &$product) {
+        $product['id'] = (int) $product['id'];
+        $product['category_id'] = (int) $product['category_id'];
+        $product['variants'] = $byProduct[$product['id']] ?? [];
+        $categoryMap[$product['category_id']] = ['id' => $product['category_id'], 'name' => $product['category_name']];
+    }
+    unset($product);
+    return ['categories' => array_values($categoryMap), 'products' => $products];
+}
+
+function fan_messages(): array
+{
+    return content_rows('SELECT id, display_name, message FROM fan_messages ORDER BY id DESC LIMIT :limit', 100);
+}
+
 function news_articles(int $limit = 100): array
 {
     return content_rows(

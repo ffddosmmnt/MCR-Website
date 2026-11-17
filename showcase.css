@@ -149,6 +149,11 @@
   padding: 24px;
 }
 
+.variant-field { display: grid; gap: 8px; margin-bottom: 14px; }
+.variant-field select { width: 100%; min-height: 44px; font: inherit; padding: 8px; }
+.product-body, .bag-line { min-width: 0; overflow-wrap: anywhere; }
+.bag-line { flex-wrap: wrap; }
+
 .product-body h3 {
   margin: 8px 0 10px;
   font-size: clamp(1.35rem, 2.5vw, 2.2rem);
