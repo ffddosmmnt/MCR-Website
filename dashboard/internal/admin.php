@@ -10,6 +10,7 @@ require_once __DIR__ . '/orders.php';
 function admin_modules(): array
 {
     return [
+        'fan_messages' => ['Fan messages (published)', ['display_name' => ['Public display name', 'text', 100], 'message' => ['Message', 'textarea', 5000]]],
         'band_members' => ['Band members', ['name' => ['Name', 'text', 100], 'instrument' => ['Instrument', 'text', 100, true], 'cover_img' => ['Image', 'image', 65535, true]]],
         'albums' => ['Albums', ['title' => ['Title', 'text', 150], 'release_date' => ['Release date', 'date', 10, true], 'cover_image' => ['Cover image', 'image', 65535, true]]],
         'songs' => ['Songs', ['album_id' => ['Album', 'relation', 'albums'], 'title' => ['Title', 'text', 150], 'lyrics' => ['Lyrics', 'textarea', 65535, true]]],

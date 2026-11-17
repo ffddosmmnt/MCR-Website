@@ -1,0 +1,15 @@
+.interaction-form { display: grid; gap: 16px; min-width: 0; }
+.interaction-form label { display: grid; gap: 6px; font-weight: 700; }
+.interaction-form input, .interaction-form textarea { width: 100%; min-width: 0; border: 1px solid var(--line); background: var(--white); color: var(--ink); padding: 12px; font: inherit; }
+.interaction-form textarea { min-height: 160px; resize: vertical; }
+.interaction-form .consent { display: flex; align-items: flex-start; font-weight: 400; }
+.interaction-form .consent input { width: auto; height: auto; padding: 0; margin-top: 6px; }
+.interaction-form [data-form-status] { margin: 0; overflow-wrap: anywhere; }
+.contact-section { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+.newsletter-form { align-self: stretch; }
+.fan-messages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.fan-message { margin: 0; padding: 24px; border: 1px solid var(--line); background: var(--white); overflow-wrap: anywhere; }
+.fan-message blockquote { margin: 0 0 20px; white-space: pre-wrap; }
+.fan-message figcaption { font-weight: 700; }
+@media (max-width: 980px) { .contact-section { grid-template-columns: 1fr; gap: 24px; } .newsletter-form { flex-basis: auto; width: 100%; } }
+@media (max-width: 680px) { .fan-messages { grid-template-columns: 1fr; } }
