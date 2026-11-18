@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__ . '/shop-api.php';
 require_once __DIR__ . '/money.php';
+require_once __DIR__ . '/tickets.php';
 
 function checkout_input(array $input): array
 {
@@ -35,8 +36,7 @@ function checkout_quote(PDO $db, array $user, array $input): array
         $query = $db->prepare('SELECT id, status, concert_date FROM concerts WHERE id = ? FOR UPDATE');
         $query->execute([$concertId]);
         $concert = $query->fetch();
-        if (!$concert || $concert['status'] !== 'scheduled' || $concert['concert_date'] === null
-            || strtotime($concert['concert_date'] . ' UTC') <= time()) throw new ShopError(409, 'This concert is not open for booking.');
+        if (!$concert || !concert_bookable($concert)) throw new ShopError(409, 'This concert is not open for booking.');
         $query = $db->prepare('SELECT i.quantity FROM ticket_order_items i JOIN ticket_orders o ON o.id = i.order_id JOIN ticket_types t ON t.id = i.ticket_type_id WHERE o.user_id = ? AND t.concert_id = ? FOR UPDATE');
         $query->execute([$user['id'], $concertId]);
         $already = array_sum($query->fetchAll(PDO::FETCH_COLUMN));

@@ -6,9 +6,6 @@ public_api(function (): array {
     if ($id === false || $id === null) throw new InvalidArgumentException('Invalid concert.');
     $concert = tour_schedule(1, $id)[0] ?? null;
     if ($concert === null) throw new DomainException('Concert not found.');
-    $query = database()->prepare('SELECT id, name, price, quota FROM ticket_types WHERE concert_id = ? ORDER BY price, id LIMIT 100');
-    $query->execute([$id]);
-    $tickets = $query->fetchAll();
-    foreach ($tickets as &$ticket) { $ticket['id'] = (int) $ticket['id']; $ticket['quota'] = (int) $ticket['quota']; }
+    $tickets = concert_ticket_types($id);
     return ['concert' => public_concert($concert), 'tickets' => $tickets, 'currency' => 'IDR'];
 });

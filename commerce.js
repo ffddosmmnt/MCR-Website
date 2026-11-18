@@ -144,6 +144,7 @@
     if (kind === "ticket") {
       const data = await request(`tickets.php?concert=${encodeURIComponent(params.get("concert") || "")}`);
       const concert = data.concert;
+      if (!concert.bookable) throw new Error("Ticket sales are closed for this concert.");
       document.querySelector("[data-concert-label]").textContent = `${concert.venue_name} · ${concert.city} · ${concert.date_display} · ${concert.status}`;
       document.querySelector("[data-ticket-fields]").hidden = false;
       const select = form.elements.ticket_type;
@@ -157,6 +158,11 @@
       const available = [...select.options].find(option => !option.disabled);
       if (!available) throw new Error("No tickets are available for this concert.");
       select.value = available.value;
+      if (params.has("ticket")) {
+        const chosen = [...select.options].find(option => option.value === params.get("ticket") && !option.disabled);
+        if (!chosen) throw new Error("The selected ticket is unavailable. Return to Tour and choose a ticket again.");
+        select.value = chosen.value;
+      }
       select.disabled = false;
       form.elements.quantity.disabled = false;
     } else {

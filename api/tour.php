@@ -9,5 +9,5 @@ public_api(function () {
     }
     $selected = $id === null ? null : (tour_schedule(1, $id)[0] ?? null);
     if ($id !== null && $selected === null) throw new DomainException('Concert not found.');
-    return ['concerts' => array_map('public_concert', tour_schedule()), 'selected' => $selected === null ? null : public_concert($selected)];
+    return ['tickets' => $selected === null ? [] : concert_ticket_types((int) $selected['id']), 'concerts' => array_map('public_concert', tour_schedule()), 'selected' => $selected === null ? null : public_concert($selected)];
 });

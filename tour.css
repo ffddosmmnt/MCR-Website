@@ -85,6 +85,31 @@
   background: var(--white);
 }
 
+.ticket-concert-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.ticket-concert-form select {
+  flex: 1 1 260px;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--ink);
+}
+
+.package-card .ticket-price {
+  color: var(--ink);
+  font-size: 1.5rem;
+  font-weight: 900;
+}
+
 .package-card.featured {
   background: var(--ink);
   color: var(--white);

@@ -199,11 +199,39 @@
       const list = find(document, "[data-concerts]");
       data.concerts.forEach(item => clone("concert-template", list, root => fillConcert(root, item)));
       find(document, "[data-tour-empty]").hidden = data.concerts.length !== 0;
+      const concertSelect = find(document, "#ticket-concert");
+      data.concerts.forEach(concert => {
+        const option = document.createElement("option");
+        option.value = String(concert.id);
+        option.textContent = `${concert.city} · ${concert.venue_name} · ${concert.date_display} · ${concert.status}`;
+        concertSelect.append(option);
+      });
+      concertSelect.disabled = data.concerts.length === 0;
+      find(document, ".ticket-concert-form button").disabled = concertSelect.disabled;
+      const ticketStatus = find(document, "[data-ticket-status]");
+      if (!data.concerts.length) ticketStatus.textContent = "No concerts are available to select.";
       if (data.selected) {
         const selected = find(document, "[data-selected-concert]");
         fillConcert(selected, data.selected);
-        find(document, "[data-book-concert]").href = `ticket-transaction.html?kind=ticket&concert=${encodeURIComponent(data.selected.id)}`;
         selected.hidden = false;
+        concertSelect.value = String(data.selected.id);
+        ticketStatus.textContent = !data.selected.bookable ? "Ticket sales are closed for this concert."
+          : !data.tickets.length ? "No ticket types have been published for this concert."
+          : "Choose a ticket below to continue. No tickets are reserved until your order is placed.";
+        data.tickets.forEach(ticket => clone("tour-ticket-template", find(document, "[data-tour-tickets]"), root => {
+          text(root, "[data-ticket-name]", ticket.name);
+          text(root, "[data-ticket-price]", formatRupiah(catalogCents(ticket.price)));
+          text(root, "[data-ticket-quota]", `${ticket.quota} tickets remaining`);
+          if (data.selected.bookable && ticket.quota > 0) {
+            const link = find(root, "[data-choose-ticket]");
+            link.href = `ticket-transaction.html?kind=ticket&concert=${encodeURIComponent(data.selected.id)}&ticket=${encodeURIComponent(ticket.id)}`;
+            link.hidden = false;
+          } else {
+            const unavailable = find(root, "[data-ticket-unavailable]");
+            unavailable.textContent = data.selected.bookable ? "Sold out" : "Sales closed";
+            unavailable.hidden = false;
+          }
+        }));
       }
     }
     status.hidden = true;

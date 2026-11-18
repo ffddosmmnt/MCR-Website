@@ -3,39 +3,19 @@
 <body data-page="tour"><header class="site-header"><div class="container header-inner"><a class="logo" href="index.html">MCR</a><nav class="main-nav" aria-label="Main navigation"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html">Music</a><a href="tour.html" class="active" aria-current="page">Tour</a><a href="showcase.html">Store</a><a href="news.html">News</a></nav><div class="header-icons" aria-label="Utility navigation"><a href="music.html#lyrics">Search</a><a href="showcase.html#bag">Bag</a><a href="account.html">Account</a></div></div></header>
 <main class="page"><div class="container"><h1 class="page-title">Tour</h1></div><section class="container tour-intro section-tight" aria-label="Tour introduction"><div class="tour-intro-copy"><span class="eyebrow">The live schedule</span><h2>Dates, places, and live moments.</h2><p class="lead">Browse the published concert schedule. All concert times are displayed in WIB (Asia/Jakarta, UTC+7).</p></div><figure class="image-frame tour-banner"><img src="assets/tour-arena.png" alt="Empty concert arena"></figure></section><div class="container"><p class="content-notice" data-content-status role="status" aria-live="polite">Loading content…</p><noscript><p class="content-notice">JavaScript is required to load live content. Navigation and the static artwork remain available.</p></noscript></div>
 <section class="container section" aria-labelledby="dates-title"><div class="section-heading-row"><h2 class="section-title" id="dates-title">Tour Schedule</h2><span class="meta">All published dates / WIB</span></div><div class="data-table" role="table" aria-label="Published tour dates"><div class="table-row header" role="row"><div class="table-cell date" role="columnheader">Date / WIB</div><div class="table-cell" role="columnheader">City</div><div class="table-cell" role="columnheader">Venue / Status</div><div class="table-cell action" role="columnheader">Details</div></div><div role="rowgroup" data-concerts></div></div><p data-tour-empty class="content-notice" hidden>No tour dates have been published yet.</p><p class="content-note">Up to 100 dates are shown in chronological order. Undated events follow. Status labels do not confirm ticket availability.</p></section>
-<section class="container section" id="selected-show" aria-labelledby="selected-title" data-selected-concert hidden><div class="section-heading-row"><h2 class="section-title" id="selected-title">Selected Show</h2></div><h3 data-venue></h3><p data-city></p><p><span data-date></span> · <span data-status></span></p><p>Choose your tickets for this concert. A maximum of two tickets per account applies.</p><a class="button" data-book-concert>Review ticket options</a></section>
-<section class="container section" aria-labelledby="vip-title">
-            <div class="section-heading-row">
-                <h2 class="section-title" id="vip-title">VIP Package Concepts</h2>
-            </div>
-
-            <p class="lead">Package concepts from the original design. These packages are not available to book.</p>
-            <div class="card-grid">
-                <article class="package-card">
-                    <span class="package-label">Level 01</span>
-                    <h3>Early Entry</h3>
-                    <p>Enter before general admission, shop the merch stand first, and receive a printed commemorative
-                        laminate.</p>
-                    <span class="button disabled full">Concept Preview</span>
-                </article>
-
-                <article class="package-card featured">
-                    <span class="package-label">Premium</span>
-                    <h3>Side Stage Experience</h3>
-                    <p>Watch selected songs from a reserved production-view area with a limited poster and priority
-                        check-in.</p>
-                    <span class="button disabled full">Concept Preview</span>
-                </article>
-
-                <article class="package-card">
-                    <span class="package-label">Level 03</span>
-                    <h3>Ultimate News</h3>
-                    <p>Includes early entry, exclusive tour print, collectible ticket, and access to a curated digital
-                        show News.</p>
-                    <span class="button disabled full">Concept Preview</span>
-                </article>
-            </div>
-        </section>
+<section class="container section" id="selected-show" aria-labelledby="selected-title" data-selected-concert hidden><div class="section-heading-row"><h2 class="section-title" id="selected-title">Selected Show</h2></div><h3 data-venue></h3><p data-city></p><p><span data-date></span> · <span data-status></span></p><p>Choose your tickets for this concert. A maximum of two tickets per account applies.</p><a class="button" href="#ticket-options">View ticket options</a></section>
+<section class="container section" id="ticket-options" aria-labelledby="tickets-title">
+    <div class="section-heading-row"><h2 class="section-title" id="tickets-title">Concert Tickets</h2></div>
+    <p class="lead">Choose a concert to explore ticket types and prices.</p>
+    <form class="ticket-concert-form" action="tour.html#ticket-options" method="get">
+        <label for="ticket-concert">Concert</label>
+        <select id="ticket-concert" name="concert" required disabled><option value="">Choose a concert</option></select>
+        <button type="submit" disabled>View Tickets</button>
+    </form>
+    <p class="content-note">Prices in IDR. Maximum two tickets per account per concert across all ticket types and orders. Availability is confirmed at checkout.</p>
+    <p data-ticket-status role="status">Select a concert above or open a show from the schedule.</p>
+    <div class="card-grid" data-tour-tickets></div>
+</section>
 <section class="container section" aria-labelledby="past-title">
             <div class="section-heading-row">
                 <h2 class="section-title" id="past-title">Visual Archive</h2>
@@ -78,6 +58,8 @@
 <section class="container section split-section" aria-label="Venue information and tour archive"><article class="venue-panel"><div class="section-heading-row"><h2 class="section-title">Before You Go</h2></div><p>Check the venue's official information for entry, accessibility, parking, and bag policies. No reservation or ticket payment is processed on this page.</p></article><figure class="image-frame tour-banner"><img src="assets/hero-concert.png" alt="Black and white concert archive artwork" loading="lazy"></figure></section>
 </main>
 <template id="concert-template"><article class="table-row" role="row"><div class="table-cell date" role="cell" data-date></div><div class="table-cell" role="cell" data-city></div><div class="table-cell" role="cell"><span data-venue></span><br><span class="meta" data-status></span></div><div class="table-cell action" role="cell"><a class="button secondary small" data-concert-link>Show Details</a></div></article></template>
+
+<template id="tour-ticket-template"><article class="package-card"><span class="package-label">Concert ticket</span><h3 data-ticket-name></h3><p class="ticket-price" data-ticket-price></p><p data-ticket-quota></p><a class="button full" data-choose-ticket hidden>Choose Ticket</a><p class="meta" data-ticket-unavailable hidden></p></article></template>
 
 <footer class="site-footer" id="about"><div class="container footer-inner"><div><strong>My Chemical Romance</strong><span>Music, live shows, and the latest news.</span></div><div class="footer-links"><a href="index.html">Home</a><a href="about.html">About</a><a href="music.html">Music</a><a href="tour.html">Tour</a><a href="showcase.html">Store</a><a href="news.html">News</a></div></div></footer>
 <script src="site-config.js"></script><script src="script.js"></script><script src="content.js"></script></body></html>

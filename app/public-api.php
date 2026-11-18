@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/view.php';
+require_once __DIR__ . '/tickets.php';
 
 /** Public, read-only content API. Never enable credentialed CORS on these routes. */
 function public_api(callable $read): void
@@ -65,6 +66,7 @@ function public_article(array $article): array
 
 function public_concert(array $concert): array
 {
+    $concert['bookable'] = concert_bookable($concert);
     $concert['id'] = (int) $concert['id'];
     $concert['date_display'] = date_label($concert['concert_date'], true);
     return $concert;
