@@ -35,15 +35,46 @@ The project uses shared `base.css` and `script.js` files, plus a dedicated HTML 
 - Server-calculated checkout totals with no additional fees
 - Merchandise filtering with an interactive fan bag total
 
-## Run
+## Setup and running
 
-Use the PHP server setup below for the working application. A static server or GitHub Pages can preview the HTML/CSS/JavaScript, but does not execute the PHP APIs or provide accounts and orders by itself.
+Requirements: Laragon with PHP (PDO MySQL and mbstring), MySQL, and Windows PowerShell 5.1 or newer. The GD extension is required for dashboard image uploads.
+
+1. Open Laragon and start **MySQL**. Apache is not required for this method.
+2. For a new device/database, import the SQL files through HeidiSQL or phpMyAdmin in this order:
+   - `mcr_database_mysql.db` — an SQL file that creates the `mcr_website` database.
+   - Select `mcr_website`, then import `migrations/001_checkout_requests.sql`.
+   - Import `migrations/002_interactions.sql` into the same database.
+   - Import `database/content.sql` to populate the initial content. Stop if an error occurs; do not commit a failed transaction.
+
+   Existing complete installations do not need to reimport the schema. See [database/README.md](database/README.md) for the full import guide.
+3. Open Windows PowerShell in the project folder. For the current project location:
+
+   ```powershell
+   cd "D:\Kuliah\Semester 5\WebProgramming\Kelompok"
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\start-local.ps1
+   ```
+
+4. If prompted, enter your local MySQL username and password. For an empty password, press Enter. The script uses `DB_USER`/`DB_PASSWORD` from the terminal environment when available, otherwise prompts for them; credentials are not saved to files.
+5. Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and check News and Tour. Keep the terminal open while using the website.
+6. Press **Ctrl+C** in the terminal to stop the website.
+
+If port 8000 is already in use, run:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\start-local.ps1 -Port 8001
+```
+
+Then open [http://127.0.0.1:8001/](http://127.0.0.1:8001/). If PHP is not detected, add `-Php "path/to/php.exe"`.
+
+The script serves the project folder containing `start-local.ps1`, rather than a copy in `laragon/www`. Neither `pwsh` nor PowerShell 7 is required. `ExecutionPolicy Bypass` applies only to this process and does not change the saved Windows policy. Files such as `.env` are not loaded automatically; use `DB_HOST`, `DB_PORT`, and `DB_NAME` if your database settings differ from the local defaults.
+
+GitHub Pages or a static server only serves the frontend; PHP APIs, accounts, and orders require a PHP/MySQL backend.
 
 ## PHP/MySQL catalog and checkout
 
 Home, Music, News, Tour, and Store load database content through native PHP JSON APIs. Fan accounts and ticket/merchandise checkout use PHP sessions on the backend host. Orders use IDR with no extra fees and at most two tickets per account per concert across orders. Payment processing is not integrated. Creating a `pending` order reduces stock/quota; cancellation is not available.
 
-Import the original schema from `mcr_database_mysql.db`, then select the intended database and run `migrations/001_checkout_requests.sql`. Existing installations need only the migration. It adds the request-key table used to prevent duplicate orders. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` in the PHP process environment; `.env` files are not loaded automatically. The backend needs PDO MySQL and mbstring. Run from the project root after setting those variables:
+For a new installation, follow the schema and content import order above, including both migrations. Migration `001_checkout_requests.sql` adds the request-key table used to prevent duplicate orders. Existing installations need only migrations that have not yet been applied. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` in the PHP process environment; `.env` files are not loaded automatically. The backend needs PDO MySQL and mbstring. Run from the project root after setting those variables:
 
 ```powershell
 php -d display_errors=0 -S 127.0.0.1:8000 router.php
@@ -66,3 +97,15 @@ Private contacts and subscriber lists require administrator sign-in at `/dashboa
 Public registration creates a `user` account only. The Fan Account page displays the current role from the server; an administrator can open the dashboard link. Administrative access requires signing in at `/dashboard/login.php` with an existing admin account. Both dashboard addresses share their admin session and logout; the visitor account session remains separate.
 
 Roles and password versions are checked again on requests. Anonymous visitors cannot open or submit dashboard forms, ordinary accounts cannot sign in as administrators, and orders remain restricted to their owner. Administrator sessions expire after 30 minutes of inactivity. No additional database migration is required for authentication/access changes.
+
+## Database content for another device
+
+The repository includes a portable content pack with four albums, 20 selected songs, six editorial articles plus three sourced news summaries, a merchandise catalog, concert/ticket records and published fan messages. Event schedules, merchandise, prices, inventory and fan messages are fictional coursework content; they are not official band information. No accounts, credentials, orders or private contacts are exported.
+
+Follow [database/README.md](database/README.md) to import the existing schema and migrations, configure DB_*, then run `php database/import.php --dry-run` and `php database/import.php`. Repeated imports retain matching records and do not reset stock. Copy assets/ with the code. The guide lists temporary artwork and the final content/images still needed.
+
+## Original photos and sourced news
+
+Music uses four original album covers from the Apple Music catalogue; About uses real performance photos of the four members. Source and license details are in [assets/IMAGE_CREDITS.md](assets/IMAGE_CREDITS.md). No AI images were generated for this replacement. The content importer refreshes known starter images while preserving other custom artwork.
+
+News includes short, attributed updates checked on 18 November 2026, including the Jakarta show and reported recording plans. Official event links are separate from the coursework ticket records. These are manually curated articles, not an automatically refreshed news feed.
