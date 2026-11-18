@@ -3,7 +3,7 @@ DirectoryIndex index.html index.php
 
 # Apache 2.4 with mod_rewrite and AllowOverride enabled.
 RewriteEngine On
-RewriteRule ^(?:app|agent|tests|old|output|\.runtime)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:app|agent|database|tests|old|output|\.runtime)(?:/|$) - [F,L,NC]
 RewriteRule ^router\.php(?:/|$) - [F,L,NC]
 RewriteRule ^(index|music|tour|news|news-detail)\.php$ $1.html [R=308,L]
 
