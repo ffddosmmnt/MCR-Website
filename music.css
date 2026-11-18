@@ -9,6 +9,14 @@
   aspect-ratio: 1 / 1;
 }
 
+/* Album covers retain the colours of the original artwork. */
+.featured-cover img,
+.featured-cover:hover img,
+.album-image img,
+.album-image:hover img {
+  filter: none;
+}
+
 .featured-info {
   flex: 1 1 0;
 }

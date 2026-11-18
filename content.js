@@ -9,6 +9,24 @@
   const status = document.querySelector("[data-content-status]");
   const find = (root, selector) => root.querySelector(selector);
   const text = (root, selector, value) => root.querySelectorAll(selector).forEach(node => { node.textContent = value ?? ""; });
+  const articleBody = (root, value) => {
+    // Sources remain plain database text; build links with DOM APIs, never HTML.
+    const body = find(root, "[data-body]");
+    const content = value || "The article content is not available yet.";
+    body.replaceChildren();
+    let offset = 0;
+    for (const match of content.matchAll(/https:\/\/[^\s<>"']+/g)) {
+      body.append(document.createTextNode(content.slice(offset, match.index)));
+      const link = document.createElement("a");
+      link.href = match[0];
+      link.textContent = match[0];
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      body.append(link);
+      offset = match.index + match[0].length;
+    }
+    body.append(document.createTextNode(content.slice(offset)));
+  };
   const notice = (container, message) => {
     const node = document.createElement("p");
     node.className = "content-notice";
@@ -158,7 +176,7 @@
       const shell = find(document, "[data-article-shell]");
       text(shell, "[data-title]", data.article.title);
       text(shell, "[data-date]", data.article.date_display);
-      text(shell, "[data-body]", data.article.content || "The article content is not available yet.");
+      articleBody(shell, data.article.content);
       document.title = `${data.article.title} | MCR`;
       find(document, "[data-page-heading]").hidden = true;
       shell.hidden = false;

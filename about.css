@@ -361,3 +361,7 @@
     margin-top: 18px;
   }
 }
+
+.architect-image img {
+  object-position: center 25%;
+}
