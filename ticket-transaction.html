@@ -42,11 +42,17 @@
             </form>
         </section>
         <section class="shop-panel" data-quote-panel hidden>
-            <h2 data-order-title>Order summary</h2>
+            <div class="shop-confirmation" data-confirmation hidden>
+                <p class="eyebrow">My Chemical Romance · Order confirmation</p>
+                <h2>Thank you for your order!</h2>
+                <p>Your order has been received. Keep this confirmation for your records.</p>
+            </div>
+            <h2 data-order-title tabindex="-1">Order summary</h2>
             <div data-order-lines></div>
             <p><strong>Total: <span data-order-total></span></strong></p>
             <p data-order-address></p>
             <button type="button" data-create-order hidden>Place order</button>
+            <button type="button" data-print-order hidden>Print / Save PDF</button>
             <a class="button secondary" href="showcase.html" data-new-order hidden>Back to Store</a>
         </section>
     </main>

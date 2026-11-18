@@ -34,6 +34,10 @@
       const label = document.createElement("span");
       const variant = [item.size, item.color].filter(Boolean).join(" / ");
       label.textContent = `${item.name}${variant ? " / " + variant : ""} × ${item.quantity}`;
+      const unitPrice = document.createElement("small");
+      unitPrice.className = "shop-unit-price";
+      unitPrice.textContent = `${amount(item.unit_price)} each`;
+      label.append(unitPrice);
       const price = document.createElement("strong");
       price.textContent = amount(item.subtotal);
       row.append(label, price);
@@ -42,6 +46,18 @@
     document.querySelector("[data-order-total]").textContent = amount(order.total_amount);
     document.querySelector("[data-order-address]").textContent = order.address || order.items[0]?.address || "";
     document.querySelector("[data-quote-panel]").hidden = false;
+  }
+  function confirmOrder(order) {
+    renderOrder(order);
+    document.querySelector(".shop-main > h1").textContent = "Order confirmation";
+    document.querySelector("[data-checkout-panel]").hidden = true;
+    document.querySelector("[data-create-order]").hidden = true;
+    document.querySelector("[data-confirmation]").hidden = false;
+    document.querySelector("[data-print-order]").hidden = false;
+    document.querySelector("[data-new-order]").hidden = false;
+    const title = document.querySelector("[data-order-title]");
+    title.textContent = `Order #${order.id} · ${order.status}`;
+    title.focus();
   }
   try {
     base = resolveMcrApiBase();
@@ -112,11 +128,10 @@
     }
     const kind = params.get("kind");
     if (!["ticket", "merch"].includes(kind)) throw new Error("Choose tickets from Tour or merchandise from Store first.");
+    document.querySelector("[data-print-order]").addEventListener("click", () => window.print());
     if (params.has("order")) {
       const data = await request(`checkout.php?kind=${kind}&id=${encodeURIComponent(params.get("order"))}`);
-      renderOrder(data.order);
-      document.querySelector("[data-order-title]").textContent = `Order #${data.order.id} · ${data.order.status}`;
-      document.querySelector("[data-new-order]").hidden = false;
+      confirmOrder(data.order);
       message("Your order details are shown below.");
       return;
     }
@@ -195,12 +210,9 @@
       message("Placing your order…");
       try {
         const data = await request("checkout.php", { ...selection, action: "create", request_key: key, quote_hash: quote.quote_hash });
-        renderOrder(data.order);
-        create.hidden = true;
+        confirmOrder(data.order);
         try { sessionStorage.removeItem(storageKey); } catch { /* No stored key. */ }
         history.replaceState(null, "", `ticket-transaction.html?kind=${kind}&order=${data.order.id}`);
-        document.querySelector("[data-order-title]").textContent = `Order #${data.order.id} · ${data.order.status}`;
-        document.querySelector("[data-new-order]").hidden = false;
         message(data.replayed ? "Your existing order was recovered; no duplicate was created." : "Your order has been placed and is pending.");
       } catch (error) {
         showError(error);

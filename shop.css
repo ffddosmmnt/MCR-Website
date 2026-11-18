@@ -7,5 +7,23 @@
 .shop-panel h2 { margin-top: 0; }
 .shop-line { display: flex; justify-content: space-between; gap: 20px; padding-block: 12px; border-bottom: 1px solid var(--line); }
 .shop-line > *, .shop-main { overflow-wrap: anywhere; }
+.shop-unit-price { display: block; margin-top: 4px; color: var(--muted); }
+.shop-confirmation { padding-bottom: 20px; margin-bottom: 24px; border-bottom: 2px solid var(--line); }
+.shop-confirmation h2 { margin-bottom: 12px; }
+.shop-confirmation p:last-child { margin-bottom: 0; }
 .shop-notice { border-left: 4px solid var(--accent); padding: 14px 18px; background: var(--paper-soft); }
 @media (max-width:680px) { .shop-panel { padding: 20px; } .shop-line { flex-direction: column; gap: 6px; } }
+@media print {
+  @page { margin: 16mm; }
+  body[data-page="ticket-transaction"] { background: #fff; color: #000; }
+  body[data-page="ticket-transaction"] .site-header,
+  body[data-page="ticket-transaction"] .site-footer,
+  body[data-page="ticket-transaction"] main > :not([data-quote-panel]),
+  body[data-page="ticket-transaction"] [data-create-order],
+  body[data-page="ticket-transaction"] [data-print-order],
+  body[data-page="ticket-transaction"] [data-new-order] { display: none !important; }
+  body[data-page="ticket-transaction"] .shop-main { width: 100%; max-width: none; min-height: 0; margin: 0; padding: 0; }
+  body[data-page="ticket-transaction"] .shop-panel { border: 0; margin: 0; padding: 0; box-shadow: none; }
+  body[data-page="ticket-transaction"] .shop-line { flex-direction: row; break-inside: avoid; }
+  body[data-page="ticket-transaction"] .shop-unit-price { color: #000; }
+}
