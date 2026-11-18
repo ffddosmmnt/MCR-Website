@@ -6,10 +6,20 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD', 'POST'], true)) {
     header('Allow: GET, HEAD, POST');
     admin_fail(405, 'Method not allowed.');
 }
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' && isset($_SESSION['user_id'])) {
+    try {
+        $user = shop_user(false);
+        if ($user !== null && $user['role'] === 'admin') {
+            admin_redirect();
+        }
+    } catch (Throwable $error) {
+        admin_fail(503, 'Sign in is temporarily unavailable.');
+    }
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     admin_csrf();
     try {
-        if (time() < ($_SESSION['login_after'] ?? 0)) {
+        if (time() < ($_SESSION['login_blocked_until'] ?? 0)) {
             admin_fail(429, 'Too many attempts. Try again in a minute.');
         }
         $email = admin_string($_POST, 'email');
@@ -24,14 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user || !$valid || $user['role'] !== 'admin') {
             throw new InvalidArgumentException('Invalid email or password.');
         }
-        session_regenerate_id(true);
-        $_SESSION = ['admin_id' => $user['id'], 'auth_version' => hash('sha256', $user['password_hash']), 'last_active' => time(), 'csrf' => bin2hex(random_bytes(32))];
+        shop_login($user);
         admin_redirect();
     } catch (InvalidArgumentException $exception) {
-        $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
-        if ($_SESSION['login_attempts'] >= 5) {
-            $_SESSION['login_after'] = time() + 60;
-            $_SESSION['login_attempts'] = 0;
+        $_SESSION['login_failures'] = ($_SESSION['login_failures'] ?? 0) + 1;
+        if ($_SESSION['login_failures'] >= 5) {
+            $_SESSION['login_blocked_until'] = time() + 60;
+            $_SESSION['login_failures'] = 0;
         }
         http_response_code(401);
         $error = 'Invalid email or password.';

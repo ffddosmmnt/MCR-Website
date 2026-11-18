@@ -7,8 +7,8 @@ Dashboard utama di /dashboard/ kini juga wajib login admin. Alamat ini mempertah
 ## Masuk ke dashboard
 
 1. Buka alamat dashboard yang diberikan pengelola aplikasi.
-2. Masukkan **Email** dan **Password** akun admin Anda.
-3. Klik **Sign in**.
+2. Jika sudah login sebagai admin melalui Account atau dashboard utama, langsung gunakan dashboard. Jika belum, masukkan **Email** dan **Password** akun admin Anda.
+3. Klik **Sign in** bila form login ditampilkan. Sign out dari salah satu halaman mengeluarkan akun dari website, dashboard dan inbox.
 
 Jika belum memiliki akun atau lupa password, hubungi pengelola aplikasi. Pendaftaran akun dan penggantian password belum tersedia di dashboard.
 

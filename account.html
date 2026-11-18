@@ -33,7 +33,7 @@
             <section class="shop-panel"><h2>Sign in</h2>
                 <form method="post" data-account-form="login">
                     <label>Email<input type="email" name="email" maxlength="150" autocomplete="username" required></label>
-                    <label>Password<input type="password" name="password" minlength="12" maxlength="72" autocomplete="current-password" required></label>
+                    <label>Password<input type="password" name="password" minlength="8" maxlength="72" autocomplete="current-password" required></label>
                     <button type="submit" disabled>Sign in</button>
                 </form>
             </section>
@@ -41,7 +41,7 @@
                 <form method="post" data-account-form="register">
                     <label>Name<input name="name" maxlength="100" autocomplete="name" required></label>
                     <label>Email<input type="email" name="email" maxlength="150" autocomplete="username" required></label>
-                    <label>Password (12–72 bytes)<input type="password" name="password" minlength="12" maxlength="72" autocomplete="new-password" required></label>
+                    <label>Password (at least 8 characters, max 72 bytes)<input type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required></label>
                     <button type="submit" disabled>Create account</button>
                 </form>
             </section>

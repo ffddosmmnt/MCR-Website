@@ -44,6 +44,7 @@ Requirements: Laragon with PHP (PDO MySQL and mbstring), MySQL, and Windows Powe
    - `mcr_database_mysql.db` — an SQL file that creates the `mcr_website` database.
    - Select `mcr_website`, then import `migrations/001_checkout_requests.sql`.
    - Import `migrations/002_interactions.sql` into the same database.
+   - Import `migrations/003_product_images.sql` to add product images.
    - Import `database/content.sql` to populate the initial content. Stop if an error occurs; do not commit a failed transaction.
 
    Existing complete installations do not need to reimport the schema. See [database/README.md](database/README.md) for the full import guide.
@@ -72,15 +73,15 @@ GitHub Pages or a static server only serves the frontend; PHP APIs, accounts, an
 
 ## PHP/MySQL catalog and checkout
 
-Home, Music, News, Tour, and Store load database content through native PHP JSON APIs. Fan accounts and ticket/merchandise checkout use PHP sessions on the backend host. Orders use IDR with no extra fees and at most two tickets per account per concert across orders. Payment processing is not integrated. Creating a `pending` order reduces stock/quota; cancellation is not available.
+Home, Music, News, Tour, and Store load database content through native PHP JSON APIs. Store displays four products with photos; administrators can replace photos under Products. Fan accounts and ticket/merchandise checkout use PHP sessions on the backend host. Orders use IDR with no extra fees and at most two tickets per account per concert across orders. Payment processing is not integrated. Creating a `pending` order reduces stock/quota; cancellation is not available.
 
-For a new installation, follow the schema and content import order above, including both migrations. Migration `001_checkout_requests.sql` adds the request-key table used to prevent duplicate orders. Existing installations need only migrations that have not yet been applied. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` in the PHP process environment; `.env` files are not loaded automatically. The backend needs PDO MySQL and mbstring. Run from the project root after setting those variables:
+For a new installation, follow the schema and content import order above, including all three migrations. Migration `001_checkout_requests.sql` adds the request-key table used to prevent duplicate orders. Existing installations need only migrations that have not yet been applied. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` in the PHP process environment; `.env` files are not loaded automatically. The backend needs PDO MySQL and mbstring. Run from the project root after setting those variables:
 
 ```powershell
 php -d display_errors=0 -S 127.0.0.1:8000 router.php
 ```
 
-Open `http://127.0.0.1:8000/showcase.html`, or create a fan account at `http://127.0.0.1:8000/account.html`. Select merchandise variants or choose a concert from Tour, review the server total, and place an order. Checkout does not collect card details.
+Open `http://127.0.0.1:8000/showcase.html`, or create a fan account at `http://127.0.0.1:8000/account.html`. Select merchandise variants or choose a concert from Tour, review the server total, and place an order. Checkout does not collect card details. After a successful order, the confirmation shows item quantities, unit prices, total, the actual order status and a thank-you message. Use **Print / Save PDF** to open the browser print dialog; printing or reopening the confirmation does not create another order.
 
 GitHub Pages serves the HTML frontend only. Set the public HTTPS API directory in `site-config.js` for hosted database content. With separate frontend/backend hosts, account and checkout pages offer **Continue to checkout**, where the session remains on one origin. The backend must also serve those HTML pages and their assets. Keep database credentials out of JavaScript. The administrator dashboard now requires an admin login; validate HTTPS and server file protection on the deployment host.
 
@@ -94,7 +95,7 @@ Private contacts and subscriber lists require administrator sign-in at `/dashboa
 
 ## Authentication and access
 
-Public registration creates a `user` account only. The Fan Account page displays the current role from the server; an administrator can open the dashboard link. Administrative access requires signing in at `/dashboard/login.php` with an existing admin account. Both dashboard addresses share their admin session and logout; the visitor account session remains separate.
+Public registration creates a `user` account only. The Fan Account page displays the current role from the server; an administrator can open the dashboard link. Sign in once with an existing admin account through Fan Account or `/dashboard/login.php`. That session opens both dashboard addresses and the private inbox without a second login. Signing out from the website or dashboard signs out the account everywhere on that backend host.
 
 Roles and password versions are checked again on requests. Anonymous visitors cannot open or submit dashboard forms, ordinary accounts cannot sign in as administrators, and orders remain restricted to their owner. Administrator sessions expire after 30 minutes of inactivity. No additional database migration is required for authentication/access changes.
 

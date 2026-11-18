@@ -1,29 +1,21 @@
 <?php
 declare(strict_types=1);
 
-// Shared administrator authentication for both dashboard entry points.
+require_once __DIR__ . '/../../app/shop-api.php';
+
+// One server-side account session for the website and both dashboard entry points.
 function admin_session(): void
 {
-    $sessionDirectory = __DIR__ . '/sessions';
-    if (!is_dir($sessionDirectory) && !@mkdir($sessionDirectory, 0700) && !is_dir($sessionDirectory)) {
-        admin_fail(503, 'Session storage is unavailable.');
-    }
-    session_save_path($sessionDirectory);
-    ini_set('session.use_strict_mode', '1');
-    ini_set('session.use_only_cookies', '1');
-    session_name('mcr_admin');
-    session_set_cookie_params(['httponly' => true, 'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', 'samesite' => 'Lax', 'path' => '/']);
-    if (!session_start()) {
+    try {
+        shop_session();
+    } catch (Throwable $error) {
+        error_log('[mcr] Account session unavailable (' . get_class($error) . ').');
         admin_fail(503, 'Session storage is unavailable.');
     }
     header('Cache-Control: no-store');
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
-    if (isset($_SESSION['last_active']) && time() - $_SESSION['last_active'] > 1800) {
-        $_SESSION = [];
-        session_regenerate_id(true);
-    }
-    $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
+
 }
 
 function admin_csrf(): void
@@ -49,19 +41,14 @@ function admin_redirect(string $url = 'index.php'): never
 
 function admin_user(): array
 {
-    if (!isset($_SESSION['admin_id']) || time() - ($_SESSION['last_active'] ?? 0) > 1800) {
-        unset($_SESSION['admin_id'], $_SESSION['last_active']);
+    if (!isset($_SESSION['user_id'])) {
         admin_redirect('login.php');
     }
-    // Re-read role on every request so revocation takes effect immediately.
-    $stmt = database()->prepare('SELECT id,name,role,password_hash FROM users WHERE id = ?');
-    $stmt->execute([$_SESSION['admin_id']]);
-    $user = $stmt->fetch();
-    if (!$user || $user['role'] !== 'admin' || !hash_equals($_SESSION['auth_version'] ?? '', hash('sha256', $user['password_hash']))) {
-        unset($_SESSION['admin_id']);
+    // shop_user re-reads the role/password version; browser-supplied roles are never trusted.
+    $user = shop_user(false);
+    if ($user === null || $user['role'] !== 'admin') {
         admin_fail(403, 'Administrator access is required.');
     }
-    $_SESSION['last_active'] = time();
     return $user;
 }
 

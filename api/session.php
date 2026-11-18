@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once dirname(__DIR__) . '/app/shop-api.php';
+require_once dirname(__DIR__) . '/app/password.php';
 shop_api(function (string $method, array $input): array {
     if ($method === 'GET') return ['user' => shop_user(false), 'csrf' => $_SESSION['csrf']];
     $action = shop_text($input, 'action', 12);
@@ -16,7 +17,7 @@ shop_api(function (string $method, array $input): array {
     $email = shop_text($input, 'email', 150);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new ShopError(422, 'Enter a valid email address.');
     $password = $input['password'] ?? null;
-    if (!is_string($password) || strlen($password) < 12 || strlen($password) > 72 || str_contains($password, "\0")) throw new ShopError(422, 'Password must contain 12–72 bytes.');
+    if (!valid_account_password($password)) throw new ShopError(422, 'Password must contain at least 8 characters and at most 72 bytes.');
     if ($action === 'register') {
         $name = shop_text($input, 'name', 100);
         $query = database()->prepare("INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,'user')");

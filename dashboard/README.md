@@ -14,10 +14,10 @@ Lakukan tahap 2.2 pada semua menu terlebih dahulu, kemudian tahap 2.3. Data yang
 ## Membuka dashboard
 
 1. Buka [dashboard lokal](http://127.0.0.1:8000/dashboard/) atau alamat dashboard yang diberikan pengelola aplikasi.
-2. Masukkan email dan password akun yang memiliki role **admin**, lalu pilih **Sign in**.
+2. Jika sudah login melalui Account dengan role **admin**, dashboard langsung terbuka. Jika belum, masukkan email/password akun admin lalu pilih **Sign in**.
 3. Setelah nama akun dan menu pengelolaan tampil, pilih data yang ingin dikelola.
 
-Dashboard utama sekarang wajib login administrator sesuai keputusan WBS 4.2. Pengunjung dan akun user tidak dapat membuka atau mengubah data admin. Untuk keluar, gunakan **Sign out**; menutup tab saja tidak menggantikan logout. Sesi berakhir setelah 30 menit tidak aktif.
+Dashboard utama sekarang wajib login administrator sesuai keputusan WBS 4.2. Pengunjung dan akun user tidak dapat membuka atau mengubah data admin. Untuk keluar, gunakan **Sign out**; ini juga mengeluarkan akun dari website. Menutup tab saja tidak menggantikan logout. Sesi berakhir setelah 30 menit tidak aktif.
 
 Perubahan yang Anda simpan berlaku pada data band yang digunakan aplikasi. Hindari mengubah atau menghapus konten yang masih digunakan.
 
@@ -49,7 +49,7 @@ Untuk pesanan, buat pengguna melalui **Users**, lalu buat **Merch orders** atau 
 
 ## Mengelola pengguna
 
-Isi nama, email yang belum dipakai akun lain, password sepanjang **12–72 byte**, dan peran **user** atau **admin**. Password tidak ditampilkan pada daftar pengguna. Saat mengedit, kosongkan kolom Password jika tidak ingin menggantinya.
+Isi nama, email yang belum dipakai akun lain, password sepanjang **minimal 8 karakter dan maksimal 72 byte**, dan peran **user** atau **admin**. Password tidak ditampilkan pada daftar pengguna. Saat mengedit, kosongkan kolom Password jika tidak ingin menggantinya.
 
 Tanggal pembuatan dan pencatatan akun diisi otomatis. Akun admin terakhir tidak dapat dihapus atau diubah menjadi user agar akses ke versi dashboard dengan login tetap tersedia. Pengguna yang masih mempunyai pesanan juga tidak dapat dihapus.
 

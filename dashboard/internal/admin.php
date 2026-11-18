@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../app/view.php';
+require_once __DIR__ . '/../../app/password.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/images.php';
 require_once __DIR__ . '/orders.php';
@@ -20,7 +21,7 @@ function admin_modules(): array
         'concerts' => ['Concerts', ['venue_id' => ['Venue', 'relation', 'venues'], 'concert_date' => ['Concert date (WIB)', 'timestamp', 19, true], 'status' => ['Status', 'text', 30]]],
         'ticket_types' => ['Ticket types', ['concert_id' => ['Concert', 'relation', 'concerts'], 'name' => ['Name', 'text', 100], 'price' => ['Price', 'money', 12], 'quota' => ['Quota', 'integer', 2147483647]]],
         'categories' => ['Categories', ['name' => ['Name', 'text', 100]]],
-        'products' => ['Products', ['category_id' => ['Category', 'relation', 'categories'], 'name' => ['Name', 'text', 150], 'price' => ['Price', 'money', 12], 'details' => ['Details', 'textarea', 65535, true]]],
+        'products' => ['Products', ['category_id' => ['Category', 'relation', 'categories'], 'name' => ['Name', 'text', 150], 'price' => ['Price', 'money', 12], 'details' => ['Details', 'textarea', 65535, true], 'image_path' => ['Product image', 'image', 65535, true]]],
         'product_variants' => ['Product variants', ['product_id' => ['Product', 'relation', 'products'], 'size' => ['Size', 'text', 30, true], 'color' => ['Color', 'text', 50, true], 'stock' => ['Stock', 'integer', 2147483647]]],
         'users' => ['Users', ['name' => ['Name', 'text', 100], 'email' => ['Email', 'email', 150], 'password_hash' => ['Password', 'password', 72], 'role' => ['Role', 'choice', ['user', 'admin']], 'time_stamp' => ['Recorded (UTC)', 'generated', 19], 'created_at' => ['Created at', 'generated', 19]]],
         'merch_orders' => ['Merch orders', ['user_id' => ['User', 'relation', 'users'], 'status' => ['Status', 'text', 30], 'total_amount' => ['Total amount', 'calculated', 12]]],
@@ -79,8 +80,8 @@ function admin_values(PDO $db, array $fields, array $input, array $current = [])
                 $values[$key] = $current[$key];
                 continue;
             }
-            if (strlen($password) < 12 || strlen($password) > 72) {
-                throw new InvalidArgumentException('Password must contain 12–72 bytes.');
+            if (!valid_account_password($password)) {
+                throw new InvalidArgumentException('Password must contain at least 8 characters and at most 72 bytes.');
             }
             $values[$key] = password_hash($password, PASSWORD_DEFAULT);
             continue;
