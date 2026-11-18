@@ -1,0 +1,92 @@
+{
+  "retrieved": "2026-11-18",
+  "files_modified": false,
+  "images": [
+    {
+      "path": "assets/albums/bullets.jpg",
+      "subject": "I Brought You My Bullets, You Brought Me Your Love",
+      "source": "https://music.apple.com/us/album/i-brought-you-my-bullets-you-brought-me-your-love/1157609234?uo=4",
+      "download": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b7/3b/7f/b73b7f6a-a12e-3f70-ad2e-4620cad5bb9a/093624915256.jpg/600x600bb.jpg",
+      "rights": "Copyrighted album artwork; no open redistribution license established.",
+      "catalog_copyright": "℗ 2002 My Chemical Romance.",
+      "sha256": "310598f538401e17184c47461bd3c807bf6fc42bede62e7173e4abf12d18c7dd"
+    },
+    {
+      "path": "assets/albums/three-cheers.jpg",
+      "subject": "Three Cheers for Sweet Revenge",
+      "source": "https://music.apple.com/us/album/three-cheers-for-sweet-revenge/1156311431?uo=4",
+      "download": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/42/58/f7/4258f7bb-eb5b-62b8-573d-6200df0fe3e1/093624917731.jpg/600x600bb.jpg",
+      "rights": "Copyrighted album artwork; no open redistribution license established.",
+      "catalog_copyright": "℗ 2004 Reprise Records",
+      "sha256": "1f278945bdd74ba6154f90c18ac2ce6560c2f0a95a53a8bfa092c80d63b4316d"
+    },
+    {
+      "path": "assets/albums/black-parade.jpg",
+      "subject": "The Black Parade",
+      "source": "https://music.apple.com/us/album/the-black-parade/209388277?uo=4",
+      "download": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/7e/ac/69/7eac6998-7fa4-f1ab-9601-e8b791c736fa/mzi.fbpszunc.jpg/600x600bb.jpg",
+      "rights": "Copyrighted album artwork; no open redistribution license established.",
+      "catalog_copyright": "℗ 2006 Reprise Records for the U.S. and WEA International Inc. for the world outside the U.S.",
+      "sha256": "4152df661b23f27ec8f50bda800471c04f51006d657e8f0e8eaed95c64ead8e6"
+    },
+    {
+      "path": "assets/albums/danger-days.jpg",
+      "subject": "Danger Days: The True Lives of the Fabulous Killjoys",
+      "source": "https://music.apple.com/us/album/danger-days-the-true-lives-of-the-fabulous-killjoys/396793722?uo=4",
+      "download": "https://is1-ssl.mzstatic.com/image/thumb/Music/71/1e/b9/mzi.abvgmgsk.jpg/600x600bb.jpg",
+      "rights": "Copyrighted album artwork; no open redistribution license established.",
+      "catalog_copyright": "℗ 2010 Reprise Records",
+      "sha256": "88410825e3576ed19218e880c83ed1f1190e1c7caa39362d5bc18932090959f9"
+    },
+    {
+      "path": "assets/members/gerard-way.jpg",
+      "subject": "Gerard Way",
+      "source": "https://www.flickr.com/photos/eastscene/6056498020/",
+      "download": "https://live.staticflickr.com/6074/6056498020_886febb3de_z.jpg",
+      "author": "Brennan Schnell / Eastscene",
+      "license": "CC BY-NC 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/2.0/",
+      "commons_reference": "https://commons.wikimedia.org/wiki/File:Gerard_Way_East_Scene_2.jpg",
+      "commons_license": "CC BY-SA 2.0",
+      "note": "Flickr currently reports CC BY-NC 2.0; Commons reports CC BY-SA 2.0. This educational project follows the noncommercial restriction; do not assume commercial clearance.",
+      "sha256": "1badd016482cac548d46c05bcc0fc08932c98a7f4b7f04d1c3b18f75aaf63467"
+    },
+    {
+      "path": "assets/members/ray-toro.png",
+      "subject": "Ray Toro",
+      "source": "https://commons.wikimedia.org/wiki/File:Ray_Toro_2011.png",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/0/04/Ray_Toro_2011.png",
+      "author": "PacoDaKing14Sportz",
+      "license": "CC0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "note": "Source descriptions disagree on date; no exact performance date claimed.",
+      "sha256": "4ac0f5a56213629c0d0317f68e974843071153ab7dd6c42ee16472188b634aae"
+    },
+    {
+      "path": "assets/members/frank-iero.jpg",
+      "subject": "Frank Iero",
+      "source": "https://www.flickr.com/photos/eastscene/6056498246/",
+      "download": "https://live.staticflickr.com/6087/6056498246_10aace7082_z.jpg",
+      "author": "Brennan Schnell / Eastscene",
+      "license": "CC BY-NC 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/2.0/",
+      "commons_reference": "https://commons.wikimedia.org/wiki/File:Frank_Iero_East_Scene_2.jpg",
+      "commons_license": "CC BY-SA 2.0",
+      "note": "Flickr currently reports CC BY-NC 2.0; Commons reports CC BY-SA 2.0. This educational project follows the noncommercial restriction; do not assume commercial clearance.",
+      "sha256": "75115ab69499840728762b6abece9831d67011bb4fd352295aaa64fa59b0e74c"
+    },
+    {
+      "path": "assets/members/mikey-way.jpg",
+      "subject": "Mikey Way",
+      "source": "https://www.flickr.com/photos/eastscene/6056498322/",
+      "download": "https://live.staticflickr.com/6190/6056498322_99741a946f_z.jpg",
+      "author": "Brennan Schnell / Eastscene",
+      "license": "CC BY-NC 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-nc/2.0/",
+      "commons_reference": "https://commons.wikimedia.org/wiki/File:Mikey_Way_East_Scene_2.jpg",
+      "commons_license": "CC BY-SA 2.0",
+      "note": "Flickr currently reports CC BY-NC 2.0; Commons reports CC BY-SA 2.0. This educational project follows the noncommercial restriction; do not assume commercial clearance.",
+      "sha256": "b165913124d13adae3583fd8e1242a1aa692207e265f2b08274b166930ec0e4f"
+    }
+  ]
+}
