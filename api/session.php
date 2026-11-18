@@ -5,7 +5,8 @@ shop_api(function (string $method, array $input): array {
     if ($method === 'GET') return ['user' => shop_user(false), 'csrf' => $_SESSION['csrf']];
     $action = shop_text($input, 'action', 12);
     if ($action === 'logout') {
-        $_SESSION = [];
+        // Signing out must not bypass an active failed-login cooldown.
+        $_SESSION = array_intersect_key($_SESSION, array_flip(['login_failures', 'login_blocked_until']));
         session_regenerate_id(true);
         $_SESSION['csrf'] = bin2hex(random_bytes(32));
         return ['user' => null, 'csrf' => $_SESSION['csrf']];
@@ -25,7 +26,7 @@ shop_api(function (string $method, array $input): array {
             throw $error;
         }
     }
-    $query = database()->prepare('SELECT id, name, email, password_hash FROM users WHERE email = ?');
+    $query = database()->prepare('SELECT id, name, email, role, password_hash FROM users WHERE email = ?');
     $query->execute([$email]);
     $user = $query->fetch();
     $valid = password_verify($password, $user['password_hash'] ?? '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.');
@@ -37,6 +38,7 @@ shop_api(function (string $method, array $input): array {
         }
         throw new ShopError(401, 'Email or password is incorrect.');
     }
+    if (!in_array($user['role'], ['user', 'admin'], true)) throw new ShopError(403, 'Account access is unavailable.');
     shop_login($user);
     return ['user' => shop_user(), 'csrf' => $_SESSION['csrf']];
 });

@@ -25,8 +25,8 @@ catch (Throwable $error) {
 }
 admin_head('Inbox');
 ?>
-<main class="halaman"><header class="judul-halaman"><h1>Inbox</h1><a class="btn btn-outline-secondary" href="index.php">Back to dashboard</a></header>
-<nav class="d-flex gap-3 mb-3" aria-label="Inbox"><a href="?kind=contact">Contact messages</a><a href="?kind=subscribe">Newsletter subscribers</a><a href="index.php?module=fan_messages">Published fan messages</a></nav>
+<main class="halaman"><header class="judul-halaman"><h1>Inbox</h1><a class="btn btn-outline-secondary" href="../dashboard/">Back to dashboard</a></header>
+<nav class="d-flex gap-3 mb-3" aria-label="Inbox"><a href="?kind=contact">Contact messages</a><a href="?kind=subscribe">Newsletter subscribers</a><a href="../dashboard/index.php?module=fan_messages">Published fan messages</a></nav>
 <?php if (!$rows): ?><p>No records yet.</p><?php endif ?>
 <?php foreach (array_slice($rows, 0, 20) as $row): ?><article class="card p-3 mb-3 text-break">
 <?php if ($kind === 'contact'): ?><h2 class="h4"><?= e($row['subject']) ?></h2><p><?= e($row['name']) ?> · <?= e($row['email']) ?></p><p><?= nl2br(e($row['message'])) ?></p>

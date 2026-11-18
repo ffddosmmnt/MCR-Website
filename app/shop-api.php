@@ -88,11 +88,12 @@ function shop_user(bool $required = true): ?array
 {
     $user = null;
     if (isset($_SESSION['user_id'])) {
-        $query = database()->prepare('SELECT id, name, email, password_hash FROM users WHERE id = ?');
+        $query = database()->prepare('SELECT id, name, email, role, password_hash FROM users WHERE id = ?');
         $query->execute([$_SESSION['user_id']]);
         $candidate = $query->fetch();
-        if ($candidate && hash_equals($_SESSION['auth_version'] ?? '', hash('sha256', $candidate['password_hash']))) {
-            $user = ['id' => (int) $candidate['id'], 'name' => $candidate['name'], 'email' => $candidate['email']];
+        if ($candidate && in_array($candidate['role'], ['user', 'admin'], true)
+            && hash_equals($_SESSION['auth_version'] ?? '', hash('sha256', $candidate['password_hash']))) {
+            $user = ['id' => (int) $candidate['id'], 'name' => $candidate['name'], 'email' => $candidate['email'], 'role' => $candidate['role']];
         } else { unset($_SESSION['user_id'], $_SESSION['auth_version']); }
     }
     if ($required && $user === null) throw new ShopError(401, 'Please sign in to continue.');

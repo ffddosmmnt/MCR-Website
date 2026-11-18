@@ -26,6 +26,7 @@ if (in_array($path, ['/dashboard', '/dashboard-auth'], true)) {
     return;
 }
 $dashboardPages = [
+    '/dashboard/login.php' => 'dashboard/login.php', '/dashboard/logout.php' => 'dashboard/logout.php',
     '/dashboard/' => 'dashboard/index.php', '/dashboard/index.php' => 'dashboard/index.php',
     '/dashboard-auth/' => 'dashboard-auth/index.php', '/dashboard-auth/index.php' => 'dashboard-auth/index.php',
     '/dashboard-auth/messages.php' => 'dashboard-auth/messages.php',

@@ -16,7 +16,7 @@ try {
     if ($name === '' || !mb_check_encoding($name, 'UTF-8') || mb_strlen($name) > 100
         || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 150
         || strlen($password) < 12 || strlen($password) > 72 || str_contains($password, "\0")) {
-        throw new InvalidArgumentException('Use: php dashboard/internal/create-admin.php "Admin name" "email"; send a 12–72 byte password through standard input.');
+        throw new InvalidArgumentException('Use: php dashboard-auth/internal/create-admin.php "Admin name" "email"; send a 12–72 byte password through standard input.');
     }
     $stmt = database()->prepare("INSERT INTO users (name,email,password_hash,role) VALUES (?,?,?,'admin')");
     $stmt->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT)]);

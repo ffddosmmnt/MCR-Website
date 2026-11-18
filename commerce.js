@@ -64,6 +64,8 @@
         forms.hidden = !!user;
         account.hidden = !user;
         document.querySelector("[data-account-name]").textContent = user ? `${user.name} · ${user.email}` : "";
+        document.querySelector("[data-account-role]").textContent = user ? (user.role === "admin" ? "Administrator" : "User") : "";
+        document.querySelector("[data-admin-link]").hidden = user?.role !== "admin";
         for (const button of forms.querySelectorAll("button")) button.disabled = false;
         message(user ? "Your fan account is signed in." : "Sign in or create an account to place your order.");
       };

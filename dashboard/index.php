@@ -11,6 +11,7 @@ $error = '';
 $record = [];
 $options = [];
 try {
+    $user = admin_user();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         admin_csrf();
     }
