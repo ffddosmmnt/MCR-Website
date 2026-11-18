@@ -10,7 +10,7 @@ function e(?string $value): string
 }
 
 /** Keep database-supplied image paths local; never turn them into external/traversal URLs. */
-function album_cover(?string $path): string
+function local_image(?string $path): ?string
 {
     $imageRoot = $path !== null && str_starts_with($path, 'assets/') ? 'assets' : null;
     if ($path !== null && preg_match('~\Adashboard/uploads/[a-f0-9]{32}\.(?:jpg|png|webp)\z~', $path)) {
@@ -26,7 +26,12 @@ function album_cover(?string $path): string
             return $path;
         }
     }
-    return 'assets/Blackparade.png';
+    return null;
+}
+
+function album_cover(?string $path): string
+{
+    return local_image($path) ?? 'assets/Blackparade.png';
 }
 
 function date_label(?string $date, bool $withTime = false): string

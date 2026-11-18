@@ -26,19 +26,19 @@ function albums(int $limit = 100): array
 function songs(): array
 {
     return content_rows(
-        'SELECT s.id, s.title, s.lyrics, a.title AS album_title, a.id AS album_id
+        'SELECT s.id, s.title, s.lyrics, a.title AS album_title, a.id AS album_id, a.cover_image AS album_cover
          FROM songs s JOIN albums a ON a.id = s.album_id ORDER BY a.title, s.title, s.id LIMIT :limit',
         100,
     );
 }
 
 /** Prices stay DECIMAL strings; variant IDs identify bag items, not product names. */
-function merch_catalog(): array
+function merch_catalog(int $limit = 100): array
 {
     $categories = content_rows('SELECT id, name FROM categories ORDER BY name, id LIMIT :limit', 100);
     $products = content_rows(
-        'SELECT p.id, p.category_id, c.name AS category_name, p.name, p.price, p.details
-         FROM products p JOIN categories c ON c.id = p.category_id ORDER BY p.name, p.id LIMIT :limit', 100,
+        'SELECT p.id, p.category_id, c.name AS category_name, p.name, p.price, p.details, p.image_path
+         FROM products p JOIN categories c ON c.id = p.category_id ORDER BY p.id LIMIT :limit', $limit,
     );
     $byProduct = [];
     if ($products !== []) {

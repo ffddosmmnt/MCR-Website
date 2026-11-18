@@ -13,7 +13,7 @@ if ($argc > 2 || ($argc === 2 && !in_array($argv[1], ['--dry-run', '--help'], tr
     exit(1);
 }
 if (($argv[1] ?? '') === '--help') {
-    fwrite(STDOUT, "Use: php database/import.php [--dry-run]\nConfigure DB_* and import the original schema plus migrations 001/002 first.\nExisting matching records are retained, except known starter images are refreshed. No accounts or orders are imported.\n");
+    fwrite(STDOUT, "Use: php database/import.php [--dry-run]\nConfigure DB_* and import the original schema plus migrations 001/002/003 first.\nExisting matching records are retained, except known starter images are refreshed. No accounts or orders are imported.\n");
     exit;
 }
 
@@ -39,7 +39,7 @@ try {
     $engines = $db->query('SELECT TABLE_NAME, ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()')->fetchAll(PDO::FETCH_KEY_PAIR);
     foreach ($required as $table) {
         if (($engines[$table] ?? '') !== 'InnoDB') {
-            throw new RuntimeException('Import schema and migrations 001/002 first; InnoDB tables are required.');
+            throw new RuntimeException('Import schema and migrations 001/002/003 first; InnoDB tables are required.');
         }
     }
     // Only identifiers from this fixed schema allowlist are interpolated.

@@ -211,10 +211,39 @@
 }
 
 .song-details summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 900;
   overflow-wrap: anywhere;
+}
+
+.song-details summary::-webkit-details-marker { display: none; }
+.song-details summary::after { content: "+"; margin-left: auto; }
+.song-details[open] summary::after { content: "−"; }
+
+.song-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.song-heading-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.song-heading > span { min-width: 0; overflow-wrap: anywhere; }
+
+.song-cover {
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  object-fit: cover;
+  border: 1px solid var(--line);
 }
 
 .song-lyrics {

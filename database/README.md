@@ -9,6 +9,7 @@ Paket ini berisi **konten awal proyek kuliah**, bukan salinan database pribadi. 
 | [mcr_database_mysql.db](../mcr_database_mysql.db) | Skema awal 15 tabel; isinya SQL MySQL walaupun ekstensi .db. |
 | [001_checkout_requests.sql](../migrations/001_checkout_requests.sql) | Tabel pencegah duplikasi checkout. |
 | [002_interactions.sql](../migrations/002_interactions.sql) | Tabel kontak privat, subscription dan pesan fans publik. |
+| [003_product_images.sql](../migrations/003_product_images.sql) | Kolom gambar opsional pada produk yang sudah ada. |
 | [content.sql](content.sql) | Konten awal dengan relasi berdasarkan nama/slug; tidak memakai ID lokal yang tetap. |
 | [import.php](import.php) | Importer CLI dengan transaksi, pengecekan tabel InnoDB, kunci impor dan ringkasan penambahan per tabel. |
 | [assets/](../assets/) | Gambar yang dirujuk menggunakan path relatif; wajib ikut disalin. |
@@ -21,7 +22,7 @@ Tidak menyertakan users, password/hash, pesanan, checkout_requests, kontak priva
 |---|---:|---|
 | band_members | 4 | Data nama/instrumen tersedia untuk admin; About masih memakai markup anggota statis. |
 | albums | 4 | Empat album studio 2002–2010. |
-| songs | 20 | Pilihan lima judul per album; lirik NULL. Ini bukan seluruh diskografi/tracklist. |
+| songs | 20 | Pilihan lima judul per album; lirik Welcome to the Black Parade dan Na Na Na diisi dari teks yang diberikan pengguna pada 18 November 2026, 18 lagu lainnya masih NULL. Ini bukan seluruh diskografi/tracklist. |
 | news_articles | 9 | Enam artikel editorial proyek dan tiga ringkasan berita bersumber internet. Tanggal record adalah tanggal kurasi proyek; tanggal sumber asli dinyatakan dalam isi. |
 | venues | 3 | Nama tempat fiktif di Jakarta, Bandung dan Surabaya. |
 | concerts | 4 | Tiga scheduled dan satu cancelled, Mei–Juni 2027. |
@@ -42,7 +43,8 @@ Untuk instalasi baru, melalui HeidiSQL/phpMyAdmin/MySQL client:
 1. Impor mcr_database_mysql.db sebagai SQL; file membuat/memilih mcr_website. Pada file picker, pilih semua tipe file jika ekstensi .db tidak terlihat.
 2. Pilih database mcr_website, impor migrations/001_checkout_requests.sql.
 3. Pada database yang sama, impor migrations/002_interactions.sql.
-4. Pastikan 19 tabel tersedia, lalu lanjutkan impor konten di bawah.
+4. Impor migrations/003_product_images.sql sebelum mengimpor konten.
+5. Pastikan 19 tabel tersedia, lalu lanjutkan impor konten di bawah.
 
 Di MySQL client, dari root proyek, alternatif perintah impor skema adalah:
 
@@ -50,6 +52,7 @@ Di MySQL client, dari root proyek, alternatif perintah impor skema adalah:
 mysql --user=YOUR_DB_USER --password --execute="source mcr_database_mysql.db"
 mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/001_checkout_requests.sql"
 mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/002_interactions.sql"
+mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/003_product_images.sql"
 ```
 
 Ganti YOUR_DB_USER sesuai akun lokal; password diminta oleh client. Gunakan host/port sesuai instalasi. Perintah di atas mengasumsikan mysql dan php tersedia di PATH Laragon/terminal. Path executable yang memuat spasi di PowerShell dipanggil dengan operator &.
@@ -77,7 +80,7 @@ Windows PowerShell lama dapat menghapus environment variable saat nilainya koson
 
 Jalankan skrip dari terminal, bukan URL browser. Importer menggunakan database() milik aplikasi, memerlukan SELECT/INSERT serta akses metadata tabel dan GET_LOCK. Ia tidak membuat skema, akun MySQL, atau akun aplikasi. Semua tabel yang diperlukan wajib InnoDB. Proses impor serentak melalui importer yang sama diserialisasi. Hindari mengedit katalog melalui dashboard selama impor berlangsung.
 
-Alternatif SQL client: pilih database yang benar, jalankan content.sql sebagai satu transaksi dan hentikan saat error; lakukan ROLLBACK jika editor masih membuka transaksi. **CLI import.php direkomendasikan** karena memastikan rollback seluruh penambahan ketika ada kesalahan. SQL tidak menonaktifkan foreign key dan tidak menjalankan DELETE/TRUNCATE. UPDATE hanya mengganti cover_image/cover_img yang NULL atau cocok dengan path pengganti lama yang ditentukan, bukan stok/harga atau gambar custom lain.
+Alternatif SQL client: pilih database yang benar, jalankan content.sql sebagai satu transaksi dan hentikan saat error; lakukan ROLLBACK jika editor masih membuka transaksi. **CLI import.php direkomendasikan** karena memastikan rollback seluruh penambahan ketika ada kesalahan. SQL tidak menonaktifkan foreign key dan tidak menjalankan DELETE/TRUNCATE. UPDATE hanya mengisi image_path produk yang NULL atau mengganti cover_image/cover_img yang NULL atau cocok dengan path pengganti lama yang ditentukan, bukan stok/harga atau gambar custom lain.
 
 ## 3. Akun pada perangkat baru
 
@@ -101,7 +104,7 @@ Buka http://127.0.0.1:8000/ pada server PHP yang berjalan:
 - Music: empat album, 20 judul lagu, pencarian judul/album; lirik yang belum tersedia menampilkan pesan bawaan.
 - News: enam artikel; buka detail, termasuk news-detail.html?slug=explore-four-chapters. Tiga pesan fans muncul pada feed.
 - Tour: empat konser. Konser pertama 15 Mei 2027, **19.30 WIB** (SQL menyimpan 12.30 UTC). Satu konser berstatus cancelled. Pilih konser scheduled di masa depan untuk menguji pemesanan.
-- Store: empat kategori, delapan produk, 18 varian; After Midnight Crewneck XL/Charcoal stok nol tidak bisa dipilih. Harga menggunakan IDR.
+- Store: menampilkan empat produk pertama menurut ID, dengan foto; database tetap menyimpan empat kategori, delapan produk dan 18 varian; After Midnight Crewneck XL/Charcoal stok nol tidak bisa dipilih. Harga menggunakan IDR.
 - Daftar Fan Account, pilih tiket/merch, review total, buat order pending. Maksimal dua tiket per akun per konser; stok/kuota berkurang saat order dibuat. Pembayaran dan pembatalan tetap belum diintegrasikan.
 - Jalankan importer lagi setelah stok berkurang: stok dan edit admin pada record yang cocok harus tetap; seed tidak mengisi ulang inventori.
 
@@ -123,7 +126,7 @@ Yang masih dapat diganti:
 
 - Foto Ray Toro mempunyai resolusi sumber lebih rendah; dapat diganti foto asli lain dengan sumber/izin jelas.
 - Hero Home/Tour/Store dan ilustrasi editorial tetap aset sebelumnya, belum seluruhnya foto band asli.
-- Produk masih kartu tanpa foto; skema belum mempunyai kolom gambar produk. Menambahkan foto per produk memerlukan perubahan tersendiri.
+- Empat produk awal memakai foto representatif toko resmi MCR di assets/products/. Nama/harga/stok tetap konten kuliah. Ganti lewat Products → Edit → Product image pada dashboard utama; gambar custom tidak ditimpa importer.
 - Gambar per lagu/single belum tersedia; setiap lagu tetap terkait dengan album dan artwork albumnya, tanpa kolom gambar lagu baru.
 - Materi final tanggal/venue/harga/kuota konser, katalog/harga/stok produk, pesan fans yang diizinkan dan lirik tetap memerlukan input tim. Berita faktual tidak otomatis membuat event/tiket contoh menjadi resmi.
 
@@ -152,3 +155,15 @@ Diperiksa 18 November 2026; teks artikel ditulis sendiri untuk proyek. Judul/tan
 - [Video resmi band](https://www.mychemicalromance.com/media/videos), referensi judul video/lagu.
 
 Tidak mengambil lirik atau review dari sumber metadata tersebut. Cover memakai artwork katalog sesuai credits; ringkasan berita memakai sumber terpisah di atas. Venue/konser/harga/produk/testimoni pada seed tidak berasal dari sumber resmi.
+
+## Gambar dan batas Store
+
+Migrasi 003 menambahkan kolom nullable products.image_path, tanpa tabel baru. Terapkan sekali pada instalasi lama sebelum menjalankan API/dashboard/importer versi ini. Jalankan importer untuk mengisi empat path foto yang masih NULL. Store/API menampilkan maksimal empat produk dengan ID terkecil; kategori filter mengikuti produk tersebut. Produk lain tidak dihapus, tetap bisa dikelola admin, dan order lama tetap utuh.
+
+Untuk membatalkan tampilan, kembalikan kode API/UI terlebih dahulu. Kolom gambar boleh tetap ada; jangan menghapus kolom sebelum menyimpan seluruh path gambar yang diperlukan. Foto hanya boleh mengacu ke aset lokal atau upload yang lolos resolver, bukan URL eksternal.
+
+## Lirik yang diberikan pengguna
+
+Welcome to the Black Parade (album The Black Parade) memakai teks 70 baris yang dikirim pengguna pada 18 November 2026. Seed mengisi lirik hanya jika NULL atau kosong, sehingga impor ulang mempertahankan revisi admin. Tidak ada perubahan skema. Ini bukan klaim lisensi bebas atas lirik. Untuk perubahan berikutnya gunakan dashboard Songs.
+
+Na Na Na (Na Na Na Na Na Na Na Na Na), album Danger Days: The True Lives of the Fabulous Killjoys, juga memakai teks pengguna (63 baris). Pesan pengguna berisi salinan identik dua kali; hanya satu salinan disimpan. Aturan seed yang sama mempertahankan lirik admin yang sudah terisi.

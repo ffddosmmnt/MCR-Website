@@ -1,10 +1,10 @@
 -- Konten awal proyek kuliah. Bukan dump database pengguna.
--- Album/lagu: metadata katalog. Lirik lengkap tidak disertakan.
+-- Album/lagu: metadata katalog. Lirik Welcome to the Black Parade dan Na Na Na diberikan pengguna; lirik lain belum disertakan.
 -- Venue, konser 2027, tiket, merchandise, harga/stok dan pesan fans: contoh fiktif.
 -- Baca database/README.md untuk sumber dan cara mengganti materi.
--- Pilih database aplikasi dan impor skema + migrasi 001/002 terlebih dahulu.
+-- Pilih database aplikasi dan impor skema + migrasi 001/002/003 terlebih dahulu.
 -- Jalankan php database/import.php agar kegagalan dibatalkan seluruhnya.
--- Impor ulang tidak mereset stok. UPDATE terbatas pada gambar pengganti yang dikenal.
+-- Impor ulang tidak mereset stok. UPDATE terbatas pada gambar pengganti yang dikenal dan pengisian lirik kosong yang diberikan pengguna.
 -- Tiga berita bersumber internet ditambahkan 18 November 2026; tanggal record adalah tanggal kurasi lokal.
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
@@ -410,5 +410,152 @@ UPDATE `band_members` SET `cover_img` = 'assets/members/gerard-way.jpg' WHERE `n
 UPDATE `band_members` SET `cover_img` = 'assets/members/ray-toro.png' WHERE `name` = 'Ray Toro' AND (`cover_img` IS NULL OR `cover_img` IN ('assets/archive-news.png', 'assets/Blackparade.png', 'assets/tour-arena.png', 'assets/hero-concert.png'));
 UPDATE `band_members` SET `cover_img` = 'assets/members/frank-iero.jpg' WHERE `name` = 'Frank Iero' AND (`cover_img` IS NULL OR `cover_img` IN ('assets/archive-news.png', 'assets/Blackparade.png', 'assets/tour-arena.png', 'assets/hero-concert.png'));
 UPDATE `band_members` SET `cover_img` = 'assets/members/mikey-way.jpg' WHERE `name` = 'Mikey Way' AND (`cover_img` IS NULL OR `cover_img` IN ('assets/archive-news.png', 'assets/Blackparade.png', 'assets/tour-arena.png', 'assets/hero-concert.png'));
+
+-- Representative official merchandise photos; preserve custom administrator images.
+UPDATE products SET image_path='assets/products/parade-tee.png' WHERE name='Parade Emblem Tee' AND category_id=(SELECT id FROM categories WHERE name='Tees') AND image_path IS NULL;
+UPDATE products SET image_path='assets/products/revenge-tee.png' WHERE name='Revenge Lettering Tee' AND category_id=(SELECT id FROM categories WHERE name='Tees') AND image_path IS NULL;
+UPDATE products SET image_path='assets/products/zip-hoodie.png' WHERE name='Marching Zip Hoodie' AND category_id=(SELECT id FROM categories WHERE name='Outerwear') AND image_path IS NULL;
+UPDATE products SET image_path='assets/products/crewneck.png' WHERE name='After Midnight Crewneck' AND category_id=(SELECT id FROM categories WHERE name='Outerwear') AND image_path IS NULL;
+
+-- User-supplied lyrics, 18 November 2026; retain existing administrator edits on reimport.
+UPDATE songs SET lyrics='When I was a young boy
+My father took me into the city
+To see a marching band
+He said, "Son, when you grow up
+Would you be the savior of the broken
+The beaten and the damned?"
+He said, "Will you defeat them?
+Your demons, and all the non-believers
+The plans that they have made?"
+"Because one day, I''ll leave you a phantom
+To lead you in the summer
+To join the black parade"
+When I was a young boy
+My father took me into the city
+To see a marching band
+He said, "Son, when you grow up
+Would you be the savior of the broken
+The beaten and the damned?"
+Sometimes I get the feelin''
+She''s watchin'' over me
+And other times I feel like I should go
+When through it all, the rise and fall
+The bodies in the streets
+And when you''re gone, we want you all to know
+We''ll carry on, we''ll carry on
+And though you''re dead and gone, believe me
+Your memory will carry on, will carry on
+And in my heart, I can''t contain it
+The anthem won''t explain it
+A world that sends you reelin''
+From decimated dreams
+Your misery and hate will kill us all
+So paint it black and take it back
+And let''s shout it loud and clear
+Defiant to the end, we hear the call
+To carry on, we''ll carry on
+And though you''re dead and gone, believe me
+Your memory will carry on, will carry on
+And though you''re broken and defeated
+Your weary widow marches
+On and on, we carry through the fears
+Oh, ah, ha
+Disappointed faces of your peers
+Oh, ah, ha
+Take a look at me, ''cause I could not care at all
+Do or die, you''ll never make me
+Because the world will never take my heart
+Go and try, you''ll never break me
+We want it all, we wanna play this part
+Won''t explain or say I''m sorry
+I''m unashamed, I''m gonna show my scars
+Give a cheer for all the broken
+Listen here, because it''s who we are
+Just a man, I''m not a hero
+Just a boy, who had to sing this song
+Just a man, I''m not a hero
+I don''t care
+We''ll carry on, we''ll carry on
+And though you''re dead and gone, believe me
+Your memory will carry on, you''ll carry on
+And though you''re broken and defeated
+Your weary widow marches on
+Do or die, you''ll never make me
+Because the world will never take my heart
+Go and try, you''ll never break me
+We want it all, we wanna play this part (we''ll carry on)
+Do or die, you''ll never make me (we''ll carry on)
+Because the world will never take my heart (we''ll carry on)
+Go and try, you''ll never break me (we''ll carry on)
+We want it all, we wanna play this part (we''ll carry on!)'
+WHERE album_id=(SELECT id FROM albums WHERE title='The Black Parade')
+AND title='Welcome to the Black Parade' AND (lyrics IS NULL OR lyrics='');
+
+-- Na Na Na lyrics supplied by the user, 18 November 2026; one copy, without duplicated paste.
+UPDATE songs SET lyrics='Na, na-na-na, na-na-na, na-na-na-na-na-na
+Na, na-na-na, na-na-na, na-na-na-na-na-na
+Na, na-na-na, na-na-na, na-na-na
+Na-na-na, na-na-na-na
+Drugs, gimme drugs, gimme drugs, I don''t need them
+But I''ll sell what you got, take the cash, and I''ll keep it
+Eight legs to the wall, hit the gas, kill ''em all
+And we crawl, and we crawl, and we-
+You be my detonator
+Love, gimme love, gimme love, I don''t need it
+But I''ll take what I want from your heart, and I''ll keep it
+In a bag, in a box, with an "X" on the floor
+Gimme more, gimme more, gimme more
+Shut up and sing it with me
+From mall security
+To every enemy
+We''re on your property
+Standing in V formation
+Let''s blow an artery
+Eat plastic surgery
+Keep your apology
+Give us more detonation
+More
+More, gimme more, gimme more
+Oh, let me tell you ''bout the sad man
+Shut up, and let me see your jazz hands
+Remember when you were a madman?
+Thought you was Batman
+And hit the party with a gas can?
+Kiss me, you animal!
+You run the company
+Fuck like a Kennedy
+I think we''d rather be
+Burning your information
+Let''s blow an artery
+Eat plastic surgery
+Keep your apology
+Give us more detonation
+Right here, right now
+All the way in Battery City
+The little children raise their open, filthy palms
+Like tiny daggers up to Heaven
+And all the juvie halls
+And the Ritalin rats
+Ask angels made from neon and f- garbage
+Scream out, "What will save us?"
+And the sky opened up
+Everybody wants to change the world
+Everybody wants to change the world
+But no one, no one wants to die
+Wanna try, wanna try, wanna try, wanna try, wanna try now
+I''ll be your detonator
+Na, na-na-na, na-na-na, na-na-na-na
+Make no apology
+It''s death or victory
+On my authority
+Crash and burn, young and loaded
+Drop like a bullet shell
+Dress like a sleeper cell
+I''d rather go to Hell
+Than be in purgatory
+Cut my hair, gag and bore me
+Pull this pin, let this world explode'
+WHERE album_id=(SELECT id FROM albums WHERE title='Danger Days: The True Lives of the Fabulous Killjoys')
+AND title='Na Na Na (Na Na Na Na Na Na Na Na Na)' AND (lyrics IS NULL OR lyrics='');
 
 COMMIT;

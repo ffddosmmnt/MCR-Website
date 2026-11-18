@@ -78,7 +78,8 @@
     if (page === "store") {
       const filter = find(document, "[data-store-filter]");
       const grid = find(document, "[data-product-grid]");
-      data.categories.forEach(category => {
+      const shownCategories = new Set(data.products.map(product => product.category_id));
+      data.categories.filter(category => shownCategories.has(category.id)).forEach(category => {
         const option = document.createElement("option");
         option.value = String(category.id);
         option.textContent = category.name;
@@ -89,6 +90,12 @@
         card.dataset.category = String(product.category_id);
         card.dataset.name = product.name;
         card.dataset.price = product.price;
+        if (product.image_path) {
+          const image = find(root, "[data-product-image]");
+          image.src = new URL(product.image_path, new URL("../", apiBase)).href;
+          image.alt = product.name;
+          find(root, "[data-product-image-frame]").hidden = false;
+        }
         text(root, "[data-product-name]", product.name);
         text(root, "[data-product-details]", product.details || "No description available.");
         text(root, "[data-category-name]", product.category_name);
@@ -144,17 +151,22 @@
       data.albums.forEach(item => clone("album-template", albumList, root => fillAlbum(root, item)));
       const songList = find(document, "[data-songs]");
       const playlist = find(document, "[data-playlist]");
+      const fillSongCover = (root, song) => {
+        find(root, "[data-song-cover]").src = new URL("../" + song.album_cover, apiBase).href;
+      };
       data.songs.forEach(song => {
         clone("song-row-template", songList, root => {
+          fillSongCover(root, song);
           text(root, "[data-title]", song.title);
           text(root, "[data-album]", song.album_title);
           find(root, "[data-song-link]").href = `#song-${song.id}`;
           find(root, ".lyrics-row").dataset.searchText = `${song.title} ${song.album_title} ${song.lyrics ?? ""}`;
         });
         clone("playlist-template", playlist, root => {
+          fillSongCover(root, song);
           find(root, "details").id = `song-${song.id}`;
           text(root, "[data-title]", song.title);
-          text(root, "[data-album]", `/ ${song.album_title}`);
+          text(root, "[data-album]", song.album_title);
           text(root, "[data-lyrics]", song.lyrics || "Lyrics are not available for this song yet.");
         });
       });
