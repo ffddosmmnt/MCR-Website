@@ -1,6 +1,8 @@
-# Panduan Pengguna MCR Admin — Versi dengan Login
+# Panduan Pengguna MCR Admin — Alamat Kompatibilitas
 
 MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus informasi band, musik, berita, konser, serta merchandise. Panduan ini menjelaskan cara menggunakan menu dan tombol yang tersedia di dashboard.
+
+Dashboard utama di /dashboard/ kini juga wajib login admin. Alamat ini mempertahankan menu versi sebelumnya, dengan sesi/login/logout admin bersama yang dimiliki dashboard/internal/auth.php.
 
 ## Masuk ke dashboard
 

@@ -1,4 +1,4 @@
-# Panduan Pengguna MCR Admin — Akses Langsung
+# Panduan Pengguna MCR Admin — Login Administrator
 
 MCR Admin digunakan untuk menambah, melihat, mengubah, dan menghapus data pada **15 tabel awal** basis data band dan modul pesan fans pilihan admin, termasuk akun pengguna dan catatan pesanan.
 
@@ -14,10 +14,10 @@ Lakukan tahap 2.2 pada semua menu terlebih dahulu, kemudian tahap 2.3. Data yang
 ## Membuka dashboard
 
 1. Buka [dashboard lokal](http://127.0.0.1:8000/dashboard/) atau alamat dashboard yang diberikan pengelola aplikasi.
-2. Halaman pengelolaan langsung terbuka sebagai **Administrator**.
-3. Pilih menu data yang ingin dikelola.
+2. Masukkan email dan password akun yang memiliki role **admin**, lalu pilih **Sign in**.
+3. Setelah nama akun dan menu pengelolaan tampil, pilih data yang ingin dikelola.
 
-Versi ini tidak memerlukan akun, email, atau password dan tidak memiliki tombol login maupun logout. Siapa pun yang membuka halaman ini dapat menggunakan seluruh fungsi pengelolaan. Untuk selesai, cukup tutup tab dashboard.
+Dashboard utama sekarang wajib login administrator sesuai keputusan WBS 4.2. Pengunjung dan akun user tidak dapat membuka atau mengubah data admin. Untuk keluar, gunakan **Sign out**; menutup tab saja tidak menggantikan logout. Sesi berakhir setelah 30 menit tidak aktif.
 
 Perubahan yang Anda simpan berlaku pada data band yang digunakan aplikasi. Hindari mengubah atau menghapus konten yang masih digunakan.
 
@@ -149,4 +149,18 @@ Salin tautan commit atau hasil pekerjaan yang relevan ke kolom **Deliverable** p
 
 Menu **Fan messages (published)** menambah, mengubah, atau menghapus nama publik dan isi pesan pilihan admin. Setelah disimpan, pesan langsung tampil pada halaman News. Pilih pesan secara manual dari email di luar website; jangan memasukkan alamat email pribadi sebagai nama publik.
 
-Tautan **Contact & subscribers** membuka inbox pada dashboard dengan login admin. Kontak dan daftar email newsletter tidak tersedia melalui CRUD akses langsung ini. Migrasi `002_interactions.sql` harus sudah diterapkan. Pengiriman email otomatis belum terhubung.
+Tautan **Contact & subscribers** membuka inbox pada dashboard dengan login admin. Kontak dan daftar email newsletter tidak tersedia melalui CRUD dashboard utama ini. Migrasi `002_interactions.sql` harus sudah diterapkan. Pengiriman email otomatis belum terhubung.
+
+Login berlaku juga untuk inbox dan alamat dashboard-auth; keduanya menggunakan sesi admin yang sama. Akun Fan Account memakai sesi terpisah, meskipun datanya berasal dari tabel users yang sama. Akun admin disiapkan pengelola melalui provisioning CLI atau menu Users oleh admin yang berwenang, tanpa registrasi admin publik.
+
+## Alur News, Tour, dan Merchandise — WBS 4.3
+
+| Area | Urutan pengisian | Memeriksa hasil di website |
+|---|---|---|
+| **News** | Buka News → + Add record → isi judul, slug unik, teks, tanggal → Save record. | Buka News, lalu detail berita. Setelah Edit, muat ulang halaman publik untuk melihat perubahannya. Mengubah slug juga mengubah alamat detail. |
+| **Tour** | Buat Venues → Concerts dengan waktu WIB → Ticket types untuk harga dan kuota. | Buka Tour dan Show details pada konser terkait. Periksa lokasi, waktu WIB dan status; pilihan tiket mengikuti data dan ketersediaan dari server. |
+| **Merchandise** | Buat Categories → Products → Product variants dengan ukuran, warna dan stok. | Buka Store dan periksa nama, kategori, harga serta varian. Produk tanpa varian belum dapat dipesan; stok nol tidak dapat dipilih. |
+
+Untuk melihat perbedaannya, catat nilai lama, ubah satu field melalui Edit, simpan hingga Record saved., lalu muat ulang halaman publik pada backend yang sama. Harga diisi misalnya 1500.25, kemudian Store menampilkan Rp1.500,25. Foto produk belum tersedia pada skema; kartu tetap memakai nama/deskripsi dan pilihan variannya.
+
+Saat menghapus, mulai dari turunan: varian → produk → kategori, atau jenis tiket → konser → venue. Data yang masih digunakan pesanan harus dipertahankan. Tidak ada pemulihan melalui dashboard setelah penghapusan dikonfirmasi.

@@ -51,7 +51,7 @@ php -d display_errors=0 -S 127.0.0.1:8000 router.php
 
 Open `http://127.0.0.1:8000/showcase.html`, or create a fan account at `http://127.0.0.1:8000/account.html`. Select merchandise variants or choose a concert from Tour, review the server total, and place an order. Checkout does not collect card details.
 
-GitHub Pages serves the HTML frontend only. Set the public HTTPS API directory in `site-config.js` for hosted database content. With separate frontend/backend hosts, account and checkout pages offer **Continue to checkout**, where the session remains on one origin. The backend must also serve those HTML pages and their assets. Keep database credentials out of JavaScript. Restrict the direct-access administrator dashboard before exposing the PHP server publicly.
+GitHub Pages serves the HTML frontend only. Set the public HTTPS API directory in `site-config.js` for hosted database content. With separate frontend/backend hosts, account and checkout pages offer **Continue to checkout**, where the session remains on one origin. The backend must also serve those HTML pages and their assets. Keep database credentials out of JavaScript. The administrator dashboard now requires an admin login; validate HTTPS and server file protection on the deployment host.
 
 ## Contact, newsletter, and fan messages
 
@@ -59,4 +59,10 @@ After selecting the application database, import `migrations/002_interactions.sq
 
 Visitors can send a private message from About and join the newsletter list on News or article detail. Newsletter registration records the subscription; email delivery is not connected. Fan messages are selected manually by the administrator from external email, then entered through the **Fan messages (published)** dashboard module. Saving publishes the public display name and message on News.
 
-Private contacts and subscriber lists require administrator sign-in at `/dashboard-auth/messages.php`; they are not exposed by the direct dashboard or public content APIs. Include that authenticated dashboard deliberately when preparing deployment; the current local Git ignore settings exclude that directory. No credentials belong in the frontend configuration.
+Private contacts and subscriber lists require administrator sign-in at `/dashboard-auth/messages.php`; they are not exposed by public content APIs. The primary dashboard at `/dashboard/` also requires admin sign-in and shares that administrator session. Include that authenticated dashboard deliberately when preparing deployment; the current local Git ignore settings exclude that directory. No credentials belong in the frontend configuration.
+
+## Authentication and access
+
+Public registration creates a `user` account only. The Fan Account page displays the current role from the server; an administrator can open the dashboard link. Administrative access requires signing in at `/dashboard/login.php` with an existing admin account. Both dashboard addresses share their admin session and logout; the visitor account session remains separate.
+
+Roles and password versions are checked again on requests. Anonymous visitors cannot open or submit dashboard forms, ordinary accounts cannot sign in as administrators, and orders remain restricted to their owner. Administrator sessions expire after 30 minutes of inactivity. No additional database migration is required for authentication/access changes.
