@@ -103,9 +103,3 @@ Roles and password versions are checked again on requests. Anonymous visitors ca
 The repository includes a portable content pack with four albums, 20 selected songs, six editorial articles plus three sourced news summaries, a merchandise catalog, concert/ticket records and published fan messages. Event schedules, merchandise, prices, inventory and fan messages are fictional coursework content; they are not official band information. No accounts, credentials, orders or private contacts are exported.
 
 Follow [database/README.md](database/README.md) to import the existing schema and migrations, configure DB_*, then run `php database/import.php --dry-run` and `php database/import.php`. Repeated imports retain matching records and do not reset stock. Copy assets/ with the code. The guide lists temporary artwork and the final content/images still needed.
-
-## Original photos and sourced news
-
-Music uses four original album covers from the Apple Music catalogue; About uses real performance photos of the four members. Source and license details are in [assets/IMAGE_CREDITS.md](assets/IMAGE_CREDITS.md). No AI images were generated for this replacement. The content importer refreshes known starter images while preserving other custom artwork.
-
-News includes short, attributed updates checked on 18 November 2026, including the Jakarta show and reported recording plans. Official event links are separate from the coursework ticket records. These are manually curated articles, not an automatically refreshed news feed.

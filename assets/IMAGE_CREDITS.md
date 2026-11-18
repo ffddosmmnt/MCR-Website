@@ -1,7 +1,3 @@
-# Sumber cover album dan foto anggota
-
-Diunduh dan diperiksa 18 November 2026. Delapan file ini diambil dari internet; **tidak dibuat dengan AI, tidak digambar ulang dan tidak diedit pada berkasnya**. Album disimpan pada assets/albums/ dan potret panggung pada assets/members/. Website membaca file lokal sehingga gambar ikut tersedia ketika repositori disalin. Pemetaan, URL unduhan dan checksum tersedia pada [image-sources.json](image-sources.json).
-
 ## Cover album
 
 | File | Album dan sumber katalog |
@@ -27,7 +23,3 @@ Ketiga foto Eastscene menampilkan panggung Montreal, 16 Agustus 2011, sesuai des
 Metadata tanggal foto Ray tidak konsisten antara nama/deskripsi/tanggal pada Commons. Website hanya menyebut subjek dan aktivitas, tanpa mengarang tanggal konser. Foto Ray beresolusi 463×411; kualitas sumber lebih rendah daripada tiga foto lainnya dan dapat diganti nanti.
 
 Photo credits tampil pada halaman About. Berkas asli tidak dipotong atau diwarnai ulang, tetapi CSS website masih memakai crop dan grayscale untuk kartu anggota; Music menampilkan warna asli cover. Tidak ada wajah/orang yang diidentifikasi hanya dari kemiripan: nama mengikuti metadata halaman sumber.
-
-## Cakupan
-
-Mengganti empat cover pada database/seed dan empat foto anggota di About serta band_members. Lagu belum mempunyai kolom gambar sendiri; tidak ditambahkan cover single fiktif atau skema baru. Hero, ilustrasi arsip dan kartu produk lain tetap memakai aset/perilaku sebelumnya. File lama tidak dihapus karena masih dipakai di bagian lain.
