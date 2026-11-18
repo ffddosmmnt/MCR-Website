@@ -59,6 +59,7 @@ function public_album(array $album): array
 function public_article(array $article): array
 {
     $article['id'] = (int) $article['id'];
+    $article['image_path'] = local_image($article['image_path']);
     $article['date_display'] = date_label($article['news_date'] === null ? null : substr($article['news_date'], 0, 10));
     $article['excerpt'] = excerpt($article['content']);
     return $article;

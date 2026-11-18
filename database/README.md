@@ -10,6 +10,7 @@ Paket ini berisi **konten awal proyek kuliah**, bukan salinan database pribadi. 
 | [001_checkout_requests.sql](../migrations/001_checkout_requests.sql) | Tabel pencegah duplikasi checkout. |
 | [002_interactions.sql](../migrations/002_interactions.sql) | Tabel kontak privat, subscription dan pesan fans publik. |
 | [003_product_images.sql](../migrations/003_product_images.sql) | Kolom gambar opsional pada produk yang sudah ada. |
+| [004_news_images.sql](../migrations/004_news_images.sql) | Kolom gambar opsional pada berita yang sudah ada. |
 | [content.sql](content.sql) | Konten awal dengan relasi berdasarkan nama/slug; tidak memakai ID lokal yang tetap. |
 | [import.php](import.php) | Importer CLI dengan transaksi, pengecekan tabel InnoDB, kunci impor dan ringkasan penambahan per tabel. |
 | [assets/](../assets/) | Gambar yang dirujuk menggunakan path relatif; wajib ikut disalin. |
@@ -44,7 +45,8 @@ Untuk instalasi baru, melalui HeidiSQL/phpMyAdmin/MySQL client:
 2. Pilih database mcr_website, impor migrations/001_checkout_requests.sql.
 3. Pada database yang sama, impor migrations/002_interactions.sql.
 4. Impor migrations/003_product_images.sql sebelum mengimpor konten.
-5. Pastikan 19 tabel tersedia, lalu lanjutkan impor konten di bawah.
+5. Impor migrations/004_news_images.sql untuk gambar berita.
+6. Pastikan 19 tabel tersedia, lalu lanjutkan impor konten di bawah.
 
 Di MySQL client, dari root proyek, alternatif perintah impor skema adalah:
 
@@ -53,11 +55,12 @@ mysql --user=YOUR_DB_USER --password --execute="source mcr_database_mysql.db"
 mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/001_checkout_requests.sql"
 mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/002_interactions.sql"
 mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/003_product_images.sql"
+mysql --user=YOUR_DB_USER --password mcr_website --execute="source migrations/004_news_images.sql"
 ```
 
 Ganti YOUR_DB_USER sesuai akun lokal; password diminta oleh client. Gunakan host/port sesuai instalasi. Perintah di atas mengasumsikan mysql dan php tersedia di PATH Laragon/terminal. Path executable yang memuat spasi di PowerShell dipanggil dengan operator &.
 
-Untuk instalasi yang sudah lengkap, **jangan hapus atau impor ulang database**; langsung gunakan importer konten. IF NOT EXISTS pada skema bukan pembaruan otomatis untuk definisi tabel yang sudah berbeda. Buat cadangan pribadi jika database sudah berisi data penting, dan jangan commit cadangan tersebut.
+Untuk instalasi yang sudah lengkap, **jangan hapus atau impor ulang database**; terapkan hanya migrasi yang belum terpasang (termasuk 004 untuk gambar News), lalu gunakan importer konten. IF NOT EXISTS pada skema bukan pembaruan otomatis untuk definisi tabel yang sudah berbeda. Buat cadangan pribadi jika database sudah berisi data penting, dan jangan commit cadangan tersebut.
 
 ## 2. Konfigurasi dan impor konten
 
@@ -167,3 +170,7 @@ Untuk membatalkan tampilan, kembalikan kode API/UI terlebih dahulu. Kolom gambar
 Welcome to the Black Parade (album The Black Parade) memakai teks 70 baris yang dikirim pengguna pada 18 November 2026. Seed mengisi lirik hanya jika NULL atau kosong, sehingga impor ulang mempertahankan revisi admin. Tidak ada perubahan skema. Ini bukan klaim lisensi bebas atas lirik. Untuk perubahan berikutnya gunakan dashboard Songs.
 
 Na Na Na (Na Na Na Na Na Na Na Na Na), album Danger Days: The True Lives of the Fabulous Killjoys, juga memakai teks pengguna (63 baris). Pesan pengguna berisi salinan identik dua kali; hanya satu salinan disimpan. Aturan seed yang sama mempertahankan lirik admin yang sudah terisi.
+
+## Gambar News
+
+Migrasi 004 menambah nullable news_articles.image_path tanpa tabel baru atau perubahan isi berita lama. Terapkan sekali sebelum menjalankan API/dashboard versi ini; jangan menjalankan ALTER yang sama dua kali. News pada dashboard utama menerima JPG/PNG/WebP maksimal 2 MB. Edit tanpa file baru mempertahankan gambar. Home, News dan detail memakai path lokal tervalidasi; berita tanpa gambar memakai artwork arsip. File upload berada di dashboard/uploads dan diabaikan Git. Saat memindahkan konten admin antarperangkat, salin juga file gambar yang dirujuk dengan prosedur cadangan privat; Git saja tidak memindahkan upload. Rollback kode dapat mempertahankan kolom, tanpa menghapus data.

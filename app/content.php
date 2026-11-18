@@ -76,14 +76,14 @@ function fan_messages(): array
 function news_articles(int $limit = 100): array
 {
     return content_rows(
-        'SELECT id, title, slug, content, news_date FROM news_articles ORDER BY news_date DESC, id DESC LIMIT :limit',
+        'SELECT id, title, slug, content, image_path, news_date FROM news_articles ORDER BY news_date DESC, id DESC LIMIT :limit',
         $limit,
     );
 }
 
 function article_by_slug(string $slug): ?array
 {
-    $query = database()->prepare('SELECT id, title, slug, content, news_date FROM news_articles WHERE slug = :slug');
+    $query = database()->prepare('SELECT id, title, slug, content, image_path, news_date FROM news_articles WHERE slug = :slug');
     $query->execute(['slug' => $slug]);
     return $query->fetch() ?: null;
 }

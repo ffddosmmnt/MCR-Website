@@ -45,6 +45,7 @@ Requirements: Laragon with PHP (PDO MySQL and mbstring), MySQL, and Windows Powe
    - Select `mcr_website`, then import `migrations/001_checkout_requests.sql`.
    - Import `migrations/002_interactions.sql` into the same database.
    - Import `migrations/003_product_images.sql` to add product images.
+   - Import `migrations/004_news_images.sql` to add News images.
    - Import `database/content.sql` to populate the initial content. Stop if an error occurs; do not commit a failed transaction.
 
    Existing complete installations do not need to reimport the schema. See [database/README.md](database/README.md) for the full import guide.

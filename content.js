@@ -41,7 +41,15 @@
   };
   const articleLink = item => `news-detail.html?slug=${encodeURIComponent(item.slug)}`;
   const concertLink = item => `tour.html?concert=${encodeURIComponent(item.id)}#selected-show`;
+  const fillNewsImage = (root, item) => {
+    root.querySelectorAll("[data-news-image]").forEach(image => {
+      image.src = new URL(item.image_path || "assets/archive-news.png", new URL("../", resolveMcrApiBase())).href;
+      image.alt = item.image_path ? item.title : "Editorial archive artwork";
+    });
+    root.querySelectorAll("[data-news-image-caption]").forEach(caption => { caption.hidden = Boolean(item.image_path); });
+  };
   const fillNews = (root, item) => {
+    fillNewsImage(root, item);
     text(root, "[data-title]", item.title);
     text(root, "[data-date]", item.date_display);
     text(root, "[data-excerpt]", item.excerpt);
@@ -189,6 +197,7 @@
       text(shell, "[data-title]", data.article.title);
       text(shell, "[data-date]", data.article.date_display);
       articleBody(shell, data.article.content);
+      fillNewsImage(shell, data.article);
       document.title = `${data.article.title} | MCR`;
       find(document, "[data-page-heading]").hidden = true;
       shell.hidden = false;

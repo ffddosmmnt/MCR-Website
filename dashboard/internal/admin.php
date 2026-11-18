@@ -16,7 +16,7 @@ function admin_modules(): array
         'band_members' => ['Band members', ['name' => ['Name', 'text', 100], 'instrument' => ['Instrument', 'text', 100, true], 'cover_img' => ['Image', 'image', 65535, true]]],
         'albums' => ['Albums', ['title' => ['Title', 'text', 150], 'release_date' => ['Release date', 'date', 10, true], 'cover_image' => ['Cover image', 'image', 65535, true]]],
         'songs' => ['Songs', ['album_id' => ['Album', 'relation', 'albums'], 'title' => ['Title', 'text', 150], 'lyrics' => ['Lyrics', 'textarea', 65535, true]]],
-        'news_articles' => ['News', ['title' => ['Title', 'text', 200], 'slug' => ['Slug', 'slug', 220], 'content' => ['Content', 'textarea', 65535, true], 'news_date' => ['News date', 'datetime-local', 19, true]]],
+        'news_articles' => ['News', ['title' => ['Title', 'text', 200], 'slug' => ['Slug', 'slug', 220], 'content' => ['Content', 'textarea', 65535, true], 'image_path' => ['News image', 'image', 65535, true], 'news_date' => ['News date', 'datetime-local', 19, true]]],
         'venues' => ['Venues', ['name' => ['Name', 'text', 150], 'city' => ['City', 'text', 100], 'country' => ['Country', 'text', 100]]],
         'concerts' => ['Concerts', ['venue_id' => ['Venue', 'relation', 'venues'], 'concert_date' => ['Concert date (WIB)', 'timestamp', 19, true], 'status' => ['Status', 'text', 30]]],
         'ticket_types' => ['Ticket types', ['concert_id' => ['Concert', 'relation', 'concerts'], 'name' => ['Name', 'text', 100], 'price' => ['Price', 'money', 12], 'quota' => ['Quota', 'integer', 2147483647]]],

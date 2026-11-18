@@ -70,7 +70,7 @@ Pesanan pada dashboard ini merupakan **pencatatan administrasi**. Stok produk da
 2. Klik **+ Add record**.
 3. Isi formulir yang muncul. Isian bertanda **(optional)** boleh dikosongkan.
 4. Jika ada daftar pilihan, pilih data yang sesuai, misalnya album untuk sebuah lagu.
-5. Untuk gambar anggota band atau sampul album, klik **Choose File / Pilih File** pada **Image** atau **Cover image**, lalu pilih gambar dari perangkat Anda. Bagian ini boleh dikosongkan.
+5. Untuk gambar anggota band, sampul album, produk atau berita, klik **Choose File / Pilih File** pada **Image**, **Cover image**, **Product image** atau **News image**, lalu pilih gambar dari perangkat Anda. Bagian ini boleh dikosongkan.
 6. Klik **Save record**.
 
 Pesan **Record saved.** menandakan data berhasil disimpan. Jika ada pesan kesalahan, perbaiki isian yang disebutkan lalu simpan kembali.
@@ -127,7 +127,7 @@ Data yang masih digunakan oleh informasi lain tidak dapat dihapus. Contohnya, al
 - **Stok dan kuota** diisi dengan bilangan bulat nol atau lebih, tanpa angka pecahan.
 - **Quantity** pada item pesanan diisi bilangan bulat minimal satu. **Unit price** adalah harga satuan yang dicatat; **Subtotal** dan **Total amount** dihitung otomatis.
 - **Waktu konser** menggunakan WIB. Periksa tanggal dan jam sebelum menyimpan.
-- **Image / Cover image** diunggah langsung dari perangkat, tanpa mengetik lokasi file. Pilih gambar **JPG, PNG, atau WebP**, maksimal **2 MB**, dengan panjang/lebar maksimal **6000 piksel** dan luas maksimal **20 megapiksel**. Jika formulir gagal disimpan, pilih kembali file gambar sebelum mencoba lagi.
+- **Image / Cover image / Product image / News image** diunggah langsung dari perangkat, tanpa mengetik lokasi file. Pilih gambar **JPG, PNG, atau WebP**, maksimal **2 MB**, dengan panjang/lebar maksimal **6000 piksel** dan luas maksimal **20 megapiksel**. Jika formulir gagal disimpan, pilih kembali file gambar sebelum mencoba lagi.
 - **Lirik, isi berita, dan deskripsi produk** diisi sebagai teks biasa. Gunakan baris baru untuk memisahkan bagian tulisan.
 
 ## Penyimpanan gambar
@@ -164,3 +164,7 @@ Login berlaku juga untuk inbox dan alamat dashboard-auth; keduanya menggunakan s
 Untuk melihat perbedaannya, catat nilai lama, ubah satu field melalui Edit, simpan hingga Record saved., lalu muat ulang halaman publik pada backend yang sama. Harga diisi misalnya 1500.25, kemudian Store menampilkan Rp1.500,25. Foto produk belum tersedia pada skema; kartu tetap memakai nama/deskripsi dan pilihan variannya.
 
 Saat menghapus, mulai dari turunan: varian → produk → kategori, atau jenis tiket → konser → venue. Data yang masih digunakan pesanan harus dipertahankan. Tidak ada pemulihan melalui dashboard setelah penghapusan dikonfirmasi.
+
+## Gambar berita
+
+Pastikan migrasi 004_news_images.sql sudah diterapkan. Buka News → Add record atau Edit → News image → pilih JPG/PNG/WebP maksimal 2 MB → Save. Gambar tersimpan tampil pada Home, News dan detail berita setelah refresh. Edit tanpa file baru mempertahankan gambar lama; berita tanpa gambar tetap memakai artwork arsip. Upload tidak ikut Git; salin file yang dirujuk saat memindahkan konten admin ke perangkat lain.
